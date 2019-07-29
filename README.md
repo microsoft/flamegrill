@@ -20,6 +20,10 @@ run flamegrill against specified input
 
 ## Options
 
+### --name, -n
+
+name for given scenario
+
 ### --scenario, -s
 
 URL for scenario under test
