@@ -6,8 +6,7 @@ import generateFlamegraph from './flamegraph/generateFlamegraph';
 // Chrome command for running similarly configured instance of Chrome as puppeteer is configured here:
 // "C:\Program Files (x86)\Google\Chrome\Application\chrome" --no-sandbox --js-flags=" --logfile=C:\git\perf\output\chrome.log --prof --jitless --no-opt" --user-data-dir="C:\git\perf\user" http://localhost:4322
 
-// TODO: need to specify output path. will there be a default? what would it be?
-// TODO: need to make output folder if it does not exist?
+// TODO: reorganize to match cli.. export object with similarly named functions such as cook
 
 export type Scenario = {
   name: string;
