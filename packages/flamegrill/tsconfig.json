@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "outDir": "./lib",
+    "target": "es2016",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "declaration": true,
+    "declarationMap": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*"]
+}

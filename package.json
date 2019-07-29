@@ -1,0 +1,27 @@
+{
+  "name": "flamegrill-monorepo",
+  "private": true,
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "https://github.com/JasonGore/flamegrill.git",
+  "author": "Jason Gore <jagore@microsoft.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "lerna run build --stream",
+    "build:flamegrill": "lerna run build --scope flamegrill",
+    "start": "lerna run start",
+    "change": "node ./packages/flamegrill/lib/cli.js change",
+    "checkchange": "node ./packages/flamegrill/lib/cli.js check",
+    "publish:flamegrill": "node ./packages/flamegrill/lib/cli.js publish"
+  },
+  "devDependencies": {
+    "lerna": "^3.13.2",
+    "rimraf": "^2.6.3",
+    "ncp": "^2.0.0"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  }
+}
