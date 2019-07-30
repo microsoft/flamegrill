@@ -1,5 +1,4 @@
 
-// TODO: pass scenario data.. name, test URL, optional reference URL
 // TODO: use approach similar to jest.. config file with URL targets
 // TODO: recheck and remove unnecessary depedencies
 // TODO: filters should be custom defined with names and regex... can't assume using minified React. get rid of helpers?
@@ -14,14 +13,6 @@
 //  * webpack production builds that do not minify for additional visibility
 //  * filters
 //  * iterations / rollup
-
-/*
-node .\bin\flamegrill.js -n SplitButtonNew -s "http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/index.html?scenario=SplitButtonNew&iterations=5000"
-node .\bin\flamegrill.js -n SplitButtonNew -s "C:\git\oufr-jg\apps\perf-test\dist\index.html?scenario=SplitButtonNew&iterations=5000" -r "http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/index.html?scenario=SplitButtonNew&iterations=5000" -o dist -t logfiles
-node .\bin\flamegrill.js -n SplitButtonNew -s "C:\Users\Jason\src\oufr-jg\apps\perf-test\dist\index.html?scenario=SplitButtonNew&iterations=5000" -r "http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/index.html?scenario=SplitButtonNew&iterations=5000" 
-node .\bin\flamegrill.js --name SplitButtonNew --scenario "C:\git\oufr-jg\apps\perf-test\dist\index.html?scenario=SplitButtonNew&iterations=5000" --reference "http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/index.html?scenario=SplitButtonNew&iterations=5000"  --out-dir out --temp-dir temp
-node .\bin\flamegrill.js -n SplitButtonNew -s "http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/index.html?scenario=SplitButtonNew&iterations=5000" -o out -t temp
-*/
 
 import { CliOptions } from './CliOptions';
 import flamegrill from './flamegrill';
@@ -79,7 +70,7 @@ const options: CliOptions = {
         scenario,
         tempDir
       } = options;
-      flamegrill( [{ name, scenario, reference }], { outDir, tempDir } );
+      flamegrill.cook( [{ name, scenario, reference }], { outDir, tempDir } );
       break;
   }
 })();

@@ -6,8 +6,6 @@ import generateFlamegraph from './flamegraph/generateFlamegraph';
 // Chrome command for running similarly configured instance of Chrome as puppeteer is configured here:
 // "C:\Program Files (x86)\Google\Chrome\Application\chrome" --no-sandbox --js-flags=" --logfile=C:\git\perf\output\chrome.log --prof --jitless --no-opt" --user-data-dir="C:\git\perf\user" http://localhost:4322
 
-// TODO: reorganize to match cli.. export object with similarly named functions such as cook
-
 export type Scenario = {
   name: string;
   scenario: string;
@@ -19,24 +17,23 @@ export type ScenarioConfig = {
   tempDir?: string;
 };
 
-// TODO: rename / optionalize
 export interface ScenarioTest extends Scenario {
-  logfileMaster?: string;
-  outfileMaster: string;
-  logfilePR: string;
-  outfilePR: string;
+  logfile: string;
+  outfile: string;
+  logfileReference?: string;
+  outfileReference: string;
 };
 
 export interface ScenarioAnalysis extends ScenarioTest {
-  numTicksMaster?: number;
-  numTicksPR?: number;
+  numTicksReference?: number;
+  numTicks?: number;
 };
 
-export async function flamegrill(scenarios: Scenario[], config: ScenarioConfig) {
+export async function cook(scenarios: Scenario[], config: ScenarioConfig) {
   // const extraV8Flags = '--log-source-code --log-timer-events';
   // const extraV8Flags = '--log-source-code';
   const extraV8Flags = '';
-  // TODO: test with no path, relative path, and absolute path
+
   const outDir = config.outDir ? path.resolve(config.outDir) : process.cwd();
   const tempDir = config.tempDir ? path.resolve(config.tempDir) : process.cwd();
   const logFilePath = path.join(tempDir, '/puppeteer.log');
@@ -62,21 +59,21 @@ export async function flamegrill(scenarios: Scenario[], config: ScenarioConfig) 
   const testResults: ScenarioTest[] = [];
 
   for (const scenario of scenarios) {
-    let logfilePR = await runPerfTest(browser, scenario.scenario, scenario.name, tempDir);
-    let logfileMaster;
+    let logfile = await runPerfTest(browser, scenario.scenario, scenario.name, tempDir);
+    let logfileReference;
     if (scenario.reference) {
-      logfileMaster = await runPerfTest(browser, scenario.reference, scenario.name, tempDir);
+      logfileReference = await runPerfTest(browser, scenario.reference, scenario.name, tempDir);
     }
 
-    let outfileMaster = path.join(outDir, `${scenario.name}_master.html`);
-    let outfilePR = path.join(outDir, `${scenario.name}_pr.html`);
+    let outfileReference = path.join(outDir, `${scenario.name}_ref.html`);
+    let outfile = path.join(outDir, `${scenario.name}.html`);
 
     testResults.push({
       ...scenario,
-      logfileMaster,
-      outfileMaster,
-      logfilePR,
-      outfilePR
+      logfileReference,
+      outfileReference,
+      logfile,
+      outfile
     });
   }
 
@@ -87,9 +84,9 @@ export async function flamegrill(scenarios: Scenario[], config: ScenarioConfig) 
 
   // Serialize a bunch of async generation of flamegraphs
   for (const result of testResults) {
-    await generateFlamegraph(result.logfilePR, result.outfilePR);
-    if(result.logfileMaster) {
-      await generateFlamegraph(result.logfileMaster, result.outfileMaster);
+    await generateFlamegraph(result.logfile, result.outfile);
+    if(result.logfileReference) {
+      await generateFlamegraph(result.logfileReference, result.outfileReference);
     }
   }
 
@@ -147,15 +144,15 @@ function processResults(scenarioConfigs: ScenarioTest[]): ScenarioAnalysis[] {
   const scenarioResults: ScenarioAnalysis[] = [];
 
   scenarioConfigs.forEach(scenarioConfig => {
-    let numTicksMaster;
+    let numTicksReference;
     if (scenarioConfig.reference) {
-      numTicksMaster = getTicks(scenarioConfig.outfileMaster);
+      numTicksReference = getTicks(scenarioConfig.outfileReference);
     }
-    let numTicksPR = getTicks(scenarioConfig.outfilePR);
+    let numTicks = getTicks(scenarioConfig.outfile);
     let scenarioResult: ScenarioAnalysis = {
       ...scenarioConfig,
-      numTicksMaster,
-      numTicksPR
+      numTicksReference,
+      numTicks
     }
     scenarioResults.push(scenarioResult);
   });
@@ -211,4 +208,6 @@ function arr_diff(a1: string[], a2: string[]): string[] {
   return diff;
 }
 
-export default flamegrill;
+export default {
+  cook
+};
