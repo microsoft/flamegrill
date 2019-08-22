@@ -1,11 +1,14 @@
 import fs from 'fs';
 import path from 'path';
 import puppeteer, { Browser }  from 'puppeteer';
-import generateFlamegraph from './flamegraph/generateFlamegraph';
+import { generateFlamegraph, GeneratedFiles } from './flamegraph/generate';
+import { checkForRegressions } from './analysis/processData';
 
 // Chrome command for running similarly configured instance of Chrome as puppeteer is configured here:
 // "C:\Program Files (x86)\Google\Chrome\Application\chrome" --no-sandbox --js-flags=" --logfile=C:\git\perf\output\chrome.log --prof --jitless --no-opt" --user-data-dir="C:\git\perf\user" http://localhost:4322
 
+// TODO: overhaul types and reconcile with processData types
+// TODO: get rid of !'s in this file
 export type Scenario = {
   name: string;
   scenario: string;
@@ -17,16 +20,35 @@ export type ScenarioConfig = {
   tempDir?: string;
 };
 
-export interface ScenarioTest extends Scenario {
-  logfile: string;
-  outfile: string;
-  logfileReference?: string;
-  outfileReference: string;
+export interface PerfTest {
+  logFile: string;
+  outFile: string;
+  reference: {
+    logFile?: string;
+    outFile: string;
+  }
 };
 
-export interface ScenarioAnalysis extends ScenarioTest {
-  numTicksReference?: number;
+export interface PerfTests {
+  [key: string]: PerfTest;
+};
+
+export interface OutputFiles extends GeneratedFiles {
+  regressionFile?: string;
+};
+
+export interface Analysis {
   numTicks?: number;
+  files?: OutputFiles;
+  isRegression?: boolean;
+  reference?: {
+    files?: OutputFiles;
+    numTicks?: number;
+  }
+};
+
+export interface Analyses {
+  [key: string]: Analysis;
 };
 
 export async function cook(scenarios: Scenario[], config: ScenarioConfig) {
@@ -36,14 +58,16 @@ export async function cook(scenarios: Scenario[], config: ScenarioConfig) {
 
   const outDir = config.outDir ? path.resolve(config.outDir) : process.cwd();
   const tempDir = config.tempDir ? path.resolve(config.tempDir) : process.cwd();
-  const logFilePath = path.join(tempDir, '/puppeteer.log');
-  console.log(`logFilePath: ${logFilePath}`);
+  const logFile = path.join(tempDir, '/puppeteer.log');
+
+  console.log(`logFile: ${logFile}`);
+
   const browser = await puppeteer.launch({
     headless: true,
     args: [
       '--flag-switches-begin',
       '--no-sandbox',
-      '--js-flags=--logfile=' + logFilePath + ' --prof --jitless --no-opt ' + extraV8Flags,
+      '--js-flags=--logfile=' + logFile + ' --prof --jitless --no-opt ' + extraV8Flags,
       '--flag-switches-end'
     ]
   });
@@ -56,43 +80,57 @@ export async function cook(scenarios: Scenario[], config: ScenarioConfig) {
   // TODO: Need to decide whether it's ok to run tests in parallel. Variance from results seems to indicate
   // not, but then again other things outside of our control will also affect CPU load and results.
   // Run tests sequentially for now, at least as a chance of getting more consistent results when run locally.
-  const testResults: ScenarioTest[] = [];
+  const perfTests: PerfTests = {};
 
   for (const scenario of scenarios) {
-    let logfile = await runPerfTest(browser, scenario.scenario, scenario.name, tempDir);
-    let logfileReference;
+    let logFile = await runPerfTest(browser, scenario.scenario, scenario.name, tempDir);
+    let logFileRef;
     if (scenario.reference) {
-      logfileReference = await runPerfTest(browser, scenario.reference, scenario.name, tempDir);
+      logFileRef = await runPerfTest(browser, scenario.reference, scenario.name, tempDir);
     }
 
-    let outfileReference = path.join(outDir, `${scenario.name}_ref.html`);
-    let outfile = path.join(outDir, `${scenario.name}.html`);
+    let outFileRef = path.join(outDir, `${scenario.name}_ref`);
+    let outFile = path.join(outDir, `${scenario.name}`);
 
-    testResults.push({
-      ...scenario,
-      logfileReference,
-      outfileReference,
-      logfile,
-      outfile
-    });
+    perfTests[scenario.name] = {
+      logFile,
+      outFile,
+      reference: {
+        logFile: logFileRef,
+        outFile: outFileRef
+      }
+    };
   }
 
-  console.log('testResults: ' + JSON.stringify(testResults));
+  console.log('perfTests: ' + JSON.stringify(perfTests));
 
   // Clean up
   await browser.close();
 
+  const analyses: Analyses = {}
+
   // Serialize a bunch of async generation of flamegraphs
-  for (const result of testResults) {
-    await generateFlamegraph(result.logfile, result.outfile);
-    if(result.logfileReference) {
-      await generateFlamegraph(result.logfileReference, result.outfileReference);
+  // TODO: need an API story here. how will users get output? data structures? files? both?
+  for (const scenario of scenarios) {
+    const result = perfTests[scenario.name];
+    const analysis: Analysis = {};
+    analysis.files = await generateFlamegraph(result.logFile, result.outFile);
+    // await generateSummary(result.logFile, result.outFile);
+    if(result.reference.logFile) {
+      analysis.reference = {};
+      analysis.reference.files = await generateFlamegraph(result.reference.logFile, result.reference.outFile);
+      analysis.files.regressionFile = path.join(outDir, `${scenario.name}.regression.txt`);
+      // await generateSummary(result.logFileRef, result.outFileRef);    
     }
+
+    processResults(analysis);
+
+    analyses[scenario.name] = analysis;
   }
 
-  const scenarioAnalysis = processResults(testResults);
+  console.log('analyses: ' + JSON.stringify(analyses));
 
-  return scenarioAnalysis;
+  return analyses;
 };
 
 /**
@@ -100,10 +138,11 @@ export async function cook(scenarios: Scenario[], config: ScenarioConfig) {
  * @param {*} browser Launched puppeteer instance.
  * @param {string} testUrl Base URL supporting 'scenario' and 'iterations' query parameters.
  * @param {string} scenarioName Name of scenario that will be used with baseUrl.
- * @param {string} logPath Absolute path to output log profiles.
+ * @param {string} logDir Absolute path to output log profiles.
+ * @returns {string} Log file path associated with test.
  */
-async function runPerfTest(browser: Browser, testUrl: string, scenarioName: string, logPath: string) {
-  const logFilesBefore = fs.readdirSync(logPath);
+async function runPerfTest(browser: Browser, testUrl: string, scenarioName: string, logDir: string): Promise<string> {
+  const logFilesBefore = fs.readdirSync(logDir);
 
   const page = await browser.newPage();
 
@@ -112,7 +151,7 @@ async function runPerfTest(browser: Browser, testUrl: string, scenarioName: stri
   // TODO: argument? should probably default to 30 seconds
   page.setDefaultTimeout(0);
 
-  const logFilesAfter = fs.readdirSync(logPath);
+  const logFilesAfter = fs.readdirSync(logDir);
 
   const testLogFile = arr_diff(logFilesBefore, logFilesAfter);
 
@@ -134,30 +173,33 @@ async function runPerfTest(browser: Browser, testUrl: string, scenarioName: stri
 
   await page.close();
 
-  return path.join(logPath, testLogFile[0]);
+  return path.join(logDir, testLogFile[0]);
 }
 
 /**
  * Create test summary based on test results.
  */
-function processResults(scenarioConfigs: ScenarioTest[]): ScenarioAnalysis[] {
-  const scenarioResults: ScenarioAnalysis[] = [];
+function processResults(analysis: Analysis): Analysis {
+  const dataFileAfter = analysis.files && analysis.files.dataFile;
+  const dataFileBefore = analysis.reference && analysis.reference.files && analysis.reference.files.dataFile;
 
-  scenarioConfigs.forEach(scenarioConfig => {
-    let numTicksReference;
-    if (scenarioConfig.reference) {
-      numTicksReference = getTicks(scenarioConfig.outfileReference);
-    }
-    let numTicks = getTicks(scenarioConfig.outfile);
-    let scenarioResult: ScenarioAnalysis = {
-      ...scenarioConfig,
-      numTicksReference,
-      numTicks
-    }
-    scenarioResults.push(scenarioResult);
-  });
+  if (dataFileAfter) {
+    analysis.numTicks = getTicks(dataFileAfter);
+  }
+  if (dataFileBefore) {
+    analysis.reference!.numTicks = getTicks(dataFileBefore);
 
-  return scenarioResults;
+    if (dataFileAfter) {
+      const regressionAnalysis = checkForRegressions(dataFileBefore, dataFileAfter);
+      analysis.isRegression = regressionAnalysis.isRegression;
+      if (regressionAnalysis.isRegression) {
+        console.log(`regressionFile: ${JSON.stringify(analysis)}`);
+        fs.writeFileSync(analysis.files!.regressionFile!, regressionAnalysis.summary);
+      }
+    }
+  }
+
+  return analysis;
 }
 
 /**

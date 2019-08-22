@@ -1,6 +1,6 @@
 
 // TODO: use approach similar to jest.. config file with URL targets
-// TODO: recheck and remove unnecessary depedencies
+// TODO: recheck and remove unnecessary dependencies
 // TODO: filters should be custom defined with names and regex... can't assume using minified React. get rid of helpers?
 // Iterations:
 //    The way perf-test is set up now, iterations are baked into page under target
@@ -8,11 +8,24 @@
 //    TODO: standardize URL interface for passing iteration count?
 //    TODO: leave it up to consumer?
 // TODO: documentation should include
-//  * development vs. production considerations (React, app, etc.)
-//  * insight vs. additional overhead
-//  * webpack production builds that do not minify for additional visibility
+//  * approaches for making flamegrill output readable via URL config
+//    * Analyzing React perf and impact of component / app code on React perf (or other generic framework as defined by user)
+//    * Layout and Recalculate Style (browser perf hits that don't seem to be part of JS domain)
+//    * development vs. production considerations (React, app, etc.)
+//    * insight vs. additional overhead
+//    * webpack production builds that do not minify for additional visibility
+//    * build configs vs. source maps?
+//      * can users use full production builds but still get meaningful results using sourcemaps?
+//        https://developer.mozilla.org/en-US/docs/Tools/Debugger/How_to/Use_a_source_map
+//        https://stackoverflow.com/questions/30870830/how-do-i-generate-sourcemaps-when-using-babel-and-webpack
 //  * filters
 //  * iterations / rollup
+// TODO: alternatives / improvements to flamegraphs:
+//  * https://github.com/jlfwong/speedscope
+// TODO: possible bugs to fix:
+//  * https://github.com/mapbox/flamebearer/issues
+//  * https://github.com/mapbox/flamebearer/issues/8
+// TODO: add support for both displayName and identifier?
 
 import { CliOptions } from './CliOptions';
 import flamegrill from './flamegrill';
@@ -101,8 +114,8 @@ Options:
 
 Examples:
 
-$ flamegrill cook -n LocalHostTest -s http://localhost:4322
-$ flamegrill cook -n LocalHostTest -s http://localhost:4322 -r http://some.url.com
+$ flamegrill cook -n SplitButton -s "http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/index.html?scenario=SplitButtonNew&iterations=5000"
+$ flamegrill cook -n SplitButton -s "http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/index.html?scenario=SplitButtonNew&iterations=5000" -r "http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/index.html?scenario=SplitButton&iterations=5000"
 $ flamegrill cook -n SplitButtonNew -s "http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/index.html?scenario=SplitButtonNew&iterations=5000" -o out -t temp
 `);
 }
