@@ -28,7 +28,7 @@ function jsonCleanUp() {
 
 /**
  * Takes in a v8 or node generated profile log and turn into flamegraph with flamebearer.
- * Generates files based on scenarioName: flamegraph (.html), JS data (.data.js), and error output (.err)
+ * Generates files based on scenarioName: flamegraph (.html), JS data (.data.js), and error output (.err.txt)
  *
  * @param {string} logFile Log file path and base name input.
  * @param {string} outFile File path and base name for file output. Extensions will be added for each type of file output.
@@ -41,7 +41,7 @@ export function generateFlamegraph(logFile: string, outFile: string): Promise<Ge
   const preprocessProc = cp.spawn(process.execPath, [tickprocessor, '--preprocess', '-j', logFile]);
   const flamegraphFile = outFile + '.html'
   const dataFile = outFile + '.data.js';
-  const errorFile = outFile + '.err';
+  const errorFile = outFile + '.err.txt';
 
   // TODO: return early?
   if (!fs.existsSync(path.dirname(outFile))) {

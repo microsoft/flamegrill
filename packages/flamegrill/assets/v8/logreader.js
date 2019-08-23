@@ -207,7 +207,12 @@ LogReader.prototype.dispatchLogRow_ = function(fields) {
       if (parser === parseInt) {
         const field = fields[1 + i];
         if (!Number.isSafeInteger(parseInt(field))) {
-          throw Error(`dispatchLogRow_: Can't parse ${field}, integer too large.`);
+          // Linux environments have this line which will cause this error to be thrown.
+          // shared-library,[vsyscall],0xffffffffff600000,0xffffffffff601000,0
+          // Since these instances aren't important for analysis, ignore lines with [vsyscall] for now.
+          if (!fields.includes('[vsyscall]')) {
+            throw Error(`dispatchLogRow_: Can't parse ${fields}, integer too large.`);
+          }
         }
       }
       parsedFields.push(parser(fields[1 + i]));
