@@ -31,9 +31,9 @@ steps:
       yarn build
     displayName: 'build'
 
-  - script: |
-      yarn test
-    displayName: 'test'
+  #- script: |
+  #    yarn test
+  #  displayName: 'test'
 
   #- script: |
   #    yarn pub -n $(npm.authtoken) -y

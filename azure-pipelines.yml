@@ -20,10 +20,10 @@ steps:
       yarn build
     displayName: 'yarn build'
 
-  - script: |
-      yarn test
-    displayName: 'yarn test'
+  #- script: |
+  #    yarn test
+  #  displayName: 'yarn test'
 
-  - script: |
-      yarn checkchange
-    displayName: 'yarn checkchange'
+  #- script: |
+  #    yarn checkchange
+  #  displayName: 'yarn checkchange'
