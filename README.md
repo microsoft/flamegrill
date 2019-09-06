@@ -46,6 +46,8 @@ help message
 
 ## Examples
 
+The following invocations perform the tests using a scenario that you can find [here](https://github.com/OfficeDev/office-ui-fabric-react/blob/master/apps/perf-test/src/scenarios/SplitButtonNew.tsx).
+
 ```
 $ flamegrill cook -n SplitButton -s "http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/index.html?scenario=SplitButtonNew&iterations=5000"
 
