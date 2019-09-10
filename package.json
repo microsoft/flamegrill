@@ -1,28 +1,30 @@
 {
   "name": "flamegrill-monorepo",
-  "private": true,
   "version": "0.0.1",
-  "main": "index.js",
+  "private": true,
   "repository": "https://github.com/microsoft/flamegrill.git",
-  "author": "Jason Gore <jagore@microsoft.com>",
   "license": "MIT",
-  "scripts": {
-    "build": "lerna run build --stream",
-    "build:flamegrill": "lerna run build --scope flamegrill",
-    "test": "lerna run test --scope flamegrill",
-    "start": "lerna run start",
-    "change": "node ./packages/flamegrill/lib/cli.js change",
-    "checkchange": "node ./packages/flamegrill/lib/cli.js check",
-    "publish:flamegrill": "node ./packages/flamegrill/lib/cli.js publish"
-  },
-  "devDependencies": {
-    "lerna": "^3.13.2",
-    "rimraf": "^2.6.3",
-    "ncp": "^2.0.0"
-  },
+  "author": "Jason Gore <jagore@microsoft.com>",
+  "main": "index.js",
   "workspaces": {
     "packages": [
       "packages/*"
     ]
+  },
+  "scripts": {
+    "build:all": "lerna run build --stream",
+    "build:docs": "yarn workspace flamegrill-website build",
+    "build": "yarn workspace flamegrill build",
+    "build:flamegrill": "yarn workspace flamegrill build",
+    "change": "beachball change",
+    "checkchange": "beachball check",
+    "publish:beachball": "beachball publish",
+    "start": "yarn workspace flamegrill start",
+    "start:docs": "yarn workspace flamegrill-website start",
+    "test": "yarn workspace flamegrill test"
+  },
+  "devDependencies": {
+    "beachball": "^1.13.1",
+    "lerna": "^3.13.2"
   }
 }
