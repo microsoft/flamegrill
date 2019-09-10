@@ -1,0 +1,19 @@
+{
+  "id": "table-of-contents",
+  "chapters": [
+    {
+      "title": "Overview",
+      "entries": [
+        { "entry": "./overview/getting-started.md" },
+        { "entry": "./overview/installation.md" },
+        { "entry": "./overview/integrations.md" }
+      ],
+      "chapters": []
+    },
+    {
+      "title": "CLI Reference",
+      "entries": [{ "entry": "./cli/cook.md" }],
+      "chapters": []
+    }
+  ]
+}

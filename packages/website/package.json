@@ -1,0 +1,76 @@
+{
+  "name": "flamegrill-website",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Flamegrill website",
+  "keywords": [
+    "gatsby"
+  ],
+  "license": "MIT",
+  "author": "Jason Gore",
+  "main": "n/a",
+  "scripts": {
+    "build": "yarn clean && gatsby build --prefix-paths && rimraf ../../docs && ncp public ../../docs",
+    "build:local": "gatsby build",
+    "clean": "rm -rf public && rm -rf .cache",
+    "format:js": "npm run prettier -- --write",
+    "lint": "npm run lint:js && npm run lint:md",
+    "lint:js": "eslint --ext .js,.jsx --ignore-pattern public,static . && npm run prettier -- --list-different",
+    "lint:md": "remark content/posts/",
+    "prettier": "prettier '{,!(node_modules,.cache)/**/}*.{js,jsx}'",
+    "serve": "gatsby serve",
+    "start": "gatsby develop"
+  },
+  "dependencies": {
+    "babel-plugin-lodash": "^3.2.11",
+    "babel-plugin-styled-components": "^1.10.1",
+    "gatsby": "^2.10.0",
+    "gatsby-link": "^2.2.0",
+    "gatsby-plugin-google-fonts": "^1.0.1",
+    "gatsby-plugin-manifest": "^2.2.0",
+    "gatsby-plugin-nprogress": "^2.1.0",
+    "gatsby-plugin-offline": "^2.2.0",
+    "gatsby-plugin-react-helmet": "^3.1.0",
+    "gatsby-plugin-react-svg": "^2.1.1",
+    "gatsby-plugin-sharp": "^2.2.1",
+    "gatsby-plugin-sitemap": "^2.2.0",
+    "gatsby-plugin-styled-components": "^3.1.0",
+    "gatsby-remark-autolink-headers": "^2.1.0",
+    "gatsby-remark-copy-linked-files": "^2.1.0",
+    "gatsby-remark-images": "^3.1.0",
+    "gatsby-remark-prismjs": "^3.3.0",
+    "gatsby-remark-responsive-iframe": "^2.2.0",
+    "gatsby-source-filesystem": "^2.1.0",
+    "gatsby-transformer-json": "^2.2.0",
+    "gatsby-transformer-remark": "^2.5.0",
+    "lodash": "^4.17.4",
+    "lodash-webpack-plugin": "^0.11.4",
+    "prismjs": "^1.16.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-helmet": "^5.1.3",
+    "react-icons": "^3.7.0",
+    "react-share": "^3.0.0",
+    "styled-components": "^4.3.2"
+  },
+  "devDependencies": {
+    "cli-glob": "^0.1.0",
+    "eslint": "^4.18.2",
+    "eslint-config-airbnb": "^17.1.1",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.1.0",
+    "ncp": "^2.0.0",
+    "prettier": "^1.18.2",
+    "remark-cli": "^6.0.1",
+    "remark-preset-lint-recommended": "^3.0.1",
+    "rimraf": "^3.0.0",
+    "stylefmt": "^6.0.0"
+  },
+  "remarkConfig": {
+    "plugins": [
+      "remark-preset-lint-recommended"
+    ]
+  }
+}
