@@ -51,7 +51,7 @@ export interface Analyses {
   [key: string]: Analysis;
 };
 
-export async function cook(scenarios: Scenario[], config: ScenarioConfig) {
+export async function cook(scenarios: Scenario[], config: ScenarioConfig): Promise<Analyses> {
   // const extraV8Flags = '--log-source-code --log-timer-events';
   // const extraV8Flags = '--log-source-code';
   const extraV8Flags = '';

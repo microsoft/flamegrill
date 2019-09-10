@@ -18,15 +18,15 @@ steps:
 
   - script: |
       yarn build
-    displayName: 'yarn build'
+    displayName: 'build'
 
-  #- script: |
-  #    yarn test
-  #  displayName: 'yarn test'
+  - script: |
+     yarn test
+   displayName: 'test'
 
   #- script: |
   #    yarn checkchange
-  #  displayName: 'yarn checkchange'
+  #  displayName: 'checkchange'
   
   - task: ComponentGovernanceComponentDetection@0
     inputs:

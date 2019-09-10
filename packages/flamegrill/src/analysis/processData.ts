@@ -289,6 +289,11 @@ function filterSystemNames(functions: FunctionData[]): FunctionData[] {
   return functions;
 }
 
+export const __unitTestHooks = {
+  filterMinifiedNames,
+  filterSystemNames
+};
+
 if (require.main === module) {
   // From directory with output:
   // node ..\..\..\node_modules\flamegrill\lib\analysis\processData.js > ../analysis.txt

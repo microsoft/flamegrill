@@ -20,7 +20,7 @@ steps:
   #- script: |
   #    git config user.email "jagore@microsoft.com"
   #    git config user.name "jagore@microsoft.com"
-  #    git remote set-url origin https://$(github.user):$(github.pat)@github.com/JasonGore/flamegrill.git
+  #    git remote set-url origin https://$(github.user):$(github.pat)@github.com/microsoft/flamegrill.git
   #  displayName: 'git config'
 
   - script: |
@@ -31,9 +31,9 @@ steps:
       yarn build
     displayName: 'build'
 
-  #- script: |
-  #    yarn test
-  #  displayName: 'test'
+  - script: |
+     yarn test
+   displayName: 'test'
 
   #- script: |
   #    yarn pub -n $(npm.authtoken) -y

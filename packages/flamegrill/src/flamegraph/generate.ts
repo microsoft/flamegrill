@@ -13,7 +13,7 @@ export interface GeneratedFiles {
 
 const tickprocessor = require.resolve('../tickprocessor');
 
-// TODO: can remove this if not using Node
+// TODO: no longer using Node's profile processor, remove this
 function jsonCleanUp() {
   return new Transform({
     transform: (data, _, next) => {
