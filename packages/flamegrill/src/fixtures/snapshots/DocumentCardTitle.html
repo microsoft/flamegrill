@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>flamebearer</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <style>
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        font: 16px 'Helvetica Neue', sans-serif;
+        margin: 0;
+      }
+
+      body.hover {
+        background: #cfc;
+      }
+
+      h1 {
+        font-size: 30px;
+        margin: 30px 30px 15px;
+      }
+
+      h1 a {
+        color: black;
+        text-decoration: none;
+      }
+
+      h1 a:hover {
+        text-decoration: underline;
+      }
+
+      #fire-icon {
+        fill: #f53;
+        width: 26px;
+        height: 26px;
+        vertical-align: -1px;
+      }
+
+      #intro {
+        margin: 0 30px;
+      }
+
+      code {
+        font-size: 13px;
+        color: #444;
+      }
+
+      code span {
+        color: #aaa;
+      }
+
+      #canvas {
+        width: 100%;
+      }
+
+      #controls {
+        display: none;
+      }
+
+      #search {
+        margin-right: 10px;
+      }
+
+      label {
+        font-size: 14px;
+      }
+
+      #highlight {
+        position: absolute;
+        pointer-events: none;
+        background: #ffffff40;
+      }
+
+      .loaded #intro {
+        display: none;
+      }
+
+      .loaded #header {
+        display: flex;
+        align-items: center;
+        flex-flow: row wrap;
+        padding: 7px 10px;
+      }
+
+      .loaded h1 {
+        font-size: 22px;
+        margin: 0 auto 0 0;
+        flex-shrink: 0;
+      }
+
+      .loaded #fire-icon {
+        width: 20px;
+        height: 20px;
+      }
+
+      .loaded #controls {
+        display: block;
+        flex-shrink: 0;
+      }
+
+      #tooltip {
+        position: absolute;
+        pointer-events: none;
+        background: #ffffff;
+        white-space: nowrap;
+        box-shadow: 1px 2px 4px 0px rgba(0, 0, 0, 0.3);
+        border-radius: 2px;
+        padding: 3px 5px;
+        font: 12px Tahoma, sans-serif;
+        display: none;
+      }
+
+      #tooltip .path {
+        color: #888;
+        font-size: 11px;
+      }
+
+      #tooltip .time {
+        color: #4a4;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>
+        <svg
+          id="fire-icon"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          viewBox="0 0 15 15"
+          style="enable-background:new 0 0 15 15;"
+          xml:space="preserve"
+        >
+          <path
+            d="M7.5,0.5L5,4.5l-1.5-2 C2.9452,3.4753,0.8036,5.7924,0.8036,8.3036C0.8036,12.002,3.8017,15,7.5,15s6.6964-2.998,6.6964-6.6964 c0-2.5112-2.1416-4.8283-2.6964-5.8036l-1.5,2L7.5,0.5z M7.5,7c0,0,2.5,2.5618,2.5,4.5c0,0.8371-0.8259,2-2.5,2S5,12.3371,5,11.5 C5,9.6283,7.5,7,7.5,7z"
+          />
+        </svg>
+        <a href="https://github.com/mapbox/flamebearer">flamebearer</a>
+      </h1>
+      <div id="controls">
+        <input id="search" placeholder="Search..." />
+        <button id="reset">Reset view</button><br />
+        <input id="framework" type="checkbox" /><label for="framework">Include Framework</label><br />
+        <input id="system" type="checkbox" /><label for="system">Include System</label>
+      </div>
+    </div>
+    <div id="highlight"></div>
+    <div id="tooltip"></div>
+    <div id="intro">
+      <!--  -->
+    </div>
+    <canvas id="canvas" height="0"></canvas>
+
+    <!--  -->
+    <script>const frameworkName = /~([a-zA-Z]{1,2}|[a-zA-Z]{1}\.[a-zA-Z]{1})[\. ]|~render |~\(anonymous\)|\(unknown\)|\~webpack/;
+const systemName = /\(C\+\+\)|\(lib\)/;
+
+function isFrameworkName(name) {
+  return frameworkName.test(name);
+}
+
+function isSystemName(name) {
+  return systemName.test(name);
+}
+
+
+'use strict';
+
+const introEl = document.getElementById('intro');
+const searchEl = document.getElementById('search');
+const highlightEl = document.getElementById('highlight');
+const tooltipEl = document.getElementById('tooltip');
+const frameworkEl = document.getElementById('framework');
+const systemEl = document.getElementById('system');
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+let names, levels, numTicks;
+
+names = ["(unknown)","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/react-dom.production.min.js:1:1","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/react-dom.production.min.js:12:23","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/react-dom.production.min.js:12:222","~gc file:///C:/git/oufr-jg/apps/perf-test/dist/react-dom.production.min.js:19:175","(lib) C:\\git\\oufr-jg\\node_modules\\puppeteer\\.local-chromium\\win64-672088\\chrome-win\\chrome_child.dll","(unknown)","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/react-dom.production.min.js:193:215","~uf file:///C:/git/oufr-jg/apps/perf-test/dist/react-dom.production.min.js:38:258","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:1","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:10","~r file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:33","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3483322","~(anonymous) :1:1","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:2057389","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3491678","~(anonymous) :53:1110","~sc :52:266","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3088650","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:46613","~_createSlideInY :393:25","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3611635","~(anonymous) :4:36","~webpackContext :26:24","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3613606","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:201883","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3050099","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:1998995","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3456795","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:2856024","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:1949395","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3065283","~r.d file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:181","~(anonymous) :12606:56","~__extends :44:19","~__ :46:16","(lib) C:\\WINDOWS\\SYSTEM32\\ntdll.dll","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:2632962","~createComponent :31:25","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:2674587","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3390173","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3614036","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:2161985","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3622989","~M :15:11","~lib_initializeIcons :2289:29","~(anonymous) :2291:624","~fabric_icons_4_initializeIcons :587:40","~fabric_icons_17_initializeIcons :2199:41","~registerIcons :94:23","~render :266:336","~Si :264:12","~Hi :251:12","~(anonymous) :264:339","~Pi.render :261:29","~Ki :253:42","~Ji :252:12","~qf :243:12","~Xh :245:83","~Yh :248:12","~Di :249:12","~ci :233:12","~bi :232:12","~Tg :177:12","~S :164:45","~(anonymous) :145:114","~v :142:337","~p :140:224","~Ye :122:12","~K :118:419","~Ue :118:12","~Og :167:12","~Qg :173:12","~obj.<computed> :264:36","~DocumentCardTitleBase.render :14638:55","~ai :222:12","~vf :132:12","~Wrapped :39:25","~getClassNames :36:34","~_styles :73:41","~mergeStyleSets :16:24","~styleToRegistration :401:29","~extractRules :284:22","~expandQuads :355:21","~oe :106:12","~Wrapped._this._renderContent :42:45","~extractStyleParts :8:27","~tc :55:12","~qc :49:12","~ke :103:12","~Wrapped.render :53:45","~DocumentCardTitleBase :14544:35","~BaseComponent :70:27","~initializeFocusRects :22:30","~Lf :148:288","~ne :105:284","~_resolve :90:18","~applyRegistration :427:27","~Stylesheet.getInstance :57:39","~_traverseMap :89:22","~getKeyForRules :362:24","~_processArgs :16:26","~DocumentCardTitle_styles_getStyles :13957:51","~Ng :166:128","~getWindow :22:19","~getGlobalClassNames :946:29","~memoizedFunction :73:37","~xf :134:12","~M :186:11","~Wrapped._updateStyles :66:52","~concatStyleSets :6:25","~initializeDir :31:23","~(anonymous) :1:88","~_makeAllSafe :252:22","~_makeSafe :257:19","~E :13:11","~_normalizeArg :100:23","~_traverseEdge :82:23","~pc :48:127","~re :108:12","~_normalizeValue :108:25","~he :101:184","~ge :101:12","~Af :136:12","~J :114:349","~lh :194:140","~qe :107:12","~__rest :61:16","~Fi :250:12","~exports.unstable_runWithPriority :18:42","~(anonymous) :250:265","~Zh :219:12","~Uh :215:12","~Th :214:12","~zh :209:12","~Vh :216:12","~DocumentCardTitleBase.componentDidMount :14629:66","~DocumentCardTitleBase._this._truncateTitle :14549:41","~get :147:23","~Async :13:19","~Async.requestAnimationFrame :379:54","~get :164:23","~EventGroup :19:24","~BaseComponent.componentDidMount :94:58","~EventGroup.on :119:40","~animationFrameCallback :387:51","~DocumentCardTitleBase._this._truncateWhenInAnimation :14555:51","~E.setState :13:138","~enqueueSetState :130:101","~Jg :176:12","~Xe :120:12","~Rg :173:357","~Jf :148:12","~DocumentCardTitleBase.componentDidUpdate :14612:67","~hh :193:12","~Mf :148:385","~Ce :112:12","~G :113:325","~Pd :90:12","~Nd :89:12","~Jd :87:114","~EventGroup.off :205:41","~e :138:356","~yf :191:12","~gh :190:12","~ih :193:336","~Od :89:217","~lf :245:12","~xi :243:419","~fh :189:228","~ch :187:12","~hi :242:12","~pf :188:12","~nh :195:12","~Me :115:12","~nf :187:238","~exports.unstable_now :14:119","~mf :240:12","~If :147:394","~cf :124:203","~df :127:114","~kh :194:66","~Qd :92:12","~exports.unstable_getCurrentPriorityLevel :20:450","~Stylesheet.classNameFromKey :106:54","~xe :110:125","~Ci :246:12","~F :113:269","~ef :125:12","~Fg :163:480"];
+levels = [[0,1,0,0,16011,6],[0,1,1,0,1,1,0,4,5,0,314,9,0,15692,145],[0,1,2,0,1,2,4,314,10,0,13,5,0,15679,146],[0,1,3,0,1,3,4,314,11,11,2,5,0,41,5,0,2,6,0,15636,147],[0,1,4,0,1,5,4,314,12,36,18,5,0,2,5,0,7,5,0,15629,148],[0,1,5,0,1,7,4,314,13,47,7,5,9,5,5,0,15606,57,0,10,167,0,2,172,0,2,175,0,4,177],[0,1,5,0,1,8,4,14,11,0,2,45,0,298,50,68,7,5,0,15589,58,0,7,171,0,3,179,0,1,5,0,8,168,0,1,186,0,2,5,0,2,5,0,3,5,0,1,183],[1,1,5,4,1,14,0,1,18,0,12,21,0,2,5,0,298,51,75,1,5,0,15588,59,0,7,5,0,1,5,0,2,180,1,2,5,0,6,176,0,1,5,7,1,5],[1,1,5,4,1,13,0,1,13,0,12,13,0,2,46,0,298,52,76,1,5,0,15587,60,8,2,5,3,6,5],[6,1,11,0,1,11,0,12,5,0,1,47,0,1,48,0,298,53,77,138,5,0,15288,61,0,161,128,16,3,5],[6,1,15,0,1,19,0,12,22,0,1,5,0,1,49,0,298,54,201,14,5,0,566,5,0,14721,62,0,1,150,0,5,5,0,156,129],[6,1,13,0,1,13,0,12,23,0,1,5,0,1,5,0,298,55,204,3,5,0,8,36,566,1695,5,0,7283,63,0,5743,75,0,1,5,5,3,5,0,151,130,0,2,176],[6,1,5,0,1,20,0,12,11,2,298,56,2470,6,5,0,1870,5,0,1,64,0,288,71,0,2,94,0,1,103,0,210,124,0,4888,149,0,21,151,0,1,185,0,1,189,0,5477,5,0,251,124,0,1,155,0,14,173,9,151,131,0,2,5],[6,1,16,0,1,5,0,10,24,0,1,41,0,1,43,2,298,57,2475,1,36,1867,2,5,0,1,36,0,1,5,0,11,5,0,261,72,0,1,124,0,15,163,0,1,5,0,1,178,0,1,5,0,210,5,0,1711,5,0,3177,150,0,3,5,0,13,152,0,5,174,0,1,5,0,1,5,5470,5,5,0,2,36,0,251,5,0,1,5,0,13,5,0,1,181,9,15,5,0,2,132,0,40,133,0,66,135,0,25,158,0,2,182,0,1,188,0,2,5],[6,1,5,0,1,5,0,10,13,0,1,13,0,1,13,2,298,58,4358,4,5,0,15,64,0,242,73,0,1,5,0,5,5,0,7,164,0,3,169,1,1,5,210,1,5,1707,4,5,0,3166,5,0,11,69,3,3,5,0,6,6,0,2,121,0,1,157,0,1,187,0,5,157,5744,1,5,24,2,5,0,1,5,0,39,134,0,7,5,0,54,73,0,5,154,0,4,5,0,12,159,0,9,166,0,1,5,0,1,159,0,1,5],[6,1,17,1,10,11,0,1,11,0,1,44,2,298,59,4362,5,5,0,10,65,0,4,5,0,238,74,6,7,5,0,1,5,0,2,170,5072,12,5,0,6,36,0,5,5,0,6,70,6,6,5,0,2,5,0,1,5,0,1,5,0,5,5,5772,2,5,0,37,156,7,5,5,0,49,153,0,4,5,0,1,165,4,6,5,0,6,160,0,1,5,0,8,6,1,1,5],[6,1,5,1,10,25,0,1,42,0,1,5,2,298,60,4367,3,5,0,1,123,0,6,162,4,6,5,0,13,44,0,219,78,9,4,5,1,2,5,5095,6,5,5795,9,5,0,22,84,0,6,119,12,10,5,0,1,137,0,1,141,0,13,144,0,24,161,4,1,5,10,3,5,0,3,6,1,8,5],[6,1,5,1,2,5,0,8,13,0,1,5,0,1,5,2,1,5,0,273,61,0,24,128,4370,1,5,0,1,5,0,5,150,10,13,5,0,7,5,0,38,79,0,154,80,0,19,99,0,1,112,10921,11,5,0,11,6,0,6,5,22,1,5,0,1,5,0,13,5,0,24,5,18,3,5],[9,1,5,0,3,5,0,4,11,0,1,33,0,1,5,3,1,5,0,2,5,0,271,62,0,24,129,4372,5,5,30,2,5,0,36,96,0,36,5,0,88,81,0,25,86,0,4,97,0,1,110,0,11,5,0,8,117,0,1,5,10924,8,5,0,11,5,2,4,5,34,3,5,11,13,5],[11,1,5,0,1,36,0,1,26,0,2,37,0,1,39,0,1,34,7,7,5,0,205,63,0,59,75,0,24,130,4409,5,5,0,31,102,25,11,5,0,5,5,0,53,82,0,22,100,0,8,184,0,8,5,0,8,98,0,9,101,0,3,5,0,1,98,0,1,5,11,5,5,0,3,120,10946,4,5,36,1,5,23,1,5],[13,1,13,0,1,5,0,1,13,0,1,13,0,1,35,12,2,5,0,14,5,0,10,64,0,160,71,0,16,85,0,3,94,0,2,108,0,25,5,0,1,6,0,16,84,0,6,87,0,7,89,0,1,119,0,1,125,0,2,126,0,24,131,4414,17,5,0,14,105,35,1,36,5,13,5,0,40,82,0,22,5,0,8,5,8,2,5,0,6,6,0,1,5,0,8,101,3,1,5,17,3,5],[13,1,11,0,1,5,0,1,38,0,1,11,0,1,5,28,3,5,0,7,65,0,3,5,0,120,72,0,31,76,0,6,107,0,7,5,0,5,44,0,3,109,0,1,127,0,2,5,0,1,121,0,2,5,23,2,5,0,1,5,0,6,5,0,7,6,0,3,95,0,3,5,0,3,88,0,2,5,0,5,6,0,1,5,0,1,5,0,2,5,0,1,5,0,1,132,0,1,133,0,21,135,4423,8,5,0,2,5,0,12,106,52,2,5,0,14,5,0,25,83,0,1,98,13,9,5,3,5,5,10,6,5,1,8,5],[13,1,27,1,1,5,0,1,40,0,1,5,31,3,5,0,2,66,0,2,68,3,6,5,0,13,64,0,97,73,0,3,90,0,1,103,0,5,5,0,7,77,0,19,91,0,5,5,0,1,124,6,1,5,0,5,5,0,3,5,0,1,5,2,1,122,32,2,5,0,7,5,0,3,5,3,1,5,0,2,118,2,5,5,5,1,5,0,1,134,0,9,5,0,12,73,4433,8,5,0,4,116,68,25,5,0,1,5],[13,1,13,1,1,5,0,1,13,35,2,67,0,1,5,0,1,69,9,3,5,0,10,65,0,1,5,0,96,74,0,1,5,0,1,44,0,1,112,0,1,5,5,4,5,0,3,115,0,5,5,0,14,92,5,1,5,13,2,5,3,1,5,42,2,5,4,2,5,13,1,5,9,11,136,0,1,143,4441,4,5,73,18,5,0,2,36],[13,1,11,2,1,5,35,1,5,0,1,68,1,1,70,12,7,5,0,2,68,0,1,123,1,2,5,0,3,44,0,91,78,1,1,5,0,1,5,6,4,5,0,3,5,4,1,5,0,4,93,0,1,111,0,7,113,0,2,115,67,2,5,29,1,5,0,6,137,0,1,141,0,3,144,0,1,5,4527,9,5],[13,1,28,39,1,69,1,1,5,19,2,69,0,1,5,3,3,5,0,3,5,0,18,79,0,66,80,0,4,99,21,3,5,0,1,104,0,1,104,0,2,5,0,5,114,0,2,5,99,4,138,0,2,140,0,1,142,0,3,5],[13,1,13,39,1,70,21,2,70,10,1,5,0,17,96,0,10,5,0,44,81,0,9,86,0,2,97,0,1,110,0,2,5,0,2,117,24,1,5,0,1,5,2,5,5,101,1,5,0,3,139,0,2,5,0,1,5,1,2,5],[13,1,11,39,1,5,21,2,5,11,5,5,0,12,102,4,6,5,0,4,5,0,24,82,0,16,100,0,4,5,0,1,98,0,4,101,0,1,5,0,1,98,0,1,5,2,1,5,0,1,120,30,3,5,102,3,5,1,1,5],[13,1,29,79,6,5,0,6,105,14,3,5,0,21,82,0,16,5,4,1,5,0,1,5,0,3,101,1,1,5,3,1,5,0,1,5,136,2,5],[13,1,13,84,1,5,0,6,106,17,6,5,0,14,83,0,1,98,13,3,5,6,3,5],[13,1,11,85,5,5,0,1,116,23,14,5,0,1,6],[13,1,30,90,1,5,27,8,5,0,2,36,0,1,5],[13,1,13,123,3,5],[13,1,11],[13,1,31],[13,1,13],[13,1,32],[13,1,5],[13,1,5]];
+numTicks = 16012;
+
+
+let rangeMin = 0;
+let rangeMax = 1;
+let topLevel = 0;
+let query = '';
+let showFramework = false;
+let showSystem = false;
+let graphWidth, pxPerTick;
+
+const pxPerLevel = 18;
+const collapseThreshold = 1;
+const hideThreshold = 0.5;
+const labelThreshold = 20;
+
+let numTopLevelTicks = numTicks;
+
+highlightEl.style.height = pxPerLevel + 'px';
+
+if (levels) {
+  init();
+}
+
+function init() {
+  document.body.classList.add('loaded');
+
+  // delta-decode bar positions
+  for (const level of levels) {
+    let prev = 0;
+    for (let i = 0; i < level.length; i += 3) {
+      level[i] += prev;
+      prev = level[i] + level[i + 1];
+    }
+  }
+
+  updateFromHash();
+  render();
+}
+
+window.onhashchange = () => {
+  updateFromHash();
+  render();
+};
+canvas.onclick = e => {
+  const { i, j } = xyToBar(e.offsetX, e.offsetY);
+  if (j === -1) return;
+  window.location.hash = [i, j].join(',');
+  removeHover();
+};
+document.getElementById('reset').onclick = () => {
+  searchEl.value = query = '';
+  window.location.hash = '';
+  render();
+};
+window.onresize = render;
+
+searchEl.oninput = e => {
+  query = e.target.value;
+  render();
+};
+
+frameworkEl.onchange = e => {
+  showFramework = frameworkEl.checked;
+  render();
+};
+
+systemEl.onchange = e => {
+  showSystem = systemEl.checked;
+  render();
+};
+
+function updateFromHash() {
+  const [i, j] = window.location.hash
+    .substr(1)
+    .split(',')
+    .map(Number);
+
+  if (!isNaN(i) && !isNaN(j)) {
+    topLevel = i;
+    numTopLevelTicks = levels[i][j + 1];
+    rangeMin = levels[i][j] / numTicks;
+    rangeMax = (levels[i][j] + levels[i][j + 1]) / numTicks;
+  } else {
+    topLevel = 0;
+    numTopLevelTicks = numTicks;
+    rangeMin = 0;
+    rangeMax = 1;
+  }
+}
+
+function tickToX(i) {
+  return (i - numTicks * rangeMin) * pxPerTick;
+}
+
+function render() {
+  if (!levels) return;
+
+  graphWidth = canvas.width = canvas.clientWidth;
+  canvas.height = pxPerLevel * (levels.length - topLevel);
+  canvas.style.height = canvas.height + 'px';
+
+  if (devicePixelRatio > 1) {
+    canvas.width *= 2;
+    canvas.height *= 2;
+    ctx.scale(2, 2);
+  }
+
+  pxPerTick = graphWidth / numTicks / (rangeMax - rangeMin);
+
+  ctx.textBaseline = 'middle';
+  ctx.font = '10px Tahoma, sans-serif';
+  ctx.strokeStyle = 'white';
+
+  for (let i = 0; i < levels.length - topLevel; i++) {
+    const level = levels[topLevel + i];
+
+    for (let j = 0; j < level.length; j += 3) {
+      const barIndex = level[j];
+      const x = tickToX(barIndex);
+      const y = i * pxPerLevel;
+      let numBarTicks = level[j + 1];
+
+      const inQuery = (query && names[level[j + 2]].indexOf(query) >= 0) || false;
+
+      // merge very small blocks into big "collapsed" ones for performance
+      // const collapsed = numBarTicks * pxPerTick <= collapseThreshold;
+      const collapsed = (!showFramework && isFrameworkName(names[level[j + 2]])) || (!showSystem && isSystemName(names[level[j + 2]]));
+      if (collapsed) {
+        while (
+          j < level.length - 3 &&
+          barIndex + numBarTicks === level[j + 3] &&
+          level[j + 4] * pxPerTick <= collapseThreshold &&
+          inQuery === ((query && names[level[j + 5]].indexOf(query) >= 0) || false)
+        ) {
+          j += 3;
+          numBarTicks += level[j + 1];
+        }
+      }
+
+      const sw = numBarTicks * pxPerTick - (collapsed ? 0 : 0.5);
+      const sh = pxPerLevel - 0.5;
+
+      if (x < -1 || x + sw > graphWidth + 1 || sw < hideThreshold) continue;
+
+      ctx.beginPath();
+      ctx.rect(x, y, sw, sh);
+
+      const ratio = numBarTicks / numTopLevelTicks;
+
+      if (!collapsed) {
+        ctx.stroke();
+        const intensity = Math.min(1, (ratio * Math.pow(1.16, i)) / (rangeMax - rangeMin));
+        const h = 50 - 50 * intensity;
+        const l = 65 + 7 * intensity;
+        ctx.fillStyle = inQuery ? 'lightgreen' : `hsl(${h}, 100%, ${l}%)`;
+      } else {
+        ctx.fillStyle = inQuery ? 'lightgreen' : '#eee';
+      }
+      ctx.fill();
+
+      if (!collapsed && sw >= labelThreshold) {
+        const percent = Math.round(10000 * ratio) / 100;
+        const name = `${names[level[j + 2]]} (${percent}%, ${numBarTicks} samples)`;
+
+        ctx.save();
+        ctx.clip();
+        ctx.fillStyle = 'black';
+        ctx.fillText(name, Math.max(x, 0) + 1, y + sh / 2);
+        ctx.restore();
+      }
+    }
+  }
+}
+
+// pixel coordinates to bar coordinates in the levels array
+function xyToBar(x, y) {
+  const i = Math.floor(y / pxPerLevel) + topLevel;
+  const j = binarySearchLevel(x, levels[i]);
+  return { i, j };
+}
+
+// binary search of a block in a stack level
+function binarySearchLevel(x, level) {
+  let i = 0;
+  let j = level.length - 3;
+  while (i <= j) {
+    const m = 3 * ((i / 3 + j / 3) >> 1);
+    const x0 = tickToX(level[m]);
+    const x1 = tickToX(level[m] + level[m + 1]);
+    if (x0 <= x && x1 >= x) {
+      return x1 - x0 > collapseThreshold ? m : -1;
+    }
+    if (x0 > x) {
+      j = m - 3;
+    } else {
+      i = m + 3;
+    }
+  }
+  return -1;
+}
+
+if (window.orientation === undefined) {
+  canvas.onmousemove = addHover;
+  canvas.onmouseout = window.onscroll = removeHover;
+}
+
+function removeHover() {
+  canvas.style.cursor = '';
+  highlightEl.style.display = 'none';
+  tooltipEl.style.display = 'none';
+}
+
+function addHover(e) {
+  const { i, j } = xyToBar(e.offsetX, e.offsetY);
+
+  if (j === -1 || e.offsetX < 0 || e.offsetX > graphWidth) {
+    removeHover();
+    return;
+  }
+
+  canvas.style.cursor = 'pointer';
+
+  const level = levels[i];
+  const x = tickToX(level[j]);
+  const y = (i - topLevel) * pxPerLevel;
+  const sw = tickToX(level[j] + level[j + 1]) - x;
+
+  highlightEl.style.display = 'block';
+  highlightEl.style.left = x + 'px';
+  highlightEl.style.top = canvas.offsetTop + y + 'px';
+  highlightEl.style.width = sw + 'px';
+
+  const numBarTicks = level[j + 1];
+  const percent = Math.round((10000 * numBarTicks) / numTopLevelTicks) / 100;
+  const time = `<span class="time">(${percent}%, ${numBarTicks} samples)</span>`;
+  let content = names[level[j + 2]];
+  if (content[0] !== '(') content = content.replace(' ', ` ${time}<br><span class="path">`) + '</span>';
+  else content += ` ${time}`;
+
+  tooltipEl.innerHTML = content;
+  tooltipEl.style.display = 'block';
+  tooltipEl.style.left = Math.min(e.offsetX + 15 + tooltipEl.clientWidth, graphWidth) - tooltipEl.clientWidth + 'px';
+  tooltipEl.style.top = canvas.offsetTop + e.offsetY + 12 + 'px';
+}
+
+// (function frame() { if (levels) render(); requestAnimationFrame(frame); })();
+
+
+</script>
+  </body>
+</html>

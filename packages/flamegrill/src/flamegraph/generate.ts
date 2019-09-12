@@ -35,7 +35,7 @@ function jsonCleanUp() {
  * @returns {Promise<OutputFiles>} Promise resolving to generated files.
  */
 // TODO: is file output good enough here as an API? should this return programmatic results?
-export function generateFlamegraph(logFile: string, outFile: string): Promise<GeneratedFiles> {
+export async function generateFlamegraph(logFile: string, outFile: string): Promise<GeneratedFiles> {
   // TODO: account for --windows, --unix and --mac arguments? what is the output difference with and without these args?
   // TODO: use cli
   const preprocessProc = cp.spawn(process.execPath, [tickprocessor, '--preprocess', '-j', logFile]);
@@ -84,7 +84,7 @@ export function generateFlamegraph(logFile: string, outFile: string): Promise<Ge
  * @param {string} outfile File path and base name for file output. Extensions will be added for each type of file output.
  * @returns {string} Summary file path.
  */
-export function generateSummary(logfile: string, outfile: string): Promise<string> {
+export async function generateSummary(logfile: string, outfile: string): Promise<string> {
   // TODO: account for --windows, --unix and --mac arguments? what is the output difference with and without these args?
   // TODO: use cli
   const summaryProc = cp.spawn(process.execPath, [tickprocessor, logfile]);

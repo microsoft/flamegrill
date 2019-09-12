@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>flamebearer</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <style>
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        font: 16px 'Helvetica Neue', sans-serif;
+        margin: 0;
+      }
+
+      body.hover {
+        background: #cfc;
+      }
+
+      h1 {
+        font-size: 30px;
+        margin: 30px 30px 15px;
+      }
+
+      h1 a {
+        color: black;
+        text-decoration: none;
+      }
+
+      h1 a:hover {
+        text-decoration: underline;
+      }
+
+      #fire-icon {
+        fill: #f53;
+        width: 26px;
+        height: 26px;
+        vertical-align: -1px;
+      }
+
+      #intro {
+        margin: 0 30px;
+      }
+
+      code {
+        font-size: 13px;
+        color: #444;
+      }
+
+      code span {
+        color: #aaa;
+      }
+
+      #canvas {
+        width: 100%;
+      }
+
+      #controls {
+        display: none;
+      }
+
+      #search {
+        margin-right: 10px;
+      }
+
+      label {
+        font-size: 14px;
+      }
+
+      #highlight {
+        position: absolute;
+        pointer-events: none;
+        background: #ffffff40;
+      }
+
+      .loaded #intro {
+        display: none;
+      }
+
+      .loaded #header {
+        display: flex;
+        align-items: center;
+        flex-flow: row wrap;
+        padding: 7px 10px;
+      }
+
+      .loaded h1 {
+        font-size: 22px;
+        margin: 0 auto 0 0;
+        flex-shrink: 0;
+      }
+
+      .loaded #fire-icon {
+        width: 20px;
+        height: 20px;
+      }
+
+      .loaded #controls {
+        display: block;
+        flex-shrink: 0;
+      }
+
+      #tooltip {
+        position: absolute;
+        pointer-events: none;
+        background: #ffffff;
+        white-space: nowrap;
+        box-shadow: 1px 2px 4px 0px rgba(0, 0, 0, 0.3);
+        border-radius: 2px;
+        padding: 3px 5px;
+        font: 12px Tahoma, sans-serif;
+        display: none;
+      }
+
+      #tooltip .path {
+        color: #888;
+        font-size: 11px;
+      }
+
+      #tooltip .time {
+        color: #4a4;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>
+        <svg
+          id="fire-icon"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          viewBox="0 0 15 15"
+          style="enable-background:new 0 0 15 15;"
+          xml:space="preserve"
+        >
+          <path
+            d="M7.5,0.5L5,4.5l-1.5-2 C2.9452,3.4753,0.8036,5.7924,0.8036,8.3036C0.8036,12.002,3.8017,15,7.5,15s6.6964-2.998,6.6964-6.6964 c0-2.5112-2.1416-4.8283-2.6964-5.8036l-1.5,2L7.5,0.5z M7.5,7c0,0,2.5,2.5618,2.5,4.5c0,0.8371-0.8259,2-2.5,2S5,12.3371,5,11.5 C5,9.6283,7.5,7,7.5,7z"
+          />
+        </svg>
+        <a href="https://github.com/mapbox/flamebearer">flamebearer</a>
+      </h1>
+      <div id="controls">
+        <input id="search" placeholder="Search..." />
+        <button id="reset">Reset view</button><br />
+        <input id="framework" type="checkbox" /><label for="framework">Include Framework</label><br />
+        <input id="system" type="checkbox" /><label for="system">Include System</label>
+      </div>
+    </div>
+    <div id="highlight"></div>
+    <div id="tooltip"></div>
+    <div id="intro">
+      <!--  -->
+    </div>
+    <canvas id="canvas" height="0"></canvas>
+
+    <!--  -->
+    <script>const frameworkName = /~([a-zA-Z]{1,2}|[a-zA-Z]{1}\.[a-zA-Z]{1})[\. ]|~render |~\(anonymous\)|\(unknown\)|\~webpack/;
+const systemName = /\(C\+\+\)|\(lib\)/;
+
+function isFrameworkName(name) {
+  return frameworkName.test(name);
+}
+
+function isSystemName(name) {
+  return systemName.test(name);
+}
+
+
+'use strict';
+
+const introEl = document.getElementById('intro');
+const searchEl = document.getElementById('search');
+const highlightEl = document.getElementById('highlight');
+const tooltipEl = document.getElementById('tooltip');
+const frameworkEl = document.getElementById('framework');
+const systemEl = document.getElementById('system');
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+let names, levels, numTicks;
+
+names = ["(unknown)","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/react.production.min.js:1:1","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/react.production.min.js:9:23","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/react.production.min.js:9:179","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/react.production.min.js:18:368","(lib) C:\\git\\oufr-jg\\node_modules\\puppeteer\\.local-chromium\\win64-672088\\chrome-win\\chrome_child.dll","(unknown)","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/react-dom.production.min.js:1:1","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/react-dom.production.min.js:12:23","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/react-dom.production.min.js:12:222","~gc http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/react-dom.production.min.js:19:175","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:1","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:10","~t http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:33","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:3372921","~(anonymous) :1:1","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:1991774","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:3381242","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:2992190","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:46625","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:1812748","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:3093489","~t.d http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:181","~registerDefaultFontFaces :660:34","~_registerFontFaceSet :652:30","~_registerFontFace :641:27","~fontFace :10:18","~serializeRuleEntries :378:30","~_defineGetter :1489:23","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:3501229","~(anonymous) :4:36","~webpackContext :26:24","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:3503178","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:196864","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:2959633","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:2598910","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:1917864","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:2033548","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:3357252","~(anonymous) :42:72","~__extends :44:19","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:3105086","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:179806","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:2954829","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:1934867","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:3347181","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:2766736","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:2519761","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:3526401","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:3351816","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:2636206","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:2503463","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:3084490","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:2838889","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:3215258","~keyframes :11:19","~Stylesheet.cacheClassName :95:52","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:2504641","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:3326805","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:2745221","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:2952854","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:2750669","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:2950046","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:36563","~t.o http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:839","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:3503596","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:2092690","(lib) C:\\WINDOWS\\SYSTEM32\\ntdll.dll","~loadStyles :72:20","~measure :35:17","~(anonymous) :74:22","~applyThemableStyles :138:29","~registerStyles :281:24","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:3509684","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:3519381","~lib_initializeIcons :2289:29","~(anonymous) :2291:624","~fabric_icons_3_initializeIcons :463:40","~registerIcons :94:23","~fabric_icons_9_initializeIcons :1207:40","~normalizeIconName :88:34","~fabric_icons_15_initializeIcons :1951:41","~render :266:336","~Si :264:12","~Hi :251:12","~(anonymous) :264:339","~Pi.render :261:29","~Ki :253:42","~Ji :252:12","~qf :243:12","~Xh :245:83","~Yh :248:12","~Di :249:12","~ci :233:12","~bi :232:12","~Tg :177:12","~S :164:45","~(anonymous) :145:114","~v :142:337","~p :140:224","~Ye :122:12","~hg :150:12","~result :139:27","~_resolveStyles :246:24","~(anonymous) :251:80","~ButtonStyles :669:29","~ButtonView :876:27","~Button :888:27","~withSlots :28:19","~toArray :21:248","~V :20:247","~Q :16:293","~ai :222:12","~tc :55:12","~MenuButtonView :2438:31","~slot :118:33","~_renderSlot :188:21","~result :77:27","~M :15:11","~_constructFinalProps :166:30","~mergeStyles :11:21","~styleToClassName :445:26","~styleToRegistration :401:29","~extractRules :284:22","~expandQuads :355:21","~memoizedFunction :73:37","~result :35:27","~TextView :9:25","~_loop_1 :313:44","~useButtonState :487:31","~useImperativeHandle :22:516","~useImperativeHandle :158:358","~sg :154:239","~rg :154:12","~extractStyleParts :8:27","~_processArgs :16:26","~K :118:419","~Ue :118:12","~getKeyForRules :362:24","~Stylesheet.getInstance :57:39","~Stylesheet.argsFromClassName :113:55","~expandSelector :272:24","~factoryComponents_FontIcon :842:43","~_resolveStyles :63:24","~concatStyleSets :6:25","~_resolveTokens :258:24","~FontIcon :34:25","~_resolveTokens :75:24","~lh :194:140","~re :108:12","~getNativeProps :393:24","~filteredAssign :70:24","~(anonymous) :398:92","~count :21:186","~se :109:12","~MenuButtonSlots :2429:32","~applyRegistration :427:27","~__rest :61:16","~_translateShorthand :150:29","~Stylesheet.classNameFromKey :106:54","~qc :49:12","~pc :48:127","~getSlots :109:18","~Mf :148:385","~_normalizeArg :100:23","~_getCustomizations :102:28","~Customizations.getSettings :31:43","~If :147:394","~qe :107:12","~U :19:192","~S :18:11","~_loop_1 :113:28","~Ng :166:128","~(anonymous) :68:123","~TextStyles :2:27","~(anonymous) :1577:100","~useMenuButtonState :2266:35","~T :19:239","~escape :16:176","~css :7:13","~fa :20:12","~_getCustomizations :285:28","~da :16:12","~(anonymous) :30:100","~useContext :22:403","~M :186:11","~oc :48:12","~Lf :148:288","~ke :103:12","~Ve :119:12","~useRef :23:254","~useRef :159:332","~Ig :185:375","~useControlledState :1880:28","~useState :23:297","~useState :159:404","~we :110:12","~xe :110:125","~R :17:11","~Button_styles_baseTokens :505:41","~(anonymous) :1573:104","~(anonymous) :1:88","~useCallback :22:349","~ge :101:12","~mg :151:12","~f :138:420","~useCallback :158:210","~Fi :250:12","~exports.unstable_runWithPriority :18:42","~(anonymous) :250:265","~Zh :219:12","~Uh :215:12","~Th :214:12","~zh :209:12","~th :199:12","~Vh :216:12"];
+levels = [[0,1,0,0,1580,6],[0,1,1,0,1,7,0,1579,11],[0,1,2,0,1,8,0,1579,12],[0,1,3,0,1,9,0,1579,13],[0,1,4,0,1,10,0,1579,14],[0,1,5,0,1,5,0,1579,15],[0,1,5,0,1,5,0,1,5,0,22,13,0,3,75,0,1553,82],[0,1,5,1,1,5,0,1,16,0,3,18,0,18,29,0,3,5,0,1553,83],[2,1,5,0,1,15,0,3,15,0,18,15,0,3,76,0,1553,84],[3,1,13,0,3,13,0,18,5,0,1,77,0,1,79,0,1,81,0,1553,85],[3,1,17,0,3,19,0,18,30,0,1,78,0,1,78,0,1,5,0,1553,86],[3,1,15,0,3,15,0,18,31,0,1,5,0,1,80,0,1,5,0,1553,87],[3,1,5,0,1,13,0,1,23,0,1,28,0,18,13,1,1,5,1,1553,88],[3,1,5,0,1,20,0,1,24,0,1,5,0,14,32,0,2,65,0,1,73,0,1,74,3,1553,89],[4,1,15,0,1,25,0,1,5,0,14,15,0,2,15,0,1,15,0,1,15,3,1553,90],[4,1,13,0,1,26,1,14,13,0,2,13,0,1,5,0,1,13,3,1553,91],[4,1,21,0,1,27,1,14,33,0,2,66,0,1,5,0,1,5,3,1553,92],[4,1,15,0,1,5,1,1,5,0,13,15,0,1,5,0,1,15,5,1,5,0,1547,93,0,5,207],[4,1,22,2,1,5,0,1,5,0,10,13,0,1,22,0,1,55,0,1,67,0,1,68,6,4,5,0,1543,94,0,5,208],[4,1,5,3,1,5,0,2,34,0,1,41,0,3,43,0,1,51,0,1,52,0,1,57,0,1,63,0,1,5,0,1,56,1,1,69,10,29,5,0,1334,95,0,180,112,0,5,209],[4,1,5,4,2,15,0,1,15,0,3,15,0,1,15,0,1,15,0,1,15,0,1,15,0,1,5,0,1,5,1,1,70,39,34,5,0,72,96,0,1217,101,0,3,172,0,3,187,0,1,192,0,4,197,0,91,5,0,10,6,0,40,113,0,10,148,0,8,149,0,5,154,0,1,163,0,1,167,0,3,168,0,9,188,0,1,196,0,1,203,0,5,210],[9,2,13,0,1,13,0,3,13,0,1,13,0,1,13,0,1,13,0,1,22,1,1,5,1,1,71,73,8,5,0,64,97,0,26,5,0,1027,102,0,126,126,0,9,142,0,29,146,0,3,5,0,2,5,0,1,167,0,1,5,0,4,5,83,8,5,0,10,5,0,32,5,0,7,160,0,1,186,0,10,5,0,8,5,0,5,5,0,1,5,0,1,5,0,3,5,0,2,5,0,7,6,0,1,5,0,1,5,0,1,211,0,2,212,0,2,215],[9,2,35,0,1,42,0,3,44,0,1,5,0,1,53,0,1,58,0,1,64,3,1,72,81,9,5,0,36,98,0,19,100,26,85,5,0,1,103,0,462,106,0,326,114,0,9,129,0,99,145,0,4,155,0,14,162,0,15,176,0,8,181,0,4,184,0,7,5,0,90,127,0,14,143,0,6,147,0,7,165,0,2,184,0,5,5,0,4,118,0,7,5,0,5,118,0,2,125,0,7,150,0,8,179,5,1,5,135,3,5,0,4,5,0,3,161,0,1,5,7,3,5,5,3,5,12,7,5,2,1,5,0,1,5,0,1,213,0,2,5],[9,2,15,0,1,5,0,1,5,0,2,15,0,1,5,0,1,15,0,1,15,0,1,5,3,1,6,90,8,5,0,27,99,0,1,205,0,5,5,0,14,136,75,36,5,0,1,5,0,8,5,0,430,107,0,14,150,0,10,157,0,7,5,0,309,108,0,10,157,0,5,5,0,3,130,0,1,190,0,74,5,0,25,145,0,4,5,0,7,5,0,7,171,0,9,5,0,1,190,0,2,193,0,3,202,0,1,5,0,6,166,0,1,201,0,4,185,7,4,5,0,76,108,0,4,150,0,3,157,0,3,162,0,5,5,0,8,144,0,1,200,0,6,5,0,1,5,0,6,166,0,2,185,3,2,5,0,4,5,7,5,5,0,1,5,0,1,164,0,7,151,0,8,5,148,3,5,16,3,5,23,1,214],[9,2,13,0,1,5,0,1,5,0,2,13,1,1,13,0,1,13,4,1,5,98,4,5,0,23,100,0,1,5,5,4,5,0,10,137,104,7,5,0,1,104,8,9,5,0,421,108,0,1,5,0,13,151,0,10,5,6,1,5,0,9,5,0,17,109,0,263,115,0,20,153,0,10,5,3,2,5,0,3,131,0,1,191,9,65,5,0,24,5,0,1,199,11,7,5,6,3,5,0,1,191,0,2,194,0,2,5,0,1,206,1,6,5,0,1,5,0,4,5,10,1,5,0,1,5,0,71,115,0,4,153,0,4,151,0,3,5,0,2,5,0,1,171,0,5,173,0,8,5,0,1,5,7,6,5,0,2,5,22,1,5,0,5,5,0,2,152,7,1,5,193,1,5],[9,1,36,0,1,38,2,2,45,1,1,54,0,1,59,107,4,5,0,13,136,0,6,189,10,10,5,111,1,105,14,3,5,0,10,5,0,17,109,0,382,115,0,12,153,1,5,5,0,8,152,7,3,5,13,3,5,0,1,5,0,16,110,0,8,5,0,255,116,0,20,169,7,3,5,5,2,5,0,1,132,0,1,5,21,53,5,7,17,5,0,1,5,27,1,204,0,2,195,2,1,5,24,1,5,0,70,116,0,1,5,0,3,169,0,4,152,5,1,5,0,1,5,0,4,174,52,2,5],[9,1,15,0,1,15,2,2,15,1,1,5,0,1,15,111,1,5,0,12,137,0,6,5,131,1,5,26,1,5,0,17,110,0,2,5,0,380,116,0,1,5,0,11,169,6,8,5,27,1,5,0,3,111,0,12,169,8,11,5,0,236,117,0,8,125,0,1,5,0,19,170,17,1,133,92,7,5,28,1,5,0,1,5,0,1,204,28,1,5,0,65,117,0,4,125,1,3,170,0,4,5,7,4,5],[9,1,13,0,1,39,2,2,13,1,1,5,0,1,13,112,12,5,137,1,5,27,1,111,0,13,169,0,3,198,2,4,5,0,371,117,0,5,125,1,1,5,0,10,170,10,4,5,28,3,5,0,12,170,19,9,5,0,19,118,0,208,119,0,5,5,0,3,164,1,12,5,0,5,170,0,2,177,17,1,5,129,1,5,29,3,5,0,2,118,0,60,119,0,4,5,1,3,5,1,3,5,7,4,5],[9,1,37,0,1,40,2,2,46,2,1,60,289,1,5,0,13,170,0,3,5,6,7,5,0,16,118,0,346,119,0,2,158,0,4,5,0,1,164,2,4,5,0,5,170,0,1,177,42,3,5,0,2,5,0,9,170,0,1,177,26,2,5,0,19,5,0,39,5,0,164,120,0,5,175,5,3,5,13,5,5,0,2,5,179,1,5,0,2,5,0,14,5,0,46,120],[9,1,5,0,1,5,2,2,15,2,1,15,289,1,5,0,11,170,0,2,177,15,1,5,0,16,5,0,15,5,0,330,120,0,1,175,0,2,5,4,1,5,6,3,5,0,2,177,0,1,5,47,1,5,0,8,180,0,1,5,71,15,5,0,19,5,0,110,121,0,35,134,0,3,5,0,2,183,214,10,5,0,4,5,0,37,121,0,5,134],[9,1,5,0,1,5,2,2,13,2,1,13,290,4,5,0,2,170,0,2,177,0,3,180,0,2,5,38,9,5,0,7,5,0,289,121,0,34,134,0,1,5,16,2,178,49,6,5,0,2,182,0,1,5,103,2,5,0,4,5,0,102,122,0,4,156,0,3,5,0,29,135,0,3,139,3,2,5,228,36,122,0,1,156,0,4,135,0,1,139],[13,2,47,2,1,61,294,1,5,0,1,180,0,2,178,0,3,5,1,1,5,54,2,5,0,285,122,0,2,156,0,8,5,0,25,135,0,1,139,17,2,5,55,2,5,110,6,5,0,54,123,0,30,138,0,1,139,0,11,159,0,2,5,0,2,139,3,2,5,0,27,135,0,2,5,0,1,6,233,6,5,0,12,123,0,17,138,0,1,159,0,1,5,0,4,135,0,1,5],[13,2,15,2,1,15,295,1,5,0,2,5,61,6,5,0,201,123,0,72,138,0,2,139,0,4,159,0,2,5,8,4,5,0,21,135,0,1,5,17,2,5,173,8,5,0,44,123,0,2,139,0,30,5,0,1,5,0,11,5,2,2,5,5,19,5,0,7,135,0,1,140,2,1,5,239,3,5,0,8,123,0,1,139,0,17,5,0,1,5,1,1,5,0,3,135],[13,2,13,2,1,13,365,8,5,0,192,123,0,1,139,0,72,5,0,1,5,0,1,6,0,4,5,14,7,5,0,14,135,18,2,5,178,3,5,0,14,5,0,29,128,0,1,139,0,2,5,21,9,5,2,10,5,20,8,5,0,4,5,0,2,135,0,1,140,0,1,5,245,8,5,0,1,6,13,4,5,0,1,5,2,1,5,0,1,135,0,1,140],[13,1,48,0,1,49,2,1,62,373,44,5,0,17,124,0,130,128,0,1,139,0,1,6,48,24,5,1,1,5,0,4,5,15,6,5,0,5,5,0,7,135,0,2,140,215,8,5,0,21,123,0,1,6,31,1,5,32,8,5,4,2,5,0,1,5,254,1,5,21,1,135,0,1,5],[13,1,15,0,1,15,2,1,15,417,17,5,0,19,5,0,105,123,0,6,141,0,1,6,0,1,5,93,6,5,5,2,5,0,3,135,0,2,140,0,2,5,223,13,5,0,6,128,0,2,139,0,1,5,78,1,5,276,1,5],[13,1,5,0,1,13,2,1,13,424,10,5,19,62,5,0,34,128,0,9,139,0,6,5,0,1,5,107,1,5,0,2,135,0,2,5,1,1,5,231,4,5,0,1,67,0,2,5,0,4,123,0,2,5],[13,1,5,0,1,50,2,1,5,433,1,5,64,13,5,0,4,67,0,3,5,0,31,123,0,9,5,5,1,5,109,2,5,242,4,5],[14,1,5,2,1,5,518,28,5,0,3,139,371,1,5],[14,1,5,540,5,5,0,4,67,0,3,5]];
+numTicks = 1581;
+
+
+let rangeMin = 0;
+let rangeMax = 1;
+let topLevel = 0;
+let query = '';
+let showFramework = false;
+let showSystem = false;
+let graphWidth, pxPerTick;
+
+const pxPerLevel = 18;
+const collapseThreshold = 1;
+const hideThreshold = 0.5;
+const labelThreshold = 20;
+
+let numTopLevelTicks = numTicks;
+
+highlightEl.style.height = pxPerLevel + 'px';
+
+if (levels) {
+  init();
+}
+
+function init() {
+  document.body.classList.add('loaded');
+
+  // delta-decode bar positions
+  for (const level of levels) {
+    let prev = 0;
+    for (let i = 0; i < level.length; i += 3) {
+      level[i] += prev;
+      prev = level[i] + level[i + 1];
+    }
+  }
+
+  updateFromHash();
+  render();
+}
+
+window.onhashchange = () => {
+  updateFromHash();
+  render();
+};
+canvas.onclick = e => {
+  const { i, j } = xyToBar(e.offsetX, e.offsetY);
+  if (j === -1) return;
+  window.location.hash = [i, j].join(',');
+  removeHover();
+};
+document.getElementById('reset').onclick = () => {
+  searchEl.value = query = '';
+  window.location.hash = '';
+  render();
+};
+window.onresize = render;
+
+searchEl.oninput = e => {
+  query = e.target.value;
+  render();
+};
+
+frameworkEl.onchange = e => {
+  showFramework = frameworkEl.checked;
+  render();
+};
+
+systemEl.onchange = e => {
+  showSystem = systemEl.checked;
+  render();
+};
+
+function updateFromHash() {
+  const [i, j] = window.location.hash
+    .substr(1)
+    .split(',')
+    .map(Number);
+
+  if (!isNaN(i) && !isNaN(j)) {
+    topLevel = i;
+    numTopLevelTicks = levels[i][j + 1];
+    rangeMin = levels[i][j] / numTicks;
+    rangeMax = (levels[i][j] + levels[i][j + 1]) / numTicks;
+  } else {
+    topLevel = 0;
+    numTopLevelTicks = numTicks;
+    rangeMin = 0;
+    rangeMax = 1;
+  }
+}
+
+function tickToX(i) {
+  return (i - numTicks * rangeMin) * pxPerTick;
+}
+
+function render() {
+  if (!levels) return;
+
+  graphWidth = canvas.width = canvas.clientWidth;
+  canvas.height = pxPerLevel * (levels.length - topLevel);
+  canvas.style.height = canvas.height + 'px';
+
+  if (devicePixelRatio > 1) {
+    canvas.width *= 2;
+    canvas.height *= 2;
+    ctx.scale(2, 2);
+  }
+
+  pxPerTick = graphWidth / numTicks / (rangeMax - rangeMin);
+
+  ctx.textBaseline = 'middle';
+  ctx.font = '10px Tahoma, sans-serif';
+  ctx.strokeStyle = 'white';
+
+  for (let i = 0; i < levels.length - topLevel; i++) {
+    const level = levels[topLevel + i];
+
+    for (let j = 0; j < level.length; j += 3) {
+      const barIndex = level[j];
+      const x = tickToX(barIndex);
+      const y = i * pxPerLevel;
+      let numBarTicks = level[j + 1];
+
+      const inQuery = (query && names[level[j + 2]].indexOf(query) >= 0) || false;
+
+      // merge very small blocks into big "collapsed" ones for performance
+      // const collapsed = numBarTicks * pxPerTick <= collapseThreshold;
+      const collapsed = (!showFramework && isFrameworkName(names[level[j + 2]])) || (!showSystem && isSystemName(names[level[j + 2]]));
+      if (collapsed) {
+        while (
+          j < level.length - 3 &&
+          barIndex + numBarTicks === level[j + 3] &&
+          level[j + 4] * pxPerTick <= collapseThreshold &&
+          inQuery === ((query && names[level[j + 5]].indexOf(query) >= 0) || false)
+        ) {
+          j += 3;
+          numBarTicks += level[j + 1];
+        }
+      }
+
+      const sw = numBarTicks * pxPerTick - (collapsed ? 0 : 0.5);
+      const sh = pxPerLevel - 0.5;
+
+      if (x < -1 || x + sw > graphWidth + 1 || sw < hideThreshold) continue;
+
+      ctx.beginPath();
+      ctx.rect(x, y, sw, sh);
+
+      const ratio = numBarTicks / numTopLevelTicks;
+
+      if (!collapsed) {
+        ctx.stroke();
+        const intensity = Math.min(1, (ratio * Math.pow(1.16, i)) / (rangeMax - rangeMin));
+        const h = 50 - 50 * intensity;
+        const l = 65 + 7 * intensity;
+        ctx.fillStyle = inQuery ? 'lightgreen' : `hsl(${h}, 100%, ${l}%)`;
+      } else {
+        ctx.fillStyle = inQuery ? 'lightgreen' : '#eee';
+      }
+      ctx.fill();
+
+      if (!collapsed && sw >= labelThreshold) {
+        const percent = Math.round(10000 * ratio) / 100;
+        const name = `${names[level[j + 2]]} (${percent}%, ${numBarTicks} samples)`;
+
+        ctx.save();
+        ctx.clip();
+        ctx.fillStyle = 'black';
+        ctx.fillText(name, Math.max(x, 0) + 1, y + sh / 2);
+        ctx.restore();
+      }
+    }
+  }
+}
+
+// pixel coordinates to bar coordinates in the levels array
+function xyToBar(x, y) {
+  const i = Math.floor(y / pxPerLevel) + topLevel;
+  const j = binarySearchLevel(x, levels[i]);
+  return { i, j };
+}
+
+// binary search of a block in a stack level
+function binarySearchLevel(x, level) {
+  let i = 0;
+  let j = level.length - 3;
+  while (i <= j) {
+    const m = 3 * ((i / 3 + j / 3) >> 1);
+    const x0 = tickToX(level[m]);
+    const x1 = tickToX(level[m] + level[m + 1]);
+    if (x0 <= x && x1 >= x) {
+      return x1 - x0 > collapseThreshold ? m : -1;
+    }
+    if (x0 > x) {
+      j = m - 3;
+    } else {
+      i = m + 3;
+    }
+  }
+  return -1;
+}
+
+if (window.orientation === undefined) {
+  canvas.onmousemove = addHover;
+  canvas.onmouseout = window.onscroll = removeHover;
+}
+
+function removeHover() {
+  canvas.style.cursor = '';
+  highlightEl.style.display = 'none';
+  tooltipEl.style.display = 'none';
+}
+
+function addHover(e) {
+  const { i, j } = xyToBar(e.offsetX, e.offsetY);
+
+  if (j === -1 || e.offsetX < 0 || e.offsetX > graphWidth) {
+    removeHover();
+    return;
+  }
+
+  canvas.style.cursor = 'pointer';
+
+  const level = levels[i];
+  const x = tickToX(level[j]);
+  const y = (i - topLevel) * pxPerLevel;
+  const sw = tickToX(level[j] + level[j + 1]) - x;
+
+  highlightEl.style.display = 'block';
+  highlightEl.style.left = x + 'px';
+  highlightEl.style.top = canvas.offsetTop + y + 'px';
+  highlightEl.style.width = sw + 'px';
+
+  const numBarTicks = level[j + 1];
+  const percent = Math.round((10000 * numBarTicks) / numTopLevelTicks) / 100;
+  const time = `<span class="time">(${percent}%, ${numBarTicks} samples)</span>`;
+  let content = names[level[j + 2]];
+  if (content[0] !== '(') content = content.replace(' ', ` ${time}<br><span class="path">`) + '</span>';
+  else content += ` ${time}`;
+
+  tooltipEl.innerHTML = content;
+  tooltipEl.style.display = 'block';
+  tooltipEl.style.left = Math.min(e.offsetX + 15 + tooltipEl.clientWidth, graphWidth) - tooltipEl.clientWidth + 'px';
+  tooltipEl.style.top = canvas.offsetTop + e.offsetY + 12 + 'px';
+}
+
+// (function frame() { if (levels) render(); requestAnimationFrame(frame); })();
+
+
+</script>
+  </body>
+</html>

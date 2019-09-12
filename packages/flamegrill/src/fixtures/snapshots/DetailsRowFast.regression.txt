@@ -1,0 +1,10 @@
+Results for C:\git\oufr-jg\apps\perf-test\dist\DetailsRowFast_ref.data.js => C:\git\oufr-jg\apps\perf-test\dist\DetailsRowFast.data.js
+
+numTicks: 1409 => 2695
+
+Potential Regressions: 
+ ~DetailsRowBase.render, time consumed: 6% => 27% 
+ ~extractRules, time consumed: 0% => 20% 
+ ~getClassNames, time consumed: 1% => 14% 
+ ~mergeStyleSets, time consumed: 0% => 36% 
+ ~styleToRegistration, time consumed: 0% => 27% 

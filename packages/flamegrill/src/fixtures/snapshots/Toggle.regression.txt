@@ -1,0 +1,17 @@
+Results for C:\git\oufr-jg\apps\perf-test\dist\Toggle_ref.data.js => C:\git\oufr-jg\apps\perf-test\dist\Toggle.data.js
+
+numTicks: 454 => 882
+
+Potential Regressions: 
+ ~ToggleBase.render, time consumed: 9% => 53% 
+ ~getClassNames, time consumed: 2% => 47% 
+ ~mergeStyleSets, time consumed: 0% => 39% 
+ ~obj.<computed>, time consumed: 10% => 53% 
+ ~styleToRegistration, time consumed: 0% => 29% 
+
+New Functions: 
+ ~Toggle_styles_getStyles, time consumed = 6%
+ ~_resolve, time consumed = 7%
+ ~_styles, time consumed = 7%
+ ~extractRules, time consumed = 42%
+ ~getKeyForRules, time consumed = 8%
