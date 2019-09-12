@@ -12,7 +12,7 @@ const snapshotsDir = path.join(__dirname, '../fixtures/snapshots');
 // TODO: modules that output files should be modified not to and wrapped by a centralized file output helper
 // TODO: consider also making file output / github / CI integration another package within this repo
 
-describe('process', () => {
+describe('flamegrill', () => {
   it('generates expected output', async () => {
     jest.setTimeout(30000);
     
@@ -60,4 +60,3 @@ describe('process', () => {
     outdir.removeCallback();
   });
 });
-
