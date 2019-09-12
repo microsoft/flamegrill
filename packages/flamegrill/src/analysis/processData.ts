@@ -136,7 +136,7 @@ export function checkForRegressions(datafileBefore: string, datafileAfter: strin
 
   });
 
-  summary += `Results for ${datafileBefore} => ${datafileAfter}\n\n`;
+  summary += `Results for ${path.basename(datafileBefore)} => ${path.basename(datafileAfter)}\n\n`;
   summary += `numTicks: ${dataBefore.numTicks} => ${dataAfter.numTicks}\n\n`;
 
   if (regressions.length === 0 && newFunctions.length === 0) {

@@ -111,6 +111,7 @@ export async function cook(scenarios: Scenario[], config: ScenarioConfig): Promi
 
   // Serialize a bunch of async generation of flamegraphs
   // TODO: need an API story here. how will users get output? data structures? files? both?
+  // TODO: break out as separate module reusable by tests.
   for (const scenario of scenarios) {
     const result = perfTests[scenario.name];
     const analysis: Analysis = {};
@@ -179,6 +180,7 @@ async function runPerfTest(browser: Browser, testUrl: string, scenarioName: stri
 /**
  * Create test summary based on test results.
  */
+// TODO: don't take in and return same structure. it's too hard to tell what this function needs and what it adds.
 function processResults(analysis: Analysis): Analysis {
   const dataFileAfter = analysis.files && analysis.files.dataFile;
   const dataFileBefore = analysis.reference && analysis.reference.files && analysis.reference.files.dataFile;

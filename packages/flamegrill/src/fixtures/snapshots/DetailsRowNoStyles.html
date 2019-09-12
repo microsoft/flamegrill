@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>flamebearer</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <style>
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        font: 16px 'Helvetica Neue', sans-serif;
+        margin: 0;
+      }
+
+      body.hover {
+        background: #cfc;
+      }
+
+      h1 {
+        font-size: 30px;
+        margin: 30px 30px 15px;
+      }
+
+      h1 a {
+        color: black;
+        text-decoration: none;
+      }
+
+      h1 a:hover {
+        text-decoration: underline;
+      }
+
+      #fire-icon {
+        fill: #f53;
+        width: 26px;
+        height: 26px;
+        vertical-align: -1px;
+      }
+
+      #intro {
+        margin: 0 30px;
+      }
+
+      code {
+        font-size: 13px;
+        color: #444;
+      }
+
+      code span {
+        color: #aaa;
+      }
+
+      #canvas {
+        width: 100%;
+      }
+
+      #controls {
+        display: none;
+      }
+
+      #search {
+        margin-right: 10px;
+      }
+
+      label {
+        font-size: 14px;
+      }
+
+      #highlight {
+        position: absolute;
+        pointer-events: none;
+        background: #ffffff40;
+      }
+
+      .loaded #intro {
+        display: none;
+      }
+
+      .loaded #header {
+        display: flex;
+        align-items: center;
+        flex-flow: row wrap;
+        padding: 7px 10px;
+      }
+
+      .loaded h1 {
+        font-size: 22px;
+        margin: 0 auto 0 0;
+        flex-shrink: 0;
+      }
+
+      .loaded #fire-icon {
+        width: 20px;
+        height: 20px;
+      }
+
+      .loaded #controls {
+        display: block;
+        flex-shrink: 0;
+      }
+
+      #tooltip {
+        position: absolute;
+        pointer-events: none;
+        background: #ffffff;
+        white-space: nowrap;
+        box-shadow: 1px 2px 4px 0px rgba(0, 0, 0, 0.3);
+        border-radius: 2px;
+        padding: 3px 5px;
+        font: 12px Tahoma, sans-serif;
+        display: none;
+      }
+
+      #tooltip .path {
+        color: #888;
+        font-size: 11px;
+      }
+
+      #tooltip .time {
+        color: #4a4;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>
+        <svg
+          id="fire-icon"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          viewBox="0 0 15 15"
+          style="enable-background:new 0 0 15 15;"
+          xml:space="preserve"
+        >
+          <path
+            d="M7.5,0.5L5,4.5l-1.5-2 C2.9452,3.4753,0.8036,5.7924,0.8036,8.3036C0.8036,12.002,3.8017,15,7.5,15s6.6964-2.998,6.6964-6.6964 c0-2.5112-2.1416-4.8283-2.6964-5.8036l-1.5,2L7.5,0.5z M7.5,7c0,0,2.5,2.5618,2.5,4.5c0,0.8371-0.8259,2-2.5,2S5,12.3371,5,11.5 C5,9.6283,7.5,7,7.5,7z"
+          />
+        </svg>
+        <a href="https://github.com/mapbox/flamebearer">flamebearer</a>
+      </h1>
+      <div id="controls">
+        <input id="search" placeholder="Search..." />
+        <button id="reset">Reset view</button><br />
+        <input id="framework" type="checkbox" /><label for="framework">Include Framework</label><br />
+        <input id="system" type="checkbox" /><label for="system">Include System</label>
+      </div>
+    </div>
+    <div id="highlight"></div>
+    <div id="tooltip"></div>
+    <div id="intro">
+      <!--  -->
+    </div>
+    <canvas id="canvas" height="0"></canvas>
+
+    <!--  -->
+    <script>const frameworkName = /~([a-zA-Z]{1,2}|[a-zA-Z]{1}\.[a-zA-Z]{1})[\. ]|~render |~\(anonymous\)|\(unknown\)|\~webpack/;
+const systemName = /\(C\+\+\)|\(lib\)/;
+
+function isFrameworkName(name) {
+  return frameworkName.test(name);
+}
+
+function isSystemName(name) {
+  return systemName.test(name);
+}
+
+
+'use strict';
+
+const introEl = document.getElementById('intro');
+const searchEl = document.getElementById('search');
+const highlightEl = document.getElementById('highlight');
+const tooltipEl = document.getElementById('tooltip');
+const frameworkEl = document.getElementById('framework');
+const systemEl = document.getElementById('system');
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+let names, levels, numTicks;
+
+names = ["(unknown)","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/react-dom.production.min.js:1:1","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/react-dom.production.min.js:12:23","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/react-dom.production.min.js:12:222","(lib) C:\\git\\oufr-jg\\node_modules\\puppeteer\\.local-chromium\\win64-672088\\chrome-win\\chrome_child.dll","(unknown)","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/react-dom.production.min.js:193:181","~uf file:///C:/git/oufr-jg/apps/perf-test/dist/react-dom.production.min.js:38:258","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:1","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:10","~r file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:33","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3483322","~(anonymous) :1:1","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3088650","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:46613","~registerDefaultFontFaces :660:34","~_registerFontFaceSet :652:30","~_registerFontFace :641:27","~fontFace :10:18","~serializeRuleEntries :378:30","~kebabRules :127:20","~_defineGetter :1489:23","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3611635","~(anonymous) :4:36","~webpackContext :26:24","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3613606","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:201883","(lib) C:\\WINDOWS\\SYSTEM32\\ntdll.dll","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3054999","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:2683435","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3467142","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:134316","~(anonymous) :11:11","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3050099","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:1998995","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3456795","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:2856024","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:2602063","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3637518","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:2118053","~mergeStyles :11:21","~styleToClassName :445:26","~styleToRegistration :401:29","~extractRules :284:22","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:2093600","~r.d file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:181","~styled :33:16","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:2586697","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3435617","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:2834004","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3048106","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:2839587","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3614036","~lib_initializeIcons :2289:29","~(anonymous) :2291:624","~fabric_icons_2_initializeIcons :339:40","~fabric_icons_8_initializeIcons :1083:40","~fabric_icons_15_initializeIcons :1951:41","~registerIcons :94:23","~render :266:336","~Si :264:12","~Hi :251:12","~(anonymous) :264:339","~Pi.render :261:29","~Ki :253:42","~Ji :252:12","~qf :243:12","~Xh :245:83","~Yh :248:12","~Di :249:12","~ci :233:12","~bi :232:12","~Tg :177:12","~yf :191:12","~S :164:45","~(anonymous) :145:114","~v :142:337","~p :140:224","~Ye :122:12","~K :118:419","~Ue :118:12","~ai :222:12","~Og :167:12","~Qg :173:12","~DetailsRowBase.render :10247:48","~getNativeProps :393:24","~filteredAssign :70:24","~(anonymous) :398:92","~hg :150:12","~CheckBase :11:26","~getClassNames :36:34","~mergeStyleSets :16:24","~_loop_1 :313:44","~Stylesheet.getInstance :57:39","~DetailsRowCheckBase :8698:36","~getKeyForRules :362:24","~vf :132:12","~tc :55:12","~FocusZone.render :328:43","~css :7:13","~concatStyleSets :6:25","~__rest :61:16","~_styles :73:41","~_resolve :90:18","~DetailsRowCheck_styles_getStyles :8656:49","~getGlobalClassNames :946:29","~memoizedFunction :73:37","~Eg :163:273","~M :15:11","~oe :106:12","~lh :194:140","~(anonymous) :324:55","~extractStyleParts :8:27","~_processArgs :16:26","~Wrapped._this._renderContent :42:45","~Customizations.getSettings :31:43","~FontIcon :34:25","(lib) C:\\WINDOWS\\System32\\KERNELBASE.dll","~Wrapped.render :53:45","~Lf :148:288","~ne :105:284","~oc :48:12","~expandQuads :355:21","~DetailsRowBase._onRenderCheck :10339:56","~qc :49:12","~pc :48:127","~M :186:11","~shallowCompare :36:24","~checkProperties :21:25","~DetailsRowBase :10121:28","~DetailsRowBase._getSelectionState :10342:60","~Selection.isIndexSelected :185:52","~ke :103:12","~DetailsRowFields :10073:33","~(anonymous) :10077:164","~qe :107:12","~_traverseMap :89:22","~_traverseEdge :82:23","~Wrapped :39:25","~getCellText :10061:28","~Stylesheet.classNameFromKey :106:54","~applyRegistration :427:27","~Wrapped._updateStyles :66:52","~xf :134:12","~Je :114:12","~expandSelector :272:24","~_fastDefaultCheckboxRender :8722:36","~Stylesheet.argsFromClassName :113:55","~expandCommaSeparatedGlobals :241:37","~FocusZone._evaluateFocusBeforeRender :405:63","~FocusZone._getDocument :816:49","~getDocument :12:21","~getStyles :14:26","~xe :110:125","~(anonymous) :2:88","~getFocusStyle :738:23","~_getFocusStyleInternal :746:32","~Mf :148:385","~we :110:12","~Ve :119:12","~FocusZone :54:23","~initializeComponentRef :10:32","~extendComponent :7:25","~appendFunction :7:24","~Ig :185:375","~he :101:184","~_normalizeValue :108:25","~_normalizeArg :100:23","~(anonymous) :3:88","~Af :136:12","~ge :101:12","~(anonymous) :1:88","(lib) C:\\WINDOWS\\System32\\KERNEL32.DLL","~re :108:12","~se :109:12","~Ng :166:128","~(anonymous) :323:51","~G :13:401","~If :147:394","~useRef :23:254","~useRef :159:332","~Id :87:12","~getId :98:15","~EventGroup :19:24","~f :138:420","~J :114:349","~Cg :163:12","~E :13:11","~elementContains :11:25","~Selection.canSelectItem :25:50","~Fi :250:12","~exports.unstable_runWithPriority :18:42","~(anonymous) :250:265","~Zh :219:12","~Uh :215:12","~Th :214:12","~zh :209:12","~Vh :216:12","~(anonymous) :15:21","~(anonymous) :20:36","~DetailsRowBase.componentDidMount :10178:59","~EventGroup.on :119:40","~FocusZone.componentDidMount :274:54","~FocusZone._updateTabIndexes :724:54","~on :2:12","~isElementFocusZone :238:28","~isElementTabbable :208:27","~DetailsRowBase._this._onRootRef :10133:37","~findDOMNode :266:45","~hd :72:122","~EventGroup._isElement :96:38","~(anonymous) :9:88","~(anonymous) :10:88"];
+levels = [[0,1,0,0,1947,5],[0,1,1,0,1,1,0,1946,8],[0,1,2,0,1,2,0,1946,9],[0,1,3,0,1,3,0,1946,10],[0,1,4,0,1,4,0,1946,11],[0,1,4,0,1,6,0,1946,12],[1,1,7,0,11,10,0,3,53,0,1932,59],[1,1,4,0,2,13,0,9,22,0,3,4,0,1932,60],[1,1,4,0,2,12,0,9,12,0,3,54,0,1932,61],[2,2,10,0,9,4,0,1,55,0,1,56,0,1,57,0,1932,62],[2,2,14,0,9,23,0,1,4,0,1,4,0,1,58,0,1932,63],[2,2,12,0,9,24,0,1,4,0,1,27,0,1,4,0,1932,64],[2,1,15,0,1,21,0,9,10,2,1,4,0,1932,65],[2,1,16,0,1,4,0,8,25,0,1,52,3,1932,66],[2,1,17,0,1,4,0,8,12,0,1,4,3,1932,67],[2,1,18,1,8,10,4,1932,68],[2,1,19,1,8,26,4,1932,69],[2,1,20,1,2,4,0,6,12,4,4,4,0,1812,70,0,116,190],[2,1,4,1,1,4,0,1,27,0,4,10,0,1,45,0,1,46,7,1,4,0,5,4,0,1807,71,0,116,191],[6,1,28,0,2,33,0,1,47,0,1,4,0,1,4,13,57,4,0,1283,72,0,467,81,0,116,192],[6,1,12,0,2,12,0,1,12,0,1,4,70,1,4,0,61,4,0,1,73,0,118,74,0,302,82,0,719,88,0,50,114,0,18,119,0,5,126,0,1,144,0,7,153,0,1,186,0,204,4,0,2,5,0,139,97,0,2,107,0,37,109,0,15,110,0,28,132,0,10,135,0,3,157,0,8,158,0,1,170,0,11,173,0,6,174,0,1,178,0,116,193],[6,1,10,0,2,10,0,1,10,133,1,4,0,20,4,0,98,75,0,16,4,0,208,83,0,67,96,0,8,143,0,2,164,0,1,185,0,20,4,0,294,89,0,282,94,0,62,116,0,61,133,0,15,4,0,9,101,0,9,108,0,9,115,0,7,142,0,1,154,0,6,4,0,10,165,0,2,178,0,5,4,0,1,4,0,7,4,0,1,4,198,5,4,0,1,27,0,2,4,0,96,4,0,10,121,0,33,124,0,2,4,0,16,4,0,17,5,0,4,120,0,15,4,0,8,4,0,20,5,0,10,4,0,3,4,0,8,4,0,1,4,0,11,4,0,4,4,0,1,5,0,1,181,0,1,4,0,1,194,0,3,195,0,112,197],[6,1,29,0,1,34,0,1,44,0,1,48,133,1,4,20,28,4,0,47,76,0,21,78,0,2,169,16,9,4,0,24,74,0,104,84,0,68,98,0,2,118,0,1,175,0,9,4,0,27,129,0,15,138,0,16,160,0,7,4,0,1,144,0,2,4,0,1,4,20,7,4,0,282,90,0,5,108,0,10,4,0,244,90,0,1,99,0,12,101,0,6,108,0,8,146,0,1,168,0,18,4,0,21,85,0,9,99,0,7,106,0,6,108,0,1,154,0,56,4,0,4,108,0,1,179,13,2,4,0,9,4,0,9,4,0,9,4,0,7,4,0,1,4,6,6,4,0,4,170,0,2,4,300,16,4,0,10,4,0,14,4,0,19,125,13,5,4,0,17,4,0,4,4,11,4,4,8,20,4,30,3,4,4,1,4,0,1,4,1,1,4,0,1,4,0,2,196,0,5,4,0,105,198,0,2,207],[6,1,12,0,1,12,0,1,12,0,1,12,182,13,4,0,33,77,0,1,184,0,5,4,0,11,79,0,5,159,0,2,4,25,7,4,0,17,75,0,30,4,0,14,85,0,14,90,0,32,108,0,11,123,0,1,127,0,1,154,0,1,189,0,23,4,0,18,85,0,4,99,0,15,108,0,8,149,0,2,4,0,1,4,9,9,4,0,3,130,0,13,161,0,1,183,0,1,187,0,11,4,0,4,177,0,8,4,0,6,161,0,1,171,0,1,182,7,1,4,30,6,4,0,248,91,0,21,102,0,7,136,0,5,4,10,6,4,0,192,91,0,39,102,0,7,136,0,1,4,0,12,4,0,6,4,0,3,4,0,5,106,0,1,4,17,1,4,0,4,4,0,16,86,0,1,168,0,9,4,0,6,4,0,1,167,0,6,4,0,1,4,1,1,4,0,54,134,0,4,4,0,1,180,20,4,4,22,3,4,13,4,4,342,19,4,112,3,4,9,2,4,5,105,4,0,1,4,0,1,208],[6,1,10,0,1,10,0,1,45,0,1,10,195,12,4,0,21,78,0,1,4,5,3,4,0,8,80,0,5,4,34,7,4,0,8,78,0,2,169,23,7,4,0,3,4,0,11,86,0,5,4,0,9,136,0,32,4,0,2,4,0,9,108,0,1,128,0,1,4,0,1,4,9,14,4,0,1,4,0,17,86,0,4,4,0,15,4,0,3,5,0,4,150,0,1,188,17,4,4,0,1,4,0,2,131,0,13,162,0,1,4,0,1,4,3,8,4,0,4,4,6,2,4,0,1,4,0,5,162,0,1,4,0,1,4,44,34,4,0,185,42,0,1,100,0,27,112,0,1,141,0,21,103,0,5,4,0,2,137,21,30,4,0,138,42,0,1,100,0,20,112,0,3,141,0,39,103,0,3,4,0,4,137,6,7,4,9,4,4,0,1,167,23,7,4,0,9,87,0,1,4,7,2,4,6,1,4,9,18,4,0,13,99,0,20,108,0,3,139,4,1,4,561,1,4,0,101,199,1,1,209],[6,1,30,0,1,35,0,1,4,0,1,49,207,4,4,0,17,79,9,8,4,46,2,4,0,5,79,0,1,159,0,2,4,33,5,4,0,6,87,5,7,4,0,2,137,33,1,4,0,9,4,0,1,4,14,11,4,1,11,4,0,6,87,14,5,4,0,3,4,0,1,4,0,3,151,0,1,4,22,2,4,0,9,4,0,3,163,0,1,171,26,2,4,0,3,163,69,11,4,0,3,4,0,122,43,0,4,93,0,44,95,0,12,140,0,1,4,0,7,4,0,2,93,0,18,113,0,1,93,0,4,4,0,17,152,5,2,4,41,10,4,0,4,4,0,72,43,0,2,93,0,51,95,0,9,140,0,1,4,0,7,4,0,4,93,0,8,113,0,1,154,0,1,4,0,2,93,0,2,4,0,37,104,3,4,4,25,1,4,0,1,4,30,9,4,9,1,117,31,3,4,0,13,4,0,20,4,0,3,4,567,2,4,0,9,200,0,90,202,1,1,4],[6,1,12,0,1,12,0,1,4,0,1,12,211,5,4,0,12,80,65,5,80,0,1,4,40,6,4,12,1,4,0,1,166,81,6,4,23,3,4,34,3,4,0,1,4,28,3,4,83,20,4,0,99,43,0,3,93,0,4,4,0,44,4,0,12,4,8,1,4,0,1,5,0,6,4,0,11,113,0,1,147,0,1,4,4,15,4,0,2,105,6,1,4,55,13,4,0,59,43,0,1,4,0,1,5,0,51,4,0,9,4,8,2,4,0,2,5,0,1,4,0,7,113,0,1,4,1,2,4,2,16,4,0,8,105,0,13,155,6,1,4,64,2,4,649,3,4,0,6,201,0,8,4,0,1,150,0,78,203,0,2,204,0,1,205],[6,1,10,0,1,10,1,1,10,216,12,4,65,5,4,44,3,4,13,1,4,84,3,4,194,4,4,0,33,4,0,64,92,0,2,93,0,3,4,38,10,4,0,12,4,9,1,4,5,1,4,0,11,4,0,1,4,15,3,4,0,2,27,0,2,106,6,1,4,65,3,4,0,24,4,0,21,92,0,3,93,0,11,122,1,1,4,37,14,4,0,9,4,10,2,4,1,7,4,13,9,4,0,2,4,0,6,106,0,13,156,6,1,4,718,5,4,0,1,210,5,3,4,0,1,151,0,5,4,0,2,5,0,62,203,0,4,205,0,5,206,0,2,4,0,1,4],[6,1,31,0,1,36,1,1,50,677,39,4,0,20,43,0,1,145,0,4,148,0,2,4,111,2,4,90,9,4,0,3,4,0,16,43,0,2,145,0,2,4,0,1,5,0,11,4,52,1,4,53,5,4,0,1,167,0,13,4,729,1,4,0,1,4,7,1,4,0,1,4,3,2,4,0,2,4,0,11,4,0,14,5,0,30,203,0,1,205,0,5,206,0,1,212,0,4,4,0,4,4,0,1,5,0,2,4,0,1,4],[6,1,12,0,1,12,1,1,12,687,8,4,0,19,111,0,2,176,0,18,4,0,2,93,0,1,4,0,4,4,114,1,4,102,11,4,0,4,92,0,1,93,0,2,4,2,1,4,3,7,4,0,1,27,111,1,4,9,3,4,0,1,172,757,1,4,0,12,4,0,2,27,0,2,4,0,10,5,0,18,203,0,1,4,0,2,4,0,3,5,0,1,4,3,1,4,4,1,4],[6,1,32,0,1,10,1,1,10,691,4,4,0,4,4,0,11,43,0,4,145,0,2,4,12,4,4,0,2,27,0,1,4,0,1,5,2,3,4,227,1,4,0,1,4,0,3,43,0,1,5,1,1,4,913,9,4,0,1,27,0,3,4,0,6,5,0,3,203,0,2,205,0,3,206,0,1,211,3,3,4],[6,1,4,0,1,37,1,1,51,699,9,4,0,2,93,0,4,4,21,1,4,2,3,4,229,3,4,0,1,4,927,1,4,0,5,4,0,1,27,0,1,4,0,2,5,0,2,4,0,2,4,0,1,5,0,1,4],[6,1,4,0,1,12,1,1,12,707,1,4,0,2,4,3,1,4,258,1,27,936,1,4,0,1,27,1,1,4,2,1,4],[7,1,10,1,1,4],[7,1,38],[7,1,12],[7,1,10],[7,1,39],[7,1,12],[7,1,40],[7,1,41],[7,1,42],[7,1,43],[7,1,4],[7,1,27]];
+numTicks = 1948;
+
+
+let rangeMin = 0;
+let rangeMax = 1;
+let topLevel = 0;
+let query = '';
+let showFramework = false;
+let showSystem = false;
+let graphWidth, pxPerTick;
+
+const pxPerLevel = 18;
+const collapseThreshold = 1;
+const hideThreshold = 0.5;
+const labelThreshold = 20;
+
+let numTopLevelTicks = numTicks;
+
+highlightEl.style.height = pxPerLevel + 'px';
+
+if (levels) {
+  init();
+}
+
+function init() {
+  document.body.classList.add('loaded');
+
+  // delta-decode bar positions
+  for (const level of levels) {
+    let prev = 0;
+    for (let i = 0; i < level.length; i += 3) {
+      level[i] += prev;
+      prev = level[i] + level[i + 1];
+    }
+  }
+
+  updateFromHash();
+  render();
+}
+
+window.onhashchange = () => {
+  updateFromHash();
+  render();
+};
+canvas.onclick = e => {
+  const { i, j } = xyToBar(e.offsetX, e.offsetY);
+  if (j === -1) return;
+  window.location.hash = [i, j].join(',');
+  removeHover();
+};
+document.getElementById('reset').onclick = () => {
+  searchEl.value = query = '';
+  window.location.hash = '';
+  render();
+};
+window.onresize = render;
+
+searchEl.oninput = e => {
+  query = e.target.value;
+  render();
+};
+
+frameworkEl.onchange = e => {
+  showFramework = frameworkEl.checked;
+  render();
+};
+
+systemEl.onchange = e => {
+  showSystem = systemEl.checked;
+  render();
+};
+
+function updateFromHash() {
+  const [i, j] = window.location.hash
+    .substr(1)
+    .split(',')
+    .map(Number);
+
+  if (!isNaN(i) && !isNaN(j)) {
+    topLevel = i;
+    numTopLevelTicks = levels[i][j + 1];
+    rangeMin = levels[i][j] / numTicks;
+    rangeMax = (levels[i][j] + levels[i][j + 1]) / numTicks;
+  } else {
+    topLevel = 0;
+    numTopLevelTicks = numTicks;
+    rangeMin = 0;
+    rangeMax = 1;
+  }
+}
+
+function tickToX(i) {
+  return (i - numTicks * rangeMin) * pxPerTick;
+}
+
+function render() {
+  if (!levels) return;
+
+  graphWidth = canvas.width = canvas.clientWidth;
+  canvas.height = pxPerLevel * (levels.length - topLevel);
+  canvas.style.height = canvas.height + 'px';
+
+  if (devicePixelRatio > 1) {
+    canvas.width *= 2;
+    canvas.height *= 2;
+    ctx.scale(2, 2);
+  }
+
+  pxPerTick = graphWidth / numTicks / (rangeMax - rangeMin);
+
+  ctx.textBaseline = 'middle';
+  ctx.font = '10px Tahoma, sans-serif';
+  ctx.strokeStyle = 'white';
+
+  for (let i = 0; i < levels.length - topLevel; i++) {
+    const level = levels[topLevel + i];
+
+    for (let j = 0; j < level.length; j += 3) {
+      const barIndex = level[j];
+      const x = tickToX(barIndex);
+      const y = i * pxPerLevel;
+      let numBarTicks = level[j + 1];
+
+      const inQuery = (query && names[level[j + 2]].indexOf(query) >= 0) || false;
+
+      // merge very small blocks into big "collapsed" ones for performance
+      // const collapsed = numBarTicks * pxPerTick <= collapseThreshold;
+      const collapsed = (!showFramework && isFrameworkName(names[level[j + 2]])) || (!showSystem && isSystemName(names[level[j + 2]]));
+      if (collapsed) {
+        while (
+          j < level.length - 3 &&
+          barIndex + numBarTicks === level[j + 3] &&
+          level[j + 4] * pxPerTick <= collapseThreshold &&
+          inQuery === ((query && names[level[j + 5]].indexOf(query) >= 0) || false)
+        ) {
+          j += 3;
+          numBarTicks += level[j + 1];
+        }
+      }
+
+      const sw = numBarTicks * pxPerTick - (collapsed ? 0 : 0.5);
+      const sh = pxPerLevel - 0.5;
+
+      if (x < -1 || x + sw > graphWidth + 1 || sw < hideThreshold) continue;
+
+      ctx.beginPath();
+      ctx.rect(x, y, sw, sh);
+
+      const ratio = numBarTicks / numTopLevelTicks;
+
+      if (!collapsed) {
+        ctx.stroke();
+        const intensity = Math.min(1, (ratio * Math.pow(1.16, i)) / (rangeMax - rangeMin));
+        const h = 50 - 50 * intensity;
+        const l = 65 + 7 * intensity;
+        ctx.fillStyle = inQuery ? 'lightgreen' : `hsl(${h}, 100%, ${l}%)`;
+      } else {
+        ctx.fillStyle = inQuery ? 'lightgreen' : '#eee';
+      }
+      ctx.fill();
+
+      if (!collapsed && sw >= labelThreshold) {
+        const percent = Math.round(10000 * ratio) / 100;
+        const name = `${names[level[j + 2]]} (${percent}%, ${numBarTicks} samples)`;
+
+        ctx.save();
+        ctx.clip();
+        ctx.fillStyle = 'black';
+        ctx.fillText(name, Math.max(x, 0) + 1, y + sh / 2);
+        ctx.restore();
+      }
+    }
+  }
+}
+
+// pixel coordinates to bar coordinates in the levels array
+function xyToBar(x, y) {
+  const i = Math.floor(y / pxPerLevel) + topLevel;
+  const j = binarySearchLevel(x, levels[i]);
+  return { i, j };
+}
+
+// binary search of a block in a stack level
+function binarySearchLevel(x, level) {
+  let i = 0;
+  let j = level.length - 3;
+  while (i <= j) {
+    const m = 3 * ((i / 3 + j / 3) >> 1);
+    const x0 = tickToX(level[m]);
+    const x1 = tickToX(level[m] + level[m + 1]);
+    if (x0 <= x && x1 >= x) {
+      return x1 - x0 > collapseThreshold ? m : -1;
+    }
+    if (x0 > x) {
+      j = m - 3;
+    } else {
+      i = m + 3;
+    }
+  }
+  return -1;
+}
+
+if (window.orientation === undefined) {
+  canvas.onmousemove = addHover;
+  canvas.onmouseout = window.onscroll = removeHover;
+}
+
+function removeHover() {
+  canvas.style.cursor = '';
+  highlightEl.style.display = 'none';
+  tooltipEl.style.display = 'none';
+}
+
+function addHover(e) {
+  const { i, j } = xyToBar(e.offsetX, e.offsetY);
+
+  if (j === -1 || e.offsetX < 0 || e.offsetX > graphWidth) {
+    removeHover();
+    return;
+  }
+
+  canvas.style.cursor = 'pointer';
+
+  const level = levels[i];
+  const x = tickToX(level[j]);
+  const y = (i - topLevel) * pxPerLevel;
+  const sw = tickToX(level[j] + level[j + 1]) - x;
+
+  highlightEl.style.display = 'block';
+  highlightEl.style.left = x + 'px';
+  highlightEl.style.top = canvas.offsetTop + y + 'px';
+  highlightEl.style.width = sw + 'px';
+
+  const numBarTicks = level[j + 1];
+  const percent = Math.round((10000 * numBarTicks) / numTopLevelTicks) / 100;
+  const time = `<span class="time">(${percent}%, ${numBarTicks} samples)</span>`;
+  let content = names[level[j + 2]];
+  if (content[0] !== '(') content = content.replace(' ', ` ${time}<br><span class="path">`) + '</span>';
+  else content += ` ${time}`;
+
+  tooltipEl.innerHTML = content;
+  tooltipEl.style.display = 'block';
+  tooltipEl.style.left = Math.min(e.offsetX + 15 + tooltipEl.clientWidth, graphWidth) - tooltipEl.clientWidth + 'px';
+  tooltipEl.style.top = canvas.offsetTop + e.offsetY + 12 + 'px';
+}
+
+// (function frame() { if (levels) render(); requestAnimationFrame(frame); })();
+
+
+</script>
+  </body>
+</html>

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>flamebearer</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <style>
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        font: 16px 'Helvetica Neue', sans-serif;
+        margin: 0;
+      }
+
+      body.hover {
+        background: #cfc;
+      }
+
+      h1 {
+        font-size: 30px;
+        margin: 30px 30px 15px;
+      }
+
+      h1 a {
+        color: black;
+        text-decoration: none;
+      }
+
+      h1 a:hover {
+        text-decoration: underline;
+      }
+
+      #fire-icon {
+        fill: #f53;
+        width: 26px;
+        height: 26px;
+        vertical-align: -1px;
+      }
+
+      #intro {
+        margin: 0 30px;
+      }
+
+      code {
+        font-size: 13px;
+        color: #444;
+      }
+
+      code span {
+        color: #aaa;
+      }
+
+      #canvas {
+        width: 100%;
+      }
+
+      #controls {
+        display: none;
+      }
+
+      #search {
+        margin-right: 10px;
+      }
+
+      label {
+        font-size: 14px;
+      }
+
+      #highlight {
+        position: absolute;
+        pointer-events: none;
+        background: #ffffff40;
+      }
+
+      .loaded #intro {
+        display: none;
+      }
+
+      .loaded #header {
+        display: flex;
+        align-items: center;
+        flex-flow: row wrap;
+        padding: 7px 10px;
+      }
+
+      .loaded h1 {
+        font-size: 22px;
+        margin: 0 auto 0 0;
+        flex-shrink: 0;
+      }
+
+      .loaded #fire-icon {
+        width: 20px;
+        height: 20px;
+      }
+
+      .loaded #controls {
+        display: block;
+        flex-shrink: 0;
+      }
+
+      #tooltip {
+        position: absolute;
+        pointer-events: none;
+        background: #ffffff;
+        white-space: nowrap;
+        box-shadow: 1px 2px 4px 0px rgba(0, 0, 0, 0.3);
+        border-radius: 2px;
+        padding: 3px 5px;
+        font: 12px Tahoma, sans-serif;
+        display: none;
+      }
+
+      #tooltip .path {
+        color: #888;
+        font-size: 11px;
+      }
+
+      #tooltip .time {
+        color: #4a4;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>
+        <svg
+          id="fire-icon"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          viewBox="0 0 15 15"
+          style="enable-background:new 0 0 15 15;"
+          xml:space="preserve"
+        >
+          <path
+            d="M7.5,0.5L5,4.5l-1.5-2 C2.9452,3.4753,0.8036,5.7924,0.8036,8.3036C0.8036,12.002,3.8017,15,7.5,15s6.6964-2.998,6.6964-6.6964 c0-2.5112-2.1416-4.8283-2.6964-5.8036l-1.5,2L7.5,0.5z M7.5,7c0,0,2.5,2.5618,2.5,4.5c0,0.8371-0.8259,2-2.5,2S5,12.3371,5,11.5 C5,9.6283,7.5,7,7.5,7z"
+          />
+        </svg>
+        <a href="https://github.com/mapbox/flamebearer">flamebearer</a>
+      </h1>
+      <div id="controls">
+        <input id="search" placeholder="Search..." />
+        <button id="reset">Reset view</button><br />
+        <input id="framework" type="checkbox" /><label for="framework">Include Framework</label><br />
+        <input id="system" type="checkbox" /><label for="system">Include System</label>
+      </div>
+    </div>
+    <div id="highlight"></div>
+    <div id="tooltip"></div>
+    <div id="intro">
+      <!--  -->
+    </div>
+    <canvas id="canvas" height="0"></canvas>
+
+    <!--  -->
+    <script>const frameworkName = /~([a-zA-Z]{1,2}|[a-zA-Z]{1}\.[a-zA-Z]{1})[\. ]|~render |~\(anonymous\)|\(unknown\)|\~webpack/;
+const systemName = /\(C\+\+\)|\(lib\)/;
+
+function isFrameworkName(name) {
+  return frameworkName.test(name);
+}
+
+function isSystemName(name) {
+  return systemName.test(name);
+}
+
+
+'use strict';
+
+const introEl = document.getElementById('intro');
+const searchEl = document.getElementById('search');
+const highlightEl = document.getElementById('highlight');
+const tooltipEl = document.getElementById('tooltip');
+const frameworkEl = document.getElementById('framework');
+const systemEl = document.getElementById('system');
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+let names, levels, numTicks;
+
+names = ["(unknown)","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/react.production.min.js:1:1","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/react.production.min.js:9:23","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/react.production.min.js:9:179","(lib) C:\\git\\oufr-jg\\node_modules\\puppeteer\\.local-chromium\\win64-672088\\chrome-win\\chrome_child.dll","(unknown)","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/react-dom.production.min.js:1:1","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/react-dom.production.min.js:12:23","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/react-dom.production.min.js:12:222","~J.extend file:///C:/git/oufr-jg/apps/perf-test/dist/react-dom.production.min.js:169:497","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:1","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:10","~r file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:33","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3483322","~(anonymous) :1:1","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3088650","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:46613","~Stylesheet.getInstance :57:39","~registerDefaultFontFaces :660:34","~_registerFontFaceSet :652:30","~_registerFontFace :641:27","~fontFace :10:18","~serializeRuleEntries :378:30","~kebabRules :127:20","~buildClassMap :16:23","~_loop_1 :18:28","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3611635","~(anonymous) :4:36","~webpackContext :26:24","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3613606","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:201883","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3054999","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:2683435","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3467142","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:2064879","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:2703916","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:2596685","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:2063097","~mergeStyleSets :16:24","~styleToRegistration :401:29","~prefixRules :170:21","~(anonymous) :2191:64","~r.d file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:181","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3614036","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:2161985","~loadStyles :72:20","~measure :35:17","~render :266:336","~Si :264:12","~Hi :251:12","~(anonymous) :264:339","~Pi.render :261:29","~Ki :253:42","~Ji :252:12","~qf :243:12","~Xh :245:83","~Yh :248:12","~Di :249:12","~ci :233:12","~bi :232:12","~Tg :177:12","~S :164:45","~(anonymous) :145:114","~v :142:337","~p :140:224","~Ye :122:12","~K :118:419","~Ue :118:12","~hg :150:12","~result :35:27","~TextView :9:25","~withSlots :28:19","~slot :118:33","~_renderSlot :188:21","~result :77:27","~_resolveStyles :63:24","~ai :222:12","~_resolveTokens :75:24","~re :108:12","~_constructFinalProps :166:30","~mergeStyles :11:21","~styleToClassName :445:26","~StackView :185:26","~count :21:186","~U :19:192","~S :18:11","~applyRegistration :427:27","~(anonymous) :68:123","~styles :38:23","~parseGap :30:25","~getNativeProps :393:24","~filteredAssign :70:24","~extractStyleParts :8:27","~_processArgs :16:26","~qe :107:12","~toArray :21:248","~V :20:247","~fa :20:12","~tc :55:12","~qc :49:12","~extractRules :284:22","~memoizedFunction :73:37","~lh :194:140","~__rest :61:16","~concatStyleSets :6:25","~map :21:30","~Stylesheet.classNameFromKey :106:54","~useContext :22:403","~M :186:11","~getKeyForRules :362:24","~(anonymous) :398:92","~(anonymous) :1573:104","~(anonymous) :32:104","~(anonymous) :2:88","~M :15:11","~TextStyles :2:27","~_loop_1 :313:44","~getSlots :109:18","~_loop_1 :113:28","~ke :103:12","~getGlobalClassNames :946:29","~_normalizeArg :100:23","~Af :136:12","~Lf :148:288","~T :19:239","~escape :16:176","~N :16:105","~_getCustomizations :102:28","~Customizations.getSettings :31:43","~da :16:12","~pc :48:127","~(anonymous) :3:88","~(anonymous) :1:88","~Ig :185:375","~xe :110:125","~Mf :148:385","~Je :114:12","~expandSelector :272:24","~Q :16:293","~If :147:394","~ge :101:12","~Ng :166:128","~Eg :163:273","~(anonymous) :1577:100","~R :17:11","~he :101:184","~(anonymous) :30:100","~Ve :119:12","~we :110:12","~(anonymous) :193:72","(lib) C:\\WINDOWS\\SYSTEM32\\ntdll.dll","~_translateShorthand :150:29","(lib) C:\\WINDOWS\\System32\\KERNEL32.DLL"];
+levels = [[0,1,0,0,1977,5],[0,1,1,0,1,6,0,1976,10],[0,1,2,0,1,7,0,1976,11],[0,1,3,0,1,8,0,1976,12],[0,1,4,0,1,9,0,1976,13],[0,1,4,0,1,4,0,1976,14],[1,1,4,0,7,12,0,1969,47],[2,3,15,0,4,26,0,1969,48],[2,3,14,0,4,14,0,1969,49],[2,3,12,0,4,4,0,1969,50],[2,3,16,0,4,27,0,1969,51],[2,3,14,0,4,28,0,1969,52],[2,1,17,0,1,18,0,1,24,0,4,12,0,1969,53],[2,1,4,0,1,19,0,1,25,0,3,29,0,1,43,0,1969,54],[3,1,20,0,1,4,0,3,14,0,1,14,0,1969,55],[3,1,21,0,1,4,0,3,12,0,1,12,0,1969,56],[3,1,22,1,3,30,0,1,44,0,1969,57],[3,1,23,1,3,14,0,1,14,0,2,4,0,1967,58],[3,1,4,1,1,12,0,1,41,0,1,42,0,1,45,1,1,4,0,8,4,0,1959,59],[5,1,31,0,1,4,0,1,4,0,1,46,1,1,150,8,47,4,0,1599,60,0,313,76],[5,1,14,0,1,4,0,1,4,0,1,4,55,2,4,0,56,4,0,120,61,0,1388,68,0,21,123,0,4,133,0,4,134,0,2,136,0,4,141,0,168,4,0,4,5,0,12,78,0,7,94,0,45,98,0,20,102,0,44,119,0,3,135,0,1,139,0,1,140,0,5,142,0,3,148],[5,1,12,59,1,4,56,14,4,0,106,62,0,36,4,0,1352,69,0,13,4,0,4,139,0,4,145,0,4,4,0,4,4,0,2,4,0,4,4,158,10,4,0,4,4,0,12,4,0,7,4,0,36,4,0,9,99,0,20,4,0,7,4,0,37,5,0,3,4,0,1,4,0,1,4,0,5,4,0,3,4],[5,1,32,130,33,4,0,40,63,0,31,65,0,2,122,36,60,4,0,828,70,0,146,75,0,32,77,0,216,82,0,20,107,0,1,113,0,49,127,13,4,4,0,3,4,0,1,140,191,7,4,37,6,4,0,3,4,0,6,130,18,2,4,7,36,4,0,1,152],[5,1,14,163,2,4,0,38,64,0,9,4,0,22,66,0,2,4,85,11,4,0,44,4,0,628,71,0,94,90,0,43,103,0,1,113,0,16,117,0,2,131,0,101,4,0,38,104,0,7,111,0,32,4,0,9,4,0,148,71,0,9,90,0,5,103,0,43,105,0,2,117,0,5,4,0,15,108,0,1,4,0,10,4,0,39,128,20,1,4,191,7,4,46,6,4],[5,1,12,165,5,4,0,28,65,0,5,122,9,7,4,0,15,67,141,1,4,0,11,4,0,593,72,0,24,83,0,15,4,0,78,91,0,1,131,0,43,4,0,1,4,0,9,4,0,7,118,0,2,4,29,6,4,0,66,87,0,38,4,0,1,4,0,6,112,41,3,4,0,89,72,0,23,83,0,33,95,0,2,4,0,7,91,0,5,4,0,2,4,0,41,96,0,2,118,4,1,4,0,15,4,11,39,4],[5,1,33,170,8,4,0,18,66,0,2,147,0,5,4,16,15,4,153,10,4,0,583,73,0,6,4,0,18,84,15,41,4,0,37,110,0,1,4,30,13,4,10,7,4,37,5,4,0,24,88,0,37,115,39,6,4,43,1,4,0,2,4,0,87,73,0,23,84,0,33,96,2,2,4,0,5,110,4,1,4,2,1,4,0,35,84,0,3,138,0,2,144,0,2,4],[5,1,14,178,2,4,0,16,67,0,2,4,199,15,4,0,547,74,0,21,101,6,4,4,0,14,85,56,37,4,103,15,4,0,2,89,0,7,120,0,37,4,91,3,4,0,81,74,0,3,101,0,23,85,0,33,84,4,5,4,8,3,4,0,32,85,0,3,4,0,2,4],[5,1,12,180,16,4,216,28,4,0,494,79,0,22,114,0,2,126,0,1,151,0,14,4,0,7,121,10,14,4,73,20,4,113,5,4,0,2,4,0,1,4,0,6,101,25,12,4,94,2,4,0,74,79,0,5,114,0,3,4,0,23,85,0,33,85,5,4,4,11,13,4,0,19,85,0,3,4,1,1,4],[5,1,34,439,1,4,0,94,4,0,388,80,0,2,132,0,10,143,0,22,4,0,2,4,0,1,4,14,7,4,235,2,4,1,5,4,0,1,121,132,1,4,0,11,4,0,63,80,0,5,4,3,5,4,0,1,85,0,17,124,0,2,4,0,31,85,33,7,4,0,12,97],[5,1,14,493,41,4,0,26,4,0,281,81,0,80,92,0,1,132,0,2,4,0,3,4,0,7,146,289,1,4,137,7,4,0,2,4,0,49,81,0,12,92,13,1,4,0,4,4,0,13,125,2,3,4,0,19,85,0,9,124,40,4,4,0,4,126,0,3,129,0,1,149],[5,1,12,559,1,4,0,21,4,0,251,39,0,9,86,0,28,4,0,18,17,0,32,93,0,2,113,0,1,4,5,7,4,436,48,39,0,1,86,0,4,4,0,8,93,18,13,4,5,4,4,0,15,97,0,3,4,0,6,125,44,4,4,0,3,4,0,1,4],[5,1,35,581,37,4,0,4,17,0,120,100,0,20,106,0,69,109,0,1,113,0,6,4,0,3,17,27,1,4,0,14,4,0,4,5,0,5,4,0,27,93,0,2,4,449,2,4,0,1,17,0,34,100,0,2,106,0,9,109,0,1,17,4,8,93,24,7,4,9,10,4,0,5,129,3,6,4],[5,1,14,618,2,4,0,2,5,0,46,4,0,11,17,0,63,100,0,20,4,0,69,4,0,1,4,6,3,4,42,4,4,5,12,4,0,15,93,453,1,4,0,1,4,0,1,17,0,32,100,0,2,4,0,9,4,0,1,5,4,3,4,0,5,93,25,6,4,19,5,4,5,4,4],[5,1,12,620,2,4,37,9,4,0,8,4,0,3,5,0,62,4,0,1,17,3,17,4,53,16,4,73,15,4,455,1,4,0,5,4,0,27,116,0,2,4,8,1,4,0,1,4,7,5,4,60,4,4],[5,1,36,676,3,4,62,1,4,638,5,4,0,20,100,0,2,137,10,1,150],[5,1,14,1385,13,4,0,2,17,0,5,100,0,2,4],[5,1,12,1393,5,4,0,1,4,0,1,5,0,4,4,0,1,17],[5,1,37,1399,1,4,4,1,4],[5,1,14],[5,1,38],[5,1,39],[5,1,22],[5,1,40],[5,1,4],[5,1,4]];
+numTicks = 1978;
+
+
+let rangeMin = 0;
+let rangeMax = 1;
+let topLevel = 0;
+let query = '';
+let showFramework = false;
+let showSystem = false;
+let graphWidth, pxPerTick;
+
+const pxPerLevel = 18;
+const collapseThreshold = 1;
+const hideThreshold = 0.5;
+const labelThreshold = 20;
+
+let numTopLevelTicks = numTicks;
+
+highlightEl.style.height = pxPerLevel + 'px';
+
+if (levels) {
+  init();
+}
+
+function init() {
+  document.body.classList.add('loaded');
+
+  // delta-decode bar positions
+  for (const level of levels) {
+    let prev = 0;
+    for (let i = 0; i < level.length; i += 3) {
+      level[i] += prev;
+      prev = level[i] + level[i + 1];
+    }
+  }
+
+  updateFromHash();
+  render();
+}
+
+window.onhashchange = () => {
+  updateFromHash();
+  render();
+};
+canvas.onclick = e => {
+  const { i, j } = xyToBar(e.offsetX, e.offsetY);
+  if (j === -1) return;
+  window.location.hash = [i, j].join(',');
+  removeHover();
+};
+document.getElementById('reset').onclick = () => {
+  searchEl.value = query = '';
+  window.location.hash = '';
+  render();
+};
+window.onresize = render;
+
+searchEl.oninput = e => {
+  query = e.target.value;
+  render();
+};
+
+frameworkEl.onchange = e => {
+  showFramework = frameworkEl.checked;
+  render();
+};
+
+systemEl.onchange = e => {
+  showSystem = systemEl.checked;
+  render();
+};
+
+function updateFromHash() {
+  const [i, j] = window.location.hash
+    .substr(1)
+    .split(',')
+    .map(Number);
+
+  if (!isNaN(i) && !isNaN(j)) {
+    topLevel = i;
+    numTopLevelTicks = levels[i][j + 1];
+    rangeMin = levels[i][j] / numTicks;
+    rangeMax = (levels[i][j] + levels[i][j + 1]) / numTicks;
+  } else {
+    topLevel = 0;
+    numTopLevelTicks = numTicks;
+    rangeMin = 0;
+    rangeMax = 1;
+  }
+}
+
+function tickToX(i) {
+  return (i - numTicks * rangeMin) * pxPerTick;
+}
+
+function render() {
+  if (!levels) return;
+
+  graphWidth = canvas.width = canvas.clientWidth;
+  canvas.height = pxPerLevel * (levels.length - topLevel);
+  canvas.style.height = canvas.height + 'px';
+
+  if (devicePixelRatio > 1) {
+    canvas.width *= 2;
+    canvas.height *= 2;
+    ctx.scale(2, 2);
+  }
+
+  pxPerTick = graphWidth / numTicks / (rangeMax - rangeMin);
+
+  ctx.textBaseline = 'middle';
+  ctx.font = '10px Tahoma, sans-serif';
+  ctx.strokeStyle = 'white';
+
+  for (let i = 0; i < levels.length - topLevel; i++) {
+    const level = levels[topLevel + i];
+
+    for (let j = 0; j < level.length; j += 3) {
+      const barIndex = level[j];
+      const x = tickToX(barIndex);
+      const y = i * pxPerLevel;
+      let numBarTicks = level[j + 1];
+
+      const inQuery = (query && names[level[j + 2]].indexOf(query) >= 0) || false;
+
+      // merge very small blocks into big "collapsed" ones for performance
+      // const collapsed = numBarTicks * pxPerTick <= collapseThreshold;
+      const collapsed = (!showFramework && isFrameworkName(names[level[j + 2]])) || (!showSystem && isSystemName(names[level[j + 2]]));
+      if (collapsed) {
+        while (
+          j < level.length - 3 &&
+          barIndex + numBarTicks === level[j + 3] &&
+          level[j + 4] * pxPerTick <= collapseThreshold &&
+          inQuery === ((query && names[level[j + 5]].indexOf(query) >= 0) || false)
+        ) {
+          j += 3;
+          numBarTicks += level[j + 1];
+        }
+      }
+
+      const sw = numBarTicks * pxPerTick - (collapsed ? 0 : 0.5);
+      const sh = pxPerLevel - 0.5;
+
+      if (x < -1 || x + sw > graphWidth + 1 || sw < hideThreshold) continue;
+
+      ctx.beginPath();
+      ctx.rect(x, y, sw, sh);
+
+      const ratio = numBarTicks / numTopLevelTicks;
+
+      if (!collapsed) {
+        ctx.stroke();
+        const intensity = Math.min(1, (ratio * Math.pow(1.16, i)) / (rangeMax - rangeMin));
+        const h = 50 - 50 * intensity;
+        const l = 65 + 7 * intensity;
+        ctx.fillStyle = inQuery ? 'lightgreen' : `hsl(${h}, 100%, ${l}%)`;
+      } else {
+        ctx.fillStyle = inQuery ? 'lightgreen' : '#eee';
+      }
+      ctx.fill();
+
+      if (!collapsed && sw >= labelThreshold) {
+        const percent = Math.round(10000 * ratio) / 100;
+        const name = `${names[level[j + 2]]} (${percent}%, ${numBarTicks} samples)`;
+
+        ctx.save();
+        ctx.clip();
+        ctx.fillStyle = 'black';
+        ctx.fillText(name, Math.max(x, 0) + 1, y + sh / 2);
+        ctx.restore();
+      }
+    }
+  }
+}
+
+// pixel coordinates to bar coordinates in the levels array
+function xyToBar(x, y) {
+  const i = Math.floor(y / pxPerLevel) + topLevel;
+  const j = binarySearchLevel(x, levels[i]);
+  return { i, j };
+}
+
+// binary search of a block in a stack level
+function binarySearchLevel(x, level) {
+  let i = 0;
+  let j = level.length - 3;
+  while (i <= j) {
+    const m = 3 * ((i / 3 + j / 3) >> 1);
+    const x0 = tickToX(level[m]);
+    const x1 = tickToX(level[m] + level[m + 1]);
+    if (x0 <= x && x1 >= x) {
+      return x1 - x0 > collapseThreshold ? m : -1;
+    }
+    if (x0 > x) {
+      j = m - 3;
+    } else {
+      i = m + 3;
+    }
+  }
+  return -1;
+}
+
+if (window.orientation === undefined) {
+  canvas.onmousemove = addHover;
+  canvas.onmouseout = window.onscroll = removeHover;
+}
+
+function removeHover() {
+  canvas.style.cursor = '';
+  highlightEl.style.display = 'none';
+  tooltipEl.style.display = 'none';
+}
+
+function addHover(e) {
+  const { i, j } = xyToBar(e.offsetX, e.offsetY);
+
+  if (j === -1 || e.offsetX < 0 || e.offsetX > graphWidth) {
+    removeHover();
+    return;
+  }
+
+  canvas.style.cursor = 'pointer';
+
+  const level = levels[i];
+  const x = tickToX(level[j]);
+  const y = (i - topLevel) * pxPerLevel;
+  const sw = tickToX(level[j] + level[j + 1]) - x;
+
+  highlightEl.style.display = 'block';
+  highlightEl.style.left = x + 'px';
+  highlightEl.style.top = canvas.offsetTop + y + 'px';
+  highlightEl.style.width = sw + 'px';
+
+  const numBarTicks = level[j + 1];
+  const percent = Math.round((10000 * numBarTicks) / numTopLevelTicks) / 100;
+  const time = `<span class="time">(${percent}%, ${numBarTicks} samples)</span>`;
+  let content = names[level[j + 2]];
+  if (content[0] !== '(') content = content.replace(' ', ` ${time}<br><span class="path">`) + '</span>';
+  else content += ` ${time}`;
+
+  tooltipEl.innerHTML = content;
+  tooltipEl.style.display = 'block';
+  tooltipEl.style.left = Math.min(e.offsetX + 15 + tooltipEl.clientWidth, graphWidth) - tooltipEl.clientWidth + 'px';
+  tooltipEl.style.top = canvas.offsetTop + e.offsetY + 12 + 'px';
+}
+
+// (function frame() { if (levels) render(); requestAnimationFrame(frame); })();
+
+
+</script>
+  </body>
+</html>

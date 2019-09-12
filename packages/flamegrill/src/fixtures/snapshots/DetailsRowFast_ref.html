@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>flamebearer</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <style>
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        font: 16px 'Helvetica Neue', sans-serif;
+        margin: 0;
+      }
+
+      body.hover {
+        background: #cfc;
+      }
+
+      h1 {
+        font-size: 30px;
+        margin: 30px 30px 15px;
+      }
+
+      h1 a {
+        color: black;
+        text-decoration: none;
+      }
+
+      h1 a:hover {
+        text-decoration: underline;
+      }
+
+      #fire-icon {
+        fill: #f53;
+        width: 26px;
+        height: 26px;
+        vertical-align: -1px;
+      }
+
+      #intro {
+        margin: 0 30px;
+      }
+
+      code {
+        font-size: 13px;
+        color: #444;
+      }
+
+      code span {
+        color: #aaa;
+      }
+
+      #canvas {
+        width: 100%;
+      }
+
+      #controls {
+        display: none;
+      }
+
+      #search {
+        margin-right: 10px;
+      }
+
+      label {
+        font-size: 14px;
+      }
+
+      #highlight {
+        position: absolute;
+        pointer-events: none;
+        background: #ffffff40;
+      }
+
+      .loaded #intro {
+        display: none;
+      }
+
+      .loaded #header {
+        display: flex;
+        align-items: center;
+        flex-flow: row wrap;
+        padding: 7px 10px;
+      }
+
+      .loaded h1 {
+        font-size: 22px;
+        margin: 0 auto 0 0;
+        flex-shrink: 0;
+      }
+
+      .loaded #fire-icon {
+        width: 20px;
+        height: 20px;
+      }
+
+      .loaded #controls {
+        display: block;
+        flex-shrink: 0;
+      }
+
+      #tooltip {
+        position: absolute;
+        pointer-events: none;
+        background: #ffffff;
+        white-space: nowrap;
+        box-shadow: 1px 2px 4px 0px rgba(0, 0, 0, 0.3);
+        border-radius: 2px;
+        padding: 3px 5px;
+        font: 12px Tahoma, sans-serif;
+        display: none;
+      }
+
+      #tooltip .path {
+        color: #888;
+        font-size: 11px;
+      }
+
+      #tooltip .time {
+        color: #4a4;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>
+        <svg
+          id="fire-icon"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          viewBox="0 0 15 15"
+          style="enable-background:new 0 0 15 15;"
+          xml:space="preserve"
+        >
+          <path
+            d="M7.5,0.5L5,4.5l-1.5-2 C2.9452,3.4753,0.8036,5.7924,0.8036,8.3036C0.8036,12.002,3.8017,15,7.5,15s6.6964-2.998,6.6964-6.6964 c0-2.5112-2.1416-4.8283-2.6964-5.8036l-1.5,2L7.5,0.5z M7.5,7c0,0,2.5,2.5618,2.5,4.5c0,0.8371-0.8259,2-2.5,2S5,12.3371,5,11.5 C5,9.6283,7.5,7,7.5,7z"
+          />
+        </svg>
+        <a href="https://github.com/mapbox/flamebearer">flamebearer</a>
+      </h1>
+      <div id="controls">
+        <input id="search" placeholder="Search..." />
+        <button id="reset">Reset view</button><br />
+        <input id="framework" type="checkbox" /><label for="framework">Include Framework</label><br />
+        <input id="system" type="checkbox" /><label for="system">Include System</label>
+      </div>
+    </div>
+    <div id="highlight"></div>
+    <div id="tooltip"></div>
+    <div id="intro">
+      <!--  -->
+    </div>
+    <canvas id="canvas" height="0"></canvas>
+
+    <!--  -->
+    <script>const frameworkName = /~([a-zA-Z]{1,2}|[a-zA-Z]{1}\.[a-zA-Z]{1})[\. ]|~render |~\(anonymous\)|\(unknown\)|\~webpack/;
+const systemName = /\(C\+\+\)|\(lib\)/;
+
+function isFrameworkName(name) {
+  return frameworkName.test(name);
+}
+
+function isSystemName(name) {
+  return systemName.test(name);
+}
+
+
+'use strict';
+
+const introEl = document.getElementById('intro');
+const searchEl = document.getElementById('search');
+const highlightEl = document.getElementById('highlight');
+const tooltipEl = document.getElementById('tooltip');
+const frameworkEl = document.getElementById('framework');
+const systemEl = document.getElementById('system');
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+let names, levels, numTicks;
+
+names = ["(unknown)","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/react-dom.production.min.js:1:1","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/react-dom.production.min.js:12:23","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/react-dom.production.min.js:12:222","~gc http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/react-dom.production.min.js:19:175","(lib) C:\\git\\oufr-jg\\node_modules\\puppeteer\\.local-chromium\\win64-672088\\chrome-win\\chrome_child.dll","(unknown)","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:1","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:10","~t http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:33","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:3372921","~(anonymous) :1:1","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:1991774","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:3381242","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:2992190","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:46625","~_createSlideInY :393:25","~keyframes :11:19","~Stylesheet.cacheClassName :95:52","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:3501229","~(anonymous) :4:36","~webpackContext :26:24","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:3503178","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:196864","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:2959633","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:2598910","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:3357252","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:121500","~(anonymous) :110:11","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:2954829","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:1934867","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:3347181","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:2766736","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:2519761","~get :22:31","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:2573451","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:3322169","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:2703381","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:36563","~t.d http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:181","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:3503596","~(anonymous) http://fabricweb.z5.web.core.windows.net/pr-deploy-site/refs/heads/master/perf-test/perf-test.js:1:2092690","~mergeStyles :11:21","~lib_initializeIcons :2289:29","~(anonymous) :2291:624","~fabric_icons_12_initializeIcons :1579:41","~fabric_icons_14_initializeIcons :1827:41","~module.exports :31:26","~render :266:336","~Si :264:12","~Hi :251:12","~(anonymous) :264:339","~Pi.render :261:29","~Ki :253:42","~Ji :252:12","~qf :243:12","~Xh :245:83","~Yh :248:12","~Di :249:12","~ci :233:12","~bi :232:12","~Tg :177:12","~S :164:45","~(anonymous) :145:114","~v :142:337","~p :140:224","~Ye :122:12","~K :118:419","~Ue :118:12","~Og :167:12","~Qg :173:12","~DetailsRowBase.render :10247:48","~getClassNames :36:34","~mergeStyleSets :16:24","~styleToRegistration :401:29","~extractRules :284:22","~hg :150:12","~FontIcon :34:25","~M :15:11","~DetailsRowFields :10073:33","~(anonymous) :10077:164","~css :7:13","~ai :222:12","~tc :55:12","~vf :132:12","~DetailsRowBase :10121:28","~getNativeProps :393:24","~filteredAssign :70:24","~(anonymous) :398:92","~Wrapped._this._renderContent :42:45","~FocusZone :54:23","~getId :98:15","~xf :134:12","~Af :136:12","~DetailsRowCheckBase :8698:36","~__rest :61:16","~DetailsRowBase._onRenderCheck :10339:56","~(anonymous) :2:88","~lh :194:140","~oe :106:12","~_traverseMap :89:22","~Wrapped :39:25","~G :13:401","~ke :103:12","~initializeComponentRef :10:32","~extendComponent :7:25","~If :147:394","~Lf :148:288","~he :101:184","~memoizedFunction :73:37","~qe :107:12","~FocusZone.render :328:43","~CheckBase :11:26","~_traverseEdge :82:23","~qc :49:12","~Ig :185:375","~re :108:12","~_fastDefaultCheckboxRender :8722:36","~J :114:349","~oc :48:12","~Ng :166:128","~shallowCompare :36:24","~we :110:12","~Wrapped.render :53:45","~E :13:11","~pc :48:127","~Customizations.getSettings :31:43","~GroupSpacer :7987:28","~M :186:11","~FocusZone._evaluateFocusBeforeRender :405:63","~checkProperties :21:25","~Je :114:12","~ge :101:12","~Eg :163:273","~Wrapped._updateStyles :66:52","~xe :110:125","~_normalizeValue :108:25","~Ve :119:12","~DetailsRowBase._getSelectionState :10342:60","~getCellText :10061:28","~appendFunction :7:24","~f :138:420","~se :109:12","~ne :105:284","~_normalizeArg :100:23","~Mf :148:385","~EventGroup :19:24","~useRef :23:254","(lib) C:\\WINDOWS\\SYSTEM32\\ntdll.dll","~Fi :250:12","~exports.unstable_runWithPriority :18:42","~(anonymous) :250:265","~Zh :219:12","~Uh :215:12","~Th :214:12","~zh :209:12","~Vh :216:12","~(anonymous) :15:21","~(anonymous) :20:36","~FocusZone.componentDidMount :274:54","~FocusZone._updateTabIndexes :724:54","~getParent :11:19","~DetailsRowBase.componentDidMount :10178:59","~EventGroup.on :119:40","~DetailsRowBase._this._onRootRef :10133:37","~findDOMNode :266:45","~hd :72:122","~gd :71:12","~ed :70:275","~isElementTabbable :208:27","~FocusZone._getDocument :816:49","~getDocument :12:21","~isElementFocusZone :238:28","~_onMount :17:18","~_setComponentRef :30:26","~(anonymous) :10:88","~on :2:12"];
+levels = [[0,1,0,0,1408,6],[0,1,1,0,1,1,0,1407,7],[0,1,2,0,1,2,0,1407,8],[0,1,3,0,1,3,0,1407,9],[0,1,4,0,1,5,0,1407,10],[0,1,5,0,1,5,0,1407,11],[0,1,5,1,1,5,0,10,9,0,2,43,0,1,47,0,1393,48],[2,1,5,0,1,12,0,2,14,0,7,19,0,2,5,0,1,5,0,1393,49],[2,1,5,0,1,11,0,2,11,0,7,11,0,2,44,0,1,5,0,1393,50],[3,1,9,0,2,9,0,7,5,0,1,45,0,1,46,1,1393,51],[3,1,13,0,2,15,0,7,20,0,1,5,0,1,5,1,1393,52],[3,1,11,0,2,11,0,7,21,0,1,5,0,1,5,1,1393,53],[3,1,5,0,1,5,0,1,16,0,7,9,3,1393,54],[3,1,5,0,1,5,0,1,17,0,6,22,0,1,40,3,1393,55],[5,1,18,0,6,11,0,1,11,3,1393,56],[5,1,5,0,6,9,0,1,9,3,1393,57],[5,1,5,0,6,23,0,1,41,3,1393,58],[6,1,5,0,5,11,0,1,11,3,5,5,0,1248,59,0,140,149],[6,1,5,0,4,9,0,1,39,0,1,42,8,9,5,0,1239,60,0,140,150],[7,1,24,0,1,29,0,1,35,0,1,38,0,1,5,0,1,5,17,59,5,0,713,61,0,467,82,0,140,151],[7,1,11,0,1,11,0,1,11,0,1,5,0,1,5,77,45,5,0,106,62,0,298,69,0,165,76,0,74,89,0,13,107,0,2,115,0,3,128,0,2,131,0,5,135,0,224,5,0,6,6,0,122,83,0,14,98,0,33,99,0,27,103,0,3,106,0,8,110,0,16,116,0,4,122,0,2,132,0,3,133,0,3,142,0,2,145,0,140,152],[7,1,9,0,1,9,0,1,9,124,20,5,0,86,63,0,10,5,0,211,70,0,66,84,0,10,92,0,1,118,0,8,5,0,39,77,0,62,79,0,38,94,0,17,112,0,1,127,0,19,5,0,24,78,0,12,95,0,1,97,0,7,126,0,11,134,0,6,5,0,7,108,0,2,5,0,3,5,0,2,5,0,5,5,218,6,5,0,6,5,0,78,5,0,31,114,0,13,119,0,14,5,0,24,5,0,7,6,0,2,143,0,5,5,0,22,6,0,3,5,0,8,5,0,16,5,0,4,5,0,2,5,0,3,5,0,3,5,0,2,5,0,2,5,0,1,153,0,3,154,0,134,156],[7,1,25,0,1,30,0,1,36,144,23,5,0,33,64,0,30,66,9,1,5,0,11,5,0,36,62,0,87,71,0,62,111,0,3,120,0,12,123,0,15,5,0,21,85,0,16,90,0,12,101,0,2,118,0,9,5,0,1,131,0,1,5,8,10,5,0,7,78,0,7,81,0,12,86,0,3,109,0,61,5,0,1,147,0,9,5,0,13,72,0,5,78,0,2,81,0,6,95,0,3,117,0,1,5,0,12,72,0,4,78,0,1,5,16,3,5,0,24,5,0,12,5,0,1,5,0,7,5,0,11,5,6,6,5,0,1,132,309,11,5,0,14,5,0,17,125,0,13,5,10,4,5,15,9,5,0,7,5,0,2,5,5,22,5,20,7,5,16,1,5,0,2,5,0,1,155,0,8,5,0,122,157,0,4,164],[7,1,11,0,1,11,0,1,11,167,6,5,0,26,65,0,1,141,0,4,5,0,22,67,0,4,137,21,36,63,0,19,5,0,19,72,0,25,78,0,14,86,0,7,96,0,1,97,0,2,121,0,20,5,0,27,78,0,3,81,0,9,86,0,3,129,0,3,5,0,6,5,0,6,78,15,3,5,0,13,104,0,2,124,0,2,138,0,1,146,0,4,5,0,2,91,0,8,104,0,2,124,0,7,5,0,1,102,0,4,124,0,2,5,9,1,5,19,7,5,0,7,5,0,2,5,0,10,87,0,1,5,0,2,144,5,5,5,0,51,80,0,1,5,9,13,100,0,5,5,0,2,5,0,6,5,0,2,5,0,1,109,1,4,5,0,8,100,0,4,5,51,5,5,13,5,5,0,1,148,12,1,5,334,17,5,50,1,5,56,7,5,19,1,5,8,122,5,0,2,5,0,2,165],[7,1,9,0,1,9,0,1,9,173,6,5,0,19,66,0,1,93,0,1,5,4,13,5,0,9,68,0,4,5,21,13,5,0,23,66,18,1,5,0,4,5,0,1,73,0,14,100,0,25,5,0,1,5,0,13,87,0,3,5,0,4,78,0,1,5,0,1,5,0,1,130,8,12,5,0,27,5,0,3,5,0,1,5,0,8,87,0,2,5,0,1,6,9,6,5,17,1,5,0,2,5,0,11,105,0,2,5,0,2,5,0,1,5,3,1,5,0,2,5,0,3,5,0,5,105,0,2,5,1,6,5,0,1,5,0,4,5,44,1,5,2,6,5,0,4,88,1,2,5,10,17,5,0,14,78,0,18,81,0,2,139,10,8,5,0,5,113,12,1,5,2,1,5,5,4,5,0,4,113,586,121,158,2,2,166],[7,1,26,0,1,31,0,1,37,179,6,5,0,12,67,0,1,137,0,1,5,18,9,5,38,6,5,0,17,67,23,1,74,0,8,5,0,6,113,26,2,5,0,11,88,2,1,5,0,4,5,2,1,5,9,11,5,16,11,5,0,3,5,1,6,5,0,2,88,2,1,5,35,11,5,10,1,5,3,1,5,0,4,140,67,4,5,25,5,5,0,14,5,0,18,5,0,2,5,18,3,5,0,2,136,25,2,5,0,2,136,586,1,5,0,109,159,0,8,162,0,3,173,2,2,167],[7,1,11,0,1,11,0,1,5,185,4,5,0,8,68,0,1,5,72,5,5,0,12,68,23,1,75,8,5,5,0,1,136,28,11,5,67,2,5,64,4,5,69,2,5,60,2,5,22,1,5,0,2,5,26,1,5,0,2,5,587,8,5,0,3,6,0,92,160,0,2,161,0,3,170,0,1,176,0,3,5,0,5,163,0,2,5,0,1,174,2,2,168],[7,1,9,0,1,9,0,1,5,189,8,5,78,12,5,23,1,75,11,2,5,0,1,5,36,3,5,68,1,5,846,4,5,0,3,5,0,11,5,0,6,6,0,69,160,0,4,169,0,1,172,0,1,175,0,2,5,0,1,5,0,2,171,0,1,5,3,5,5,2,1,5,2,2,5],[7,1,27,0,1,32,311,1,5,12,1,5,957,2,5,11,3,5,0,6,5,0,8,5,0,8,6,0,36,160,0,12,169,0,5,172,0,4,5,0,1,5,0,1,5,3,2,5,0,1,5,7,1,5],[7,1,11,0,1,11,1312,8,5,0,2,5,0,9,6,0,24,160,0,1,169,0,11,5,0,1,6,0,5,5,3,1,5,0,1,5],[7,1,28,0,1,9,1322,9,5,0,4,5,0,6,6,0,9,160,0,1,169,0,4,172,0,1,5,10,1,5,0,1,5,3,2,5],[7,1,5,0,1,33,1334,1,5,0,6,5,0,9,6,0,1,5,0,4,5],[7,1,5,0,1,11,1341,9,5,4,1,5],[8,1,34],[8,1,5]];
+numTicks = 1409;
+
+
+let rangeMin = 0;
+let rangeMax = 1;
+let topLevel = 0;
+let query = '';
+let showFramework = false;
+let showSystem = false;
+let graphWidth, pxPerTick;
+
+const pxPerLevel = 18;
+const collapseThreshold = 1;
+const hideThreshold = 0.5;
+const labelThreshold = 20;
+
+let numTopLevelTicks = numTicks;
+
+highlightEl.style.height = pxPerLevel + 'px';
+
+if (levels) {
+  init();
+}
+
+function init() {
+  document.body.classList.add('loaded');
+
+  // delta-decode bar positions
+  for (const level of levels) {
+    let prev = 0;
+    for (let i = 0; i < level.length; i += 3) {
+      level[i] += prev;
+      prev = level[i] + level[i + 1];
+    }
+  }
+
+  updateFromHash();
+  render();
+}
+
+window.onhashchange = () => {
+  updateFromHash();
+  render();
+};
+canvas.onclick = e => {
+  const { i, j } = xyToBar(e.offsetX, e.offsetY);
+  if (j === -1) return;
+  window.location.hash = [i, j].join(',');
+  removeHover();
+};
+document.getElementById('reset').onclick = () => {
+  searchEl.value = query = '';
+  window.location.hash = '';
+  render();
+};
+window.onresize = render;
+
+searchEl.oninput = e => {
+  query = e.target.value;
+  render();
+};
+
+frameworkEl.onchange = e => {
+  showFramework = frameworkEl.checked;
+  render();
+};
+
+systemEl.onchange = e => {
+  showSystem = systemEl.checked;
+  render();
+};
+
+function updateFromHash() {
+  const [i, j] = window.location.hash
+    .substr(1)
+    .split(',')
+    .map(Number);
+
+  if (!isNaN(i) && !isNaN(j)) {
+    topLevel = i;
+    numTopLevelTicks = levels[i][j + 1];
+    rangeMin = levels[i][j] / numTicks;
+    rangeMax = (levels[i][j] + levels[i][j + 1]) / numTicks;
+  } else {
+    topLevel = 0;
+    numTopLevelTicks = numTicks;
+    rangeMin = 0;
+    rangeMax = 1;
+  }
+}
+
+function tickToX(i) {
+  return (i - numTicks * rangeMin) * pxPerTick;
+}
+
+function render() {
+  if (!levels) return;
+
+  graphWidth = canvas.width = canvas.clientWidth;
+  canvas.height = pxPerLevel * (levels.length - topLevel);
+  canvas.style.height = canvas.height + 'px';
+
+  if (devicePixelRatio > 1) {
+    canvas.width *= 2;
+    canvas.height *= 2;
+    ctx.scale(2, 2);
+  }
+
+  pxPerTick = graphWidth / numTicks / (rangeMax - rangeMin);
+
+  ctx.textBaseline = 'middle';
+  ctx.font = '10px Tahoma, sans-serif';
+  ctx.strokeStyle = 'white';
+
+  for (let i = 0; i < levels.length - topLevel; i++) {
+    const level = levels[topLevel + i];
+
+    for (let j = 0; j < level.length; j += 3) {
+      const barIndex = level[j];
+      const x = tickToX(barIndex);
+      const y = i * pxPerLevel;
+      let numBarTicks = level[j + 1];
+
+      const inQuery = (query && names[level[j + 2]].indexOf(query) >= 0) || false;
+
+      // merge very small blocks into big "collapsed" ones for performance
+      // const collapsed = numBarTicks * pxPerTick <= collapseThreshold;
+      const collapsed = (!showFramework && isFrameworkName(names[level[j + 2]])) || (!showSystem && isSystemName(names[level[j + 2]]));
+      if (collapsed) {
+        while (
+          j < level.length - 3 &&
+          barIndex + numBarTicks === level[j + 3] &&
+          level[j + 4] * pxPerTick <= collapseThreshold &&
+          inQuery === ((query && names[level[j + 5]].indexOf(query) >= 0) || false)
+        ) {
+          j += 3;
+          numBarTicks += level[j + 1];
+        }
+      }
+
+      const sw = numBarTicks * pxPerTick - (collapsed ? 0 : 0.5);
+      const sh = pxPerLevel - 0.5;
+
+      if (x < -1 || x + sw > graphWidth + 1 || sw < hideThreshold) continue;
+
+      ctx.beginPath();
+      ctx.rect(x, y, sw, sh);
+
+      const ratio = numBarTicks / numTopLevelTicks;
+
+      if (!collapsed) {
+        ctx.stroke();
+        const intensity = Math.min(1, (ratio * Math.pow(1.16, i)) / (rangeMax - rangeMin));
+        const h = 50 - 50 * intensity;
+        const l = 65 + 7 * intensity;
+        ctx.fillStyle = inQuery ? 'lightgreen' : `hsl(${h}, 100%, ${l}%)`;
+      } else {
+        ctx.fillStyle = inQuery ? 'lightgreen' : '#eee';
+      }
+      ctx.fill();
+
+      if (!collapsed && sw >= labelThreshold) {
+        const percent = Math.round(10000 * ratio) / 100;
+        const name = `${names[level[j + 2]]} (${percent}%, ${numBarTicks} samples)`;
+
+        ctx.save();
+        ctx.clip();
+        ctx.fillStyle = 'black';
+        ctx.fillText(name, Math.max(x, 0) + 1, y + sh / 2);
+        ctx.restore();
+      }
+    }
+  }
+}
+
+// pixel coordinates to bar coordinates in the levels array
+function xyToBar(x, y) {
+  const i = Math.floor(y / pxPerLevel) + topLevel;
+  const j = binarySearchLevel(x, levels[i]);
+  return { i, j };
+}
+
+// binary search of a block in a stack level
+function binarySearchLevel(x, level) {
+  let i = 0;
+  let j = level.length - 3;
+  while (i <= j) {
+    const m = 3 * ((i / 3 + j / 3) >> 1);
+    const x0 = tickToX(level[m]);
+    const x1 = tickToX(level[m] + level[m + 1]);
+    if (x0 <= x && x1 >= x) {
+      return x1 - x0 > collapseThreshold ? m : -1;
+    }
+    if (x0 > x) {
+      j = m - 3;
+    } else {
+      i = m + 3;
+    }
+  }
+  return -1;
+}
+
+if (window.orientation === undefined) {
+  canvas.onmousemove = addHover;
+  canvas.onmouseout = window.onscroll = removeHover;
+}
+
+function removeHover() {
+  canvas.style.cursor = '';
+  highlightEl.style.display = 'none';
+  tooltipEl.style.display = 'none';
+}
+
+function addHover(e) {
+  const { i, j } = xyToBar(e.offsetX, e.offsetY);
+
+  if (j === -1 || e.offsetX < 0 || e.offsetX > graphWidth) {
+    removeHover();
+    return;
+  }
+
+  canvas.style.cursor = 'pointer';
+
+  const level = levels[i];
+  const x = tickToX(level[j]);
+  const y = (i - topLevel) * pxPerLevel;
+  const sw = tickToX(level[j] + level[j + 1]) - x;
+
+  highlightEl.style.display = 'block';
+  highlightEl.style.left = x + 'px';
+  highlightEl.style.top = canvas.offsetTop + y + 'px';
+  highlightEl.style.width = sw + 'px';
+
+  const numBarTicks = level[j + 1];
+  const percent = Math.round((10000 * numBarTicks) / numTopLevelTicks) / 100;
+  const time = `<span class="time">(${percent}%, ${numBarTicks} samples)</span>`;
+  let content = names[level[j + 2]];
+  if (content[0] !== '(') content = content.replace(' ', ` ${time}<br><span class="path">`) + '</span>';
+  else content += ` ${time}`;
+
+  tooltipEl.innerHTML = content;
+  tooltipEl.style.display = 'block';
+  tooltipEl.style.left = Math.min(e.offsetX + 15 + tooltipEl.clientWidth, graphWidth) - tooltipEl.clientWidth + 'px';
+  tooltipEl.style.top = canvas.offsetTop + e.offsetY + 12 + 'px';
+}
+
+// (function frame() { if (levels) render(); requestAnimationFrame(frame); })();
+
+
+</script>
+  </body>
+</html>

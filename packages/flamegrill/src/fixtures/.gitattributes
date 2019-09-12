@@ -1,0 +1,3 @@
+# CR -> CRLF conversion will break tickprocessor, so prevent profiles from having their line endings changed.
+# Also prevent CRLF conversion on snapshot files for easier comparison.
+* -text

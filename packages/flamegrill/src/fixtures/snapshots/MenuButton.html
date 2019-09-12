@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>flamebearer</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <style>
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        font: 16px 'Helvetica Neue', sans-serif;
+        margin: 0;
+      }
+
+      body.hover {
+        background: #cfc;
+      }
+
+      h1 {
+        font-size: 30px;
+        margin: 30px 30px 15px;
+      }
+
+      h1 a {
+        color: black;
+        text-decoration: none;
+      }
+
+      h1 a:hover {
+        text-decoration: underline;
+      }
+
+      #fire-icon {
+        fill: #f53;
+        width: 26px;
+        height: 26px;
+        vertical-align: -1px;
+      }
+
+      #intro {
+        margin: 0 30px;
+      }
+
+      code {
+        font-size: 13px;
+        color: #444;
+      }
+
+      code span {
+        color: #aaa;
+      }
+
+      #canvas {
+        width: 100%;
+      }
+
+      #controls {
+        display: none;
+      }
+
+      #search {
+        margin-right: 10px;
+      }
+
+      label {
+        font-size: 14px;
+      }
+
+      #highlight {
+        position: absolute;
+        pointer-events: none;
+        background: #ffffff40;
+      }
+
+      .loaded #intro {
+        display: none;
+      }
+
+      .loaded #header {
+        display: flex;
+        align-items: center;
+        flex-flow: row wrap;
+        padding: 7px 10px;
+      }
+
+      .loaded h1 {
+        font-size: 22px;
+        margin: 0 auto 0 0;
+        flex-shrink: 0;
+      }
+
+      .loaded #fire-icon {
+        width: 20px;
+        height: 20px;
+      }
+
+      .loaded #controls {
+        display: block;
+        flex-shrink: 0;
+      }
+
+      #tooltip {
+        position: absolute;
+        pointer-events: none;
+        background: #ffffff;
+        white-space: nowrap;
+        box-shadow: 1px 2px 4px 0px rgba(0, 0, 0, 0.3);
+        border-radius: 2px;
+        padding: 3px 5px;
+        font: 12px Tahoma, sans-serif;
+        display: none;
+      }
+
+      #tooltip .path {
+        color: #888;
+        font-size: 11px;
+      }
+
+      #tooltip .time {
+        color: #4a4;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="header">
+      <h1>
+        <svg
+          id="fire-icon"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          viewBox="0 0 15 15"
+          style="enable-background:new 0 0 15 15;"
+          xml:space="preserve"
+        >
+          <path
+            d="M7.5,0.5L5,4.5l-1.5-2 C2.9452,3.4753,0.8036,5.7924,0.8036,8.3036C0.8036,12.002,3.8017,15,7.5,15s6.6964-2.998,6.6964-6.6964 c0-2.5112-2.1416-4.8283-2.6964-5.8036l-1.5,2L7.5,0.5z M7.5,7c0,0,2.5,2.5618,2.5,4.5c0,0.8371-0.8259,2-2.5,2S5,12.3371,5,11.5 C5,9.6283,7.5,7,7.5,7z"
+          />
+        </svg>
+        <a href="https://github.com/mapbox/flamebearer">flamebearer</a>
+      </h1>
+      <div id="controls">
+        <input id="search" placeholder="Search..." />
+        <button id="reset">Reset view</button><br />
+        <input id="framework" type="checkbox" /><label for="framework">Include Framework</label><br />
+        <input id="system" type="checkbox" /><label for="system">Include System</label>
+      </div>
+    </div>
+    <div id="highlight"></div>
+    <div id="tooltip"></div>
+    <div id="intro">
+      <!--  -->
+    </div>
+    <canvas id="canvas" height="0"></canvas>
+
+    <!--  -->
+    <script>const frameworkName = /~([a-zA-Z]{1,2}|[a-zA-Z]{1}\.[a-zA-Z]{1})[\. ]|~render |~\(anonymous\)|\(unknown\)|\~webpack/;
+const systemName = /\(C\+\+\)|\(lib\)/;
+
+function isFrameworkName(name) {
+  return frameworkName.test(name);
+}
+
+function isSystemName(name) {
+  return systemName.test(name);
+}
+
+
+'use strict';
+
+const introEl = document.getElementById('intro');
+const searchEl = document.getElementById('search');
+const highlightEl = document.getElementById('highlight');
+const tooltipEl = document.getElementById('tooltip');
+const frameworkEl = document.getElementById('framework');
+const systemEl = document.getElementById('system');
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+let names, levels, numTicks;
+
+names = ["(unknown)","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:1","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:10","~r file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:33","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3483322","~(anonymous) :1:1","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3088650","(lib) C:\\git\\oufr-jg\\node_modules\\puppeteer\\.local-chromium\\win64-672088\\chrome-win\\chrome_child.dll","(unknown)","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:46613","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:1873904","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3061894","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:2066509","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3611635","~(anonymous) :4:36","~webpackContext :26:24","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3613606","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:201883","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3206343","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:2126512","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:2088439","~loadStyles :72:20","~measure :35:17","~(anonymous) :74:22","~applyThemableStyles :138:29","~registerStyles :281:24","~(anonymous) :20377:64","~__extends :44:19","~__ :46:16","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:2586697","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3435617","~keyframes :11:19","~Stylesheet.insertRule :129:48","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:12102","~r.d file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:181","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3614036","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:2161985","~(anonymous) file:///C:/git/oufr-jg/apps/perf-test/dist/perf-test.js:1:3617592","~lib_initializeIcons :2289:29","~(anonymous) :2291:624","~fabric_icons_15_initializeIcons :1951:41","~registerIcons :94:23","~render :266:336","~Si :264:12","~Hi :251:12","~(anonymous) :264:339","~Pi.render :261:29","~Ki :253:42","~Ji :252:12","~qf :243:12","~Xh :245:83","~Yh :248:12","~Di :249:12","~ci :233:12","~bi :232:12","~Tg :177:12","~S :164:45","~(anonymous) :145:114","~v :142:337","~p :140:224","~Ye :122:12","~K :118:419","~Ue :118:12","~Og :167:12","~vf :132:12","~DefaultButton :67:27","~BaseComponent :70:27","~_makeAllSafe :252:22","~_makeSafe :257:19","~BaseButton :102:24","~Qg :173:12","~ComponentWithInjectedProps.render :39:72","~M :15:11","~obj.<computed> :264:36","~BaseButton.render :387:44","~BaseButton._onRenderContent :496:54","~Button :505:31","~ai :222:12","~hg :150:12","~FontIcon :34:25","~getNativeProps :393:24","~filteredAssign :70:24","~css :7:13","~assign :50:16","~(anonymous) :41:183","~BaseButton._this._onRenderTextContents :127:48","~DefaultButton.render :75:47","~(anonymous) :398:92","~qe :107:12","~tc :55:12","~memoizedFunction :73:37","~xe :110:125","~BaseComponent._warnConditionallyRequiredProps :230:72","~get :116:23","~BaseButton._this._onRenderText :136:40","~se :109:12","~qc :49:12","~ke :103:12","~we :110:12","~Customizations.getSettings :31:43","~c :138:170","~Eg :163:273","~Lf :148:288","~getId :98:15","~Ng :166:128","~Cg :163:12","~Af :136:12","~re :108:12","~E :13:11","~Ig :185:375","~If :147:394","~pc :48:127","~Id :87:12","~initializeFocusRects :22:30","~J :114:349","~BaseButton._this._onRenderMenuIcon :169:44","~(anonymous) :2:88","~oc :48:12","~Mf :148:385","~BaseButton._this._onRenderAriaDescription :163:51","~lh :194:140","~ComponentWithInjectedProps :28:52","(lib) C:\\WINDOWS\\SYSTEM32\\ntdll.dll","~ge :101:12","~xf :134:12","~_normalizeArg :100:23","~he :101:184","~initializeDir :31:23","~getWindow :22:19","~Fi :250:12","~exports.unstable_runWithPriority :18:42","~(anonymous) :250:265","~Zh :219:12","~Uh :215:12","~Th :214:12","~Vh :216:12"];
+levels = [[0,1,0,0,646,8],[0,1,1,0,646,1],[0,1,2,0,646,2],[0,1,3,0,646,3],[0,1,4,0,646,4],[0,1,5,0,646,5],[0,1,3,0,15,3,0,1,7,0,1,38,0,629,42],[0,1,6,0,2,6,0,13,13,1,1,7,0,629,43],[0,1,7,0,2,5,0,13,5,1,1,39,0,629,44],[0,1,7,0,2,3,0,13,7,1,1,40,0,629,45],[1,2,9,0,13,14,1,1,41,0,629,46],[1,2,5,0,13,15,1,1,7,0,629,47],[1,1,3,0,1,7,0,13,3,2,629,48],[1,1,10,0,1,7,0,11,16,0,1,35,0,1,37,2,629,49],[1,1,5,1,11,5,0,1,5,0,1,5,2,629,50],[1,1,3,1,11,3,0,1,3,0,1,7,2,629,51],[1,1,11,1,11,17,0,1,36,3,629,52],[1,1,5,1,9,5,0,2,7,0,1,5,3,1,7,0,620,53,0,8,129],[1,1,3,1,4,3,0,1,7,0,2,21,0,1,26,0,1,34,0,2,7,0,1,21,4,2,7,0,618,54,0,8,130],[1,1,12,1,1,18,0,2,29,0,1,33,1,2,22,0,1,27,0,1,7,2,1,22,6,21,7,0,416,55,0,181,77,0,8,131],[1,1,7,1,1,5,0,1,5,0,1,7,0,1,7,1,2,23,0,1,28,0,1,7,2,1,23,26,1,7,0,19,7,0,40,56,0,272,63,0,34,78,0,31,84,0,8,91,0,8,102,0,1,105,0,3,109,0,91,7,0,8,8,0,9,88,0,39,89,0,11,95,0,9,97,0,2,98,0,1,101,0,5,107,0,1,110,0,1,118,0,3,120,0,1,123,0,8,132],[3,1,3,0,1,3,1,1,7,1,2,24,0,1,7,3,1,24,46,5,7,0,35,57,0,6,7,0,72,64,0,189,70,0,2,109,0,3,124,0,2,7,0,32,79,0,9,7,0,10,72,0,11,99,0,1,116,0,8,7,0,5,7,0,1,110,0,2,126,0,1,7,0,3,7,89,2,7,0,7,7,0,1,122,0,9,7,0,27,7,0,11,96,0,1,117,0,6,7,0,1,8,0,4,112,0,1,7,0,8,8,0,2,7,0,1,7,0,5,7,0,1,7,0,1,7,0,3,7,0,1,7,0,1,7,0,1,133,0,2,134,0,4,135],[3,1,19,0,1,30,3,1,7,0,1,25,0,1,7,3,1,7,51,15,7,0,13,58,0,5,60,0,1,100,0,1,106,6,11,7,0,21,65,0,38,69,0,1,114,0,1,121,0,8,7,0,17,56,0,5,71,0,158,73,0,1,104,0,2,7,0,3,7,2,7,7,0,5,72,0,5,80,0,9,82,0,6,90,6,3,7,0,10,7,0,11,7,0,1,7,13,1,7,0,2,7,134,5,7,0,3,7,0,8,111,0,1,7,6,1,7,0,4,7,1,8,7,7,1,7,7,1,7,0,2,7,0,4,7],[3,1,5,0,1,5,4,1,7,71,4,7,0,9,59,0,1,7,0,4,61,0,1,7,0,1,7,17,2,7,0,19,66,0,16,7,0,9,66,0,9,92,0,4,103,0,1,7,0,1,108,8,17,57,0,1,7,0,4,72,0,3,7,0,136,74,0,19,86,0,1,7,12,2,7,0,5,7,0,5,81,0,9,7,0,5,7,0,1,125,189,8,7,28,1,7],[3,1,3,0,1,31,4,1,7,75,2,7,0,6,60,0,1,106,1,1,7,0,3,62,21,3,7,0,14,67,0,2,108,6,10,7,0,2,7,0,4,67,0,1,108,0,1,113,0,1,127,0,2,7,0,7,93,0,4,7,1,1,7,8,5,7,0,10,60,0,2,106,1,4,7,3,17,7,0,46,75,0,28,80,0,32,83,0,13,90,0,8,7,0,8,72,0,3,90,20,1,7,0,4,87,7,2,7,5,1,7,196,1,7],[3,1,20,0,1,32,82,6,61,0,1,7,2,3,7,24,2,7,0,12,68,0,2,7,18,2,7,0,2,68,0,1,7,0,1,7,0,1,128,2,7,7,3,1,7,15,4,7,0,6,61,0,2,7,25,46,76,0,2,7,0,26,81,0,17,7,0,15,81,0,13,7,5,3,7,0,8,7,0,2,7,0,1,125,21,4,7],[3,1,7,0,1,8,82,2,7,0,4,62,32,12,7,22,2,7,2,1,7,7,2,7,23,1,7,0,5,62,27,8,7,0,18,72,0,17,85,0,1,115,0,2,119,2,15,7,0,11,87,12,5,7,0,15,7,12,1,7,18,1,7,23,2,7],[3,1,7,0,1,7,84,4,7,37,7,7,23,1,7,10,2,7,24,5,7,31,4,7,0,18,7,0,2,7,0,7,72,0,8,94,0,1,72,0,2,7,17,11,7],[257,7,7,0,8,72,0,1,7,26,4,7],[264,8,7]];
+numTicks = 647;
+
+
+let rangeMin = 0;
+let rangeMax = 1;
+let topLevel = 0;
+let query = '';
+let showFramework = false;
+let showSystem = false;
+let graphWidth, pxPerTick;
+
+const pxPerLevel = 18;
+const collapseThreshold = 1;
+const hideThreshold = 0.5;
+const labelThreshold = 20;
+
+let numTopLevelTicks = numTicks;
+
+highlightEl.style.height = pxPerLevel + 'px';
+
+if (levels) {
+  init();
+}
+
+function init() {
+  document.body.classList.add('loaded');
+
+  // delta-decode bar positions
+  for (const level of levels) {
+    let prev = 0;
+    for (let i = 0; i < level.length; i += 3) {
+      level[i] += prev;
+      prev = level[i] + level[i + 1];
+    }
+  }
+
+  updateFromHash();
+  render();
+}
+
+window.onhashchange = () => {
+  updateFromHash();
+  render();
+};
+canvas.onclick = e => {
+  const { i, j } = xyToBar(e.offsetX, e.offsetY);
+  if (j === -1) return;
+  window.location.hash = [i, j].join(',');
+  removeHover();
+};
+document.getElementById('reset').onclick = () => {
+  searchEl.value = query = '';
+  window.location.hash = '';
+  render();
+};
+window.onresize = render;
+
+searchEl.oninput = e => {
+  query = e.target.value;
+  render();
+};
+
+frameworkEl.onchange = e => {
+  showFramework = frameworkEl.checked;
+  render();
+};
+
+systemEl.onchange = e => {
+  showSystem = systemEl.checked;
+  render();
+};
+
+function updateFromHash() {
+  const [i, j] = window.location.hash
+    .substr(1)
+    .split(',')
+    .map(Number);
+
+  if (!isNaN(i) && !isNaN(j)) {
+    topLevel = i;
+    numTopLevelTicks = levels[i][j + 1];
+    rangeMin = levels[i][j] / numTicks;
+    rangeMax = (levels[i][j] + levels[i][j + 1]) / numTicks;
+  } else {
+    topLevel = 0;
+    numTopLevelTicks = numTicks;
+    rangeMin = 0;
+    rangeMax = 1;
+  }
+}
+
+function tickToX(i) {
+  return (i - numTicks * rangeMin) * pxPerTick;
+}
+
+function render() {
+  if (!levels) return;
+
+  graphWidth = canvas.width = canvas.clientWidth;
+  canvas.height = pxPerLevel * (levels.length - topLevel);
+  canvas.style.height = canvas.height + 'px';
+
+  if (devicePixelRatio > 1) {
+    canvas.width *= 2;
+    canvas.height *= 2;
+    ctx.scale(2, 2);
+  }
+
+  pxPerTick = graphWidth / numTicks / (rangeMax - rangeMin);
+
+  ctx.textBaseline = 'middle';
+  ctx.font = '10px Tahoma, sans-serif';
+  ctx.strokeStyle = 'white';
+
+  for (let i = 0; i < levels.length - topLevel; i++) {
+    const level = levels[topLevel + i];
+
+    for (let j = 0; j < level.length; j += 3) {
+      const barIndex = level[j];
+      const x = tickToX(barIndex);
+      const y = i * pxPerLevel;
+      let numBarTicks = level[j + 1];
+
+      const inQuery = (query && names[level[j + 2]].indexOf(query) >= 0) || false;
+
+      // merge very small blocks into big "collapsed" ones for performance
+      // const collapsed = numBarTicks * pxPerTick <= collapseThreshold;
+      const collapsed = (!showFramework && isFrameworkName(names[level[j + 2]])) || (!showSystem && isSystemName(names[level[j + 2]]));
+      if (collapsed) {
+        while (
+          j < level.length - 3 &&
+          barIndex + numBarTicks === level[j + 3] &&
+          level[j + 4] * pxPerTick <= collapseThreshold &&
+          inQuery === ((query && names[level[j + 5]].indexOf(query) >= 0) || false)
+        ) {
+          j += 3;
+          numBarTicks += level[j + 1];
+        }
+      }
+
+      const sw = numBarTicks * pxPerTick - (collapsed ? 0 : 0.5);
+      const sh = pxPerLevel - 0.5;
+
+      if (x < -1 || x + sw > graphWidth + 1 || sw < hideThreshold) continue;
+
+      ctx.beginPath();
+      ctx.rect(x, y, sw, sh);
+
+      const ratio = numBarTicks / numTopLevelTicks;
+
+      if (!collapsed) {
+        ctx.stroke();
+        const intensity = Math.min(1, (ratio * Math.pow(1.16, i)) / (rangeMax - rangeMin));
+        const h = 50 - 50 * intensity;
+        const l = 65 + 7 * intensity;
+        ctx.fillStyle = inQuery ? 'lightgreen' : `hsl(${h}, 100%, ${l}%)`;
+      } else {
+        ctx.fillStyle = inQuery ? 'lightgreen' : '#eee';
+      }
+      ctx.fill();
+
+      if (!collapsed && sw >= labelThreshold) {
+        const percent = Math.round(10000 * ratio) / 100;
+        const name = `${names[level[j + 2]]} (${percent}%, ${numBarTicks} samples)`;
+
+        ctx.save();
+        ctx.clip();
+        ctx.fillStyle = 'black';
+        ctx.fillText(name, Math.max(x, 0) + 1, y + sh / 2);
+        ctx.restore();
+      }
+    }
+  }
+}
+
+// pixel coordinates to bar coordinates in the levels array
+function xyToBar(x, y) {
+  const i = Math.floor(y / pxPerLevel) + topLevel;
+  const j = binarySearchLevel(x, levels[i]);
+  return { i, j };
+}
+
+// binary search of a block in a stack level
+function binarySearchLevel(x, level) {
+  let i = 0;
+  let j = level.length - 3;
+  while (i <= j) {
+    const m = 3 * ((i / 3 + j / 3) >> 1);
+    const x0 = tickToX(level[m]);
+    const x1 = tickToX(level[m] + level[m + 1]);
+    if (x0 <= x && x1 >= x) {
+      return x1 - x0 > collapseThreshold ? m : -1;
+    }
+    if (x0 > x) {
+      j = m - 3;
+    } else {
+      i = m + 3;
+    }
+  }
+  return -1;
+}
+
+if (window.orientation === undefined) {
+  canvas.onmousemove = addHover;
+  canvas.onmouseout = window.onscroll = removeHover;
+}
+
+function removeHover() {
+  canvas.style.cursor = '';
+  highlightEl.style.display = 'none';
+  tooltipEl.style.display = 'none';
+}
+
+function addHover(e) {
+  const { i, j } = xyToBar(e.offsetX, e.offsetY);
+
+  if (j === -1 || e.offsetX < 0 || e.offsetX > graphWidth) {
+    removeHover();
+    return;
+  }
+
+  canvas.style.cursor = 'pointer';
+
+  const level = levels[i];
+  const x = tickToX(level[j]);
+  const y = (i - topLevel) * pxPerLevel;
+  const sw = tickToX(level[j] + level[j + 1]) - x;
+
+  highlightEl.style.display = 'block';
+  highlightEl.style.left = x + 'px';
+  highlightEl.style.top = canvas.offsetTop + y + 'px';
+  highlightEl.style.width = sw + 'px';
+
+  const numBarTicks = level[j + 1];
+  const percent = Math.round((10000 * numBarTicks) / numTopLevelTicks) / 100;
+  const time = `<span class="time">(${percent}%, ${numBarTicks} samples)</span>`;
+  let content = names[level[j + 2]];
+  if (content[0] !== '(') content = content.replace(' ', ` ${time}<br><span class="path">`) + '</span>';
+  else content += ` ${time}`;
+
+  tooltipEl.innerHTML = content;
+  tooltipEl.style.display = 'block';
+  tooltipEl.style.left = Math.min(e.offsetX + 15 + tooltipEl.clientWidth, graphWidth) - tooltipEl.clientWidth + 'px';
+  tooltipEl.style.top = canvas.offsetTop + e.offsetY + 12 + 'px';
+}
+
+// (function frame() { if (levels) render(); requestAnimationFrame(frame); })();
+
+
+</script>
+  </body>
+</html>

@@ -1,4 +1,4 @@
-import { checkForRegressions, FunctionData, __unitTestHooks } from '../processData';
+import { FunctionData, __unitTestHooks } from '../processData';
 
 const { filterMinifiedNames, filterSystemNames } = __unitTestHooks;
 

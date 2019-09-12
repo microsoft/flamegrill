@@ -1,0 +1,9 @@
+Results for DetailsRow_ref.data.js => DetailsRow.data.js
+
+numTicks: 1471 => 2750
+
+Potential Regressions: 
+ ~DetailsRowBase.render, time consumed: 7% => 30% 
+ ~getClassNames, time consumed: 1% => 15% 
+ ~mergeStyleSets, time consumed: 0% => 37% 
+ ~styleToRegistration, time consumed: 0% => 27% 

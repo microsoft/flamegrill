@@ -1,0 +1,11 @@
+Results for DetailsRowNoStyles_ref.data.js => DetailsRowNoStyles.data.js
+
+numTicks: 1466 => 1948
+
+Potential Regressions: 
+ ~CheckBase, time consumed: 1% => 15% 
+ ~DetailsRowCheckBase, time consumed: 3% => 14% 
+
+New Functions: 
+ ~mergeStyleSets, time consumed = 23%
+ ~styleToRegistration, time consumed = 17%
