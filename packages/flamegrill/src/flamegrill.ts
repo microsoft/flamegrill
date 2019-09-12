@@ -111,6 +111,7 @@ export async function cook(scenarios: Scenario[], config: ScenarioConfig): Promi
 
   // Serialize a bunch of async generation of flamegraphs
   // TODO: need an API story here. how will users get output? data structures? files? both?
+  // TODO: break out as separate module reusable by tests.
   for (const scenario of scenarios) {
     const result = perfTests[scenario.name];
     const analysis: Analysis = {};

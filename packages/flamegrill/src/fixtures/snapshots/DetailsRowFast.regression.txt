@@ -1,4 +1,4 @@
-Results for C:\git\oufr-jg\apps\perf-test\dist\DetailsRowFast_ref.data.js => C:\git\oufr-jg\apps\perf-test\dist\DetailsRowFast.data.js
+Results for DetailsRowFast_ref.data.js => DetailsRowFast.data.js
 
 numTicks: 1409 => 2695
 

@@ -3,6 +3,7 @@ import path from 'path';
 import * as tmp from 'tmp';
 
 import { generateFlamegraph } from '../flamegraph/generate';
+import { checkForRegressions } from '../analysis/processData';
 
 const profiles = require('../fixtures/profiles.json');
 const snapshotsDir = path.join(__dirname, '../fixtures/snapshots');
@@ -15,7 +16,7 @@ describe('process', () => {
   it('generates expected output', async () => {
     jest.setTimeout(30000);
     
-    expect.assertions(84);
+    expect.assertions(89);
     
     const outdir = tmp.dirSync({ unsafeCleanup: true });
 
@@ -31,20 +32,29 @@ describe('process', () => {
       return generateFlamegraph(logfile, outfile)
     }));
 
+    Object.keys(profiles).forEach(key => {
+      // TODO: this code block is duplicating code in flamegrill.ts and should be removed as code is refactored.
+      let datafileBefore = path.join(outdir.name, key + '_ref.data.js');
+      let datafileAfter = path.join(outdir.name, key + '.data.js');
+      let regressionfile = path.join(outdir.name, key + '.regression.txt');
+
+      const analysis = checkForRegressions(datafileBefore, datafileAfter);
+
+      if(analysis.isRegression) {
+        fs.writeFileSync(regressionfile, analysis.summary);
+      }
+    });
+
     const snapshotFiles = fs.readdirSync(snapshotsDir);
     const testFiles = fs.readdirSync(outdir.name);
 
-    // TODO: re-enable once regression output is generated
-    // expect(snapshotFiles).toEqual(testFiles);
+    expect(testFiles).toEqual(snapshotFiles);
 
     testFiles.forEach(file => {
-      // Generated output uses just \n. Code committed in github also uses just \n.
-      // However, Windows clients can be configured to translate to \r\n while working, 
-      // so we must ignore line break types when comparing results.
-      const analysis = fs.readFileSync(path.join(snapshotsDir, file), 'utf8').split(/\r?\n/g);
-      const output = fs.readFileSync(path.join(outdir.name, file), 'utf8').split(/\r?\n/g);
+      const analysis = fs.readFileSync(path.join(snapshotsDir, file), 'utf8');
+      const output = fs.readFileSync(path.join(outdir.name, file), 'utf8');
 
-      expect(analysis).toEqual(output);
+      expect(output).toEqual(analysis);
     });
 
     outdir.removeCallback();

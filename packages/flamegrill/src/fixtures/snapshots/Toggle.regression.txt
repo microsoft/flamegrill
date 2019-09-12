@@ -1,4 +1,4 @@
-Results for C:\git\oufr-jg\apps\perf-test\dist\Toggle_ref.data.js => C:\git\oufr-jg\apps\perf-test\dist\Toggle.data.js
+Results for Toggle_ref.data.js => Toggle.data.js
 
 numTicks: 454 => 882
 

@@ -1,4 +1,4 @@
-Results for C:\git\oufr-jg\apps\perf-test\dist\DetailsRow_ref.data.js => C:\git\oufr-jg\apps\perf-test\dist\DetailsRow.data.js
+Results for DetailsRow_ref.data.js => DetailsRow.data.js
 
 numTicks: 1471 => 2750
 
