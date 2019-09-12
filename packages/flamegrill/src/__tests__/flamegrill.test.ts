@@ -51,8 +51,10 @@ describe('flamegrill', () => {
     expect(testFiles).toEqual(snapshotFiles);
 
     testFiles.forEach(file => {
-      const analysis = fs.readFileSync(path.join(snapshotsDir, file), 'utf8');
-      const output = fs.readFileSync(path.join(outdir.name, file), 'utf8');
+      // Some generated output creates files with \r\n. Some environments spit out \n.
+      // Ignore line break types when comparing results.
+      const analysis = fs.readFileSync(path.join(snapshotsDir, file), 'utf8').split(/\r?\n/g);
+      const output = fs.readFileSync(path.join(outdir.name, file), 'utf8').split(/\r?\n/g);
 
       expect(output).toEqual(analysis);
     });
