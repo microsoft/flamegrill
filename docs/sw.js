@@ -29,24 +29,24 @@ self.__precacheManifest = [
     "url": "webpack-runtime-2aaeb684eb65afdc696e.js"
   },
   {
-    "url": "commons.7be623a29cdf334e0cba.css"
+    "url": "commons.c4bc147484ae894cfd61.css"
   },
   {
-    "url": "commons-0c73a5835554a2afa88f.js"
+    "url": "commons-6bf3a616a14f08b7613c.js"
   },
   {
-    "url": "app-67f735f3285578579bf8.js"
+    "url": "app-e7ac0d706de3f09bace5.js"
   },
   {
     "url": "component---node-modules-gatsby-plugin-offline-app-shell-js-cd53c54590bb76bf5f3c.js"
   },
   {
     "url": "offline-plugin-app-shell-fallback/index.html",
-    "revision": "63c0effe46caec42c01c7ce8d92d7c35"
+    "revision": "b734c78a263afd13cbc9c621ea06e9b4"
   },
   {
     "url": "page-data/offline-plugin-app-shell-fallback/page-data.json",
-    "revision": "db688923bb06d863a4def58b214355c6"
+    "revision": "0c42f347ec06b32f5e6ff7f7b55906e0"
   },
   {
     "url": "manifest.webmanifest",
@@ -74,7 +74,7 @@ const navigationRoute = new NavigationRoute(async ({ event }) => {
   // Check for resources + the app bundle
   // The latter may not exist if the SW is updating to a new version
   const resources = await idbKeyval.get(`resources:${pathname}`)
-  if (!resources || !(await caches.match(`/flamegrill/app-67f735f3285578579bf8.js`))) {
+  if (!resources || !(await caches.match(`/flamegrill/app-e7ac0d706de3f09bace5.js`))) {
     return await fetch(event.request)
   }
 

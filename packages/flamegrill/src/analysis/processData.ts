@@ -140,7 +140,7 @@ export function checkForRegressions(datafileBefore: string, datafileAfter: strin
   summary += `numTicks: ${dataBefore.numTicks} => ${dataAfter.numTicks}\n\n`;
 
   if (regressions.length === 0 && newFunctions.length === 0) {
-    console.log('OK!');
+    summary += 'OK!';
   }
 
   if (regressions.length > 0) {

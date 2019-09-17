@@ -1,0 +1,8 @@
+{
+  "type": "patch",
+  "comment": "Fix regression ok reporting.",
+  "packageName": "flamegrill",
+  "email": "jagore@microsoft.com",
+  "commit": "541362b27f9c1fd6c68eaf65f1ff2c663f8b908a",
+  "date": "2019-09-17T20:55:41.161Z"
+}
