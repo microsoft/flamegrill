@@ -28,45 +28,6 @@ const Index = props => {
             <CtaButton to={'/getting-started'}>Getting Started</CtaButton>
           </Hero>
         </IndexHeadContainer>
-        <BodyContainer>
-          <FeatureRow>
-            <Feature>
-              <FaSync size="3rem" />
-              <h4>Synchronized in git and npm</h4>
-              keep your git and npm versions in sync in CI and local workflows
-            </Feature>
-            <Feature>
-              <FaRobot size="3rem" />
-              <h4>Automated Version Bumps</h4>
-              one command line to bump package(s) in your repo with semver
-            </Feature>
-          </FeatureRow>
-
-          <FeatureRow>
-            <Feature>
-              <FaNewspaper size="3rem" />
-              <h4>Generates Changelogs</h4>
-              same command will generate changelogs for your users
-            </Feature>
-            <Feature>
-              <DiGitBranch size="3rem" />
-              <h4>Single or Monorepo</h4>
-              compatible out of the box for single repo or monorepos
-            </Feature>
-          </FeatureRow>
-          <FeatureRow>
-            <Feature>
-              <FaCheckDouble size="3rem" />
-              <h4>Pre-Publish Validation Checks</h4>
-              double and triple check git repo and npm registry before publish
-            </Feature>
-            <Feature>
-              <FaTerminal size="3rem" />
-              <h4>Zero Config Versioning</h4>
-              no config is required to get started, do more in one line
-            </Feature>
-          </FeatureRow>
-        </BodyContainer>
         <FooterContainer>
           <div className="contributors">
             <div>
