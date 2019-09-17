@@ -65,7 +65,7 @@ This should generate `dist/index.html` which we will use in flamegrill.
 
 ## Run Flamegrill
 
-1. [Install Flamegrill](../installation)
+1. [Install Flamegrill](./installation)
 
 2. Create an Output Directory
 
