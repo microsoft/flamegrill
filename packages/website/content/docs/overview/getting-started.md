@@ -10,14 +10,14 @@ This example creates a basic app from scratch, adds an artificial bottleneck to 
 
 1. Create App
 
-In an empty directoryCreate a basic Fabric app using:
+Create a basic Fabric app using:
 
 `npm init uifabric`
 
 
 2. Create Sample Hotspot
 
-Open the In `src/App.tsx`, let's add an `IneffecientComponent`:
+In the app's `src/App.tsx` file, add an `InefficientComponent`:
 
 ```tsx
 const InefficientComponent: React.FunctionComponent = (props) => {
@@ -29,9 +29,9 @@ const InefficientComponent: React.FunctionComponent = (props) => {
 }
 ```
 
- 1. Add Hotspot to App
+3. Add Hotspot to App
 
-In the same `src/App.tsx`, let's use `InefficientComponent`:
+In the same `src/App.tsx` file, use `InefficientComponent`:
 
  ```tsx
  export const App: React.FunctionComponent = () => {
@@ -44,7 +44,7 @@ In the same `src/App.tsx`, let's use `InefficientComponent`:
 
 4. Modify Build Configuration
 
-In `webpack.config.js`:
+In the app's root directory, modify `webpack.config.js`:
 
 ```tsx
   {
@@ -67,11 +67,11 @@ This should generate `dist/index.html` which we will use in flamegrill.
 
 1. [Install Flamegrill](../installation)
 
-2. Find / Create an Output Directory
+2. Create an Output Directory
 
 Flamegrill will create file output, so find or create a directory from which to run flamegrill.
 
-3. Run Flamegrill against App
+3. Run Flamegrill
 
 Modifying the path as appropriate, run flamegrill against `dist/index.html` generated with the build above:
 
@@ -83,6 +83,6 @@ flamegrill -n AppTest -s file:///C:/app/dist/index.html
 
 In the directory where you run flamegrill, there should be an `AppTest.html` file which you can open in a browser. Opening it should reveal a flamegraph similar to the following, highlighting `InefficientComponent` as a bottleneck taking up nearly 60% of render time.
 
-![flamegraph](results.png)
+![flamegraph](./results.png)
 
 We can see here that `InefficientComponent` stands out quite a bit, consuming 47.62% of total render time.

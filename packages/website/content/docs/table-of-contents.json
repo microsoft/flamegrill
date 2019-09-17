@@ -5,8 +5,7 @@
       "title": "Overview",
       "entries": [
         { "entry": "./overview/getting-started.md" },
-        { "entry": "./overview/installation.md" },
-        { "entry": "./overview/integrations.md" }
+        { "entry": "./overview/installation.md" }
       ],
       "chapters": []
     },
