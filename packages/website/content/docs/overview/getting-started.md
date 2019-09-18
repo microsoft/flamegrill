@@ -81,7 +81,7 @@ flamegrill -n AppTest -s file:///C:/app/dist/index.html
 
 ## Inspect Results
 
-In the directory where you run flamegrill, there should be an `AppTest.html` file which you can open in a browser. Opening it should reveal a flamegraph similar to the following, highlighting `InefficientComponent` as a bottleneck taking up nearly 60% of render time.
+In the directory where you run flamegrill, there should be an `AppTest.html` file which you can open in a browser. Opening it should reveal a flamegraph similar to the following, highlighting `InefficientComponent` as a bottleneck:
 
 ![flamegraph](./results.png)
 
