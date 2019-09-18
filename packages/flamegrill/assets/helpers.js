@@ -1,4 +1,4 @@
-const frameworkName = /~([a-zA-Z]{1,2}|[a-zA-Z]{1}\.[a-zA-Z]{1})[\. ]|~render |~\(anonymous\)|\(unknown\)|\~webpack/;
+const frameworkName = /~([a-zA-Z]{1,2}|[a-zA-Z]{1}\.[a-zA-Z]{1})[\. ]|~render |~\(anonymous\)|\(unknown\)|\~_{0,2}webpack/;
 const systemName = /\(C\+\+\)|\(lib\)/;
 
 function isFrameworkName(name) {
