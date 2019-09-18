@@ -1,0 +1,19 @@
+{
+  "name": "flamegrill",
+  "entries": [
+    {
+      "date": "Wed, 18 Sep 2019 18:07:22 GMT",
+      "tag": "flamegrill_v0.0.8",
+      "version": "0.0.8",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Adjust filters to exclude more webpack functions.",
+            "author": "jagore@microsoft.com",
+            "commit": "f7abcf1d20d58d7378734f6947fc69c369d7403a"
+          }
+        ]
+      }
+    }
+  ]
+}
