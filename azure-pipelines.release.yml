@@ -17,11 +17,11 @@ steps:
       versionSpec: '10.x'
     displayName: 'Install Node.js'
 
-  #- script: |
-  #    git config user.email "jagore@microsoft.com"
-  #    git config user.name "jagore@microsoft.com"
-  #    git remote set-url origin https://$(github.user):$(github.pat)@github.com/microsoft/flamegrill.git
-  #  displayName: 'git config'
+  - script: |
+      git config user.email "jagore@microsoft.com"
+      git config user.name "jagore@microsoft.com"
+      git remote set-url origin https://$(github.user):$(github.pat)@github.com/microsoft/flamegrill.git
+    displayName: 'git config'
 
   - script: |
       yarn
@@ -35,6 +35,6 @@ steps:
       yarn test
     displayName: 'test'
 
-  #- script: |
-  #    yarn pub -n $(npm.authtoken) -y
-  #  displayName: 'beachball publish'
+  - script: |
+      yarn pub -n $(npm.authtoken) -y
+    displayName: 'beachball publish'
