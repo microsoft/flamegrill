@@ -1,0 +1,8 @@
+{
+  "type": "patch",
+  "comment": "Adjust filters to exclude more webpack functions.",
+  "packageName": "flamegrill",
+  "email": "jagore@microsoft.com",
+  "commit": "f7abcf1d20d58d7378734f6947fc69c369d7403a",
+  "date": "2019-09-18T17:59:40.474Z"
+}
