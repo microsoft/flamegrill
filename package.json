@@ -18,7 +18,7 @@
     "build:flamegrill": "yarn workspace flamegrill build",
     "change": "beachball change",
     "checkchange": "beachball check",
-    "publish:beachball": "beachball publish",
+    "publish": "beachball publish",
     "start": "yarn workspace flamegrill start",
     "start:docs": "yarn workspace flamegrill-website start",
     "test": "yarn workspace flamegrill test"

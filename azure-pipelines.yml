@@ -24,9 +24,9 @@ steps:
       yarn test
     displayName: 'test'
 
-  #- script: |
-  #    yarn checkchange
-  #  displayName: 'checkchange'
+  - script: |
+      yarn checkchange
+    displayName: 'checkchange'
   
   - task: ComponentGovernanceComponentDetection@0
     inputs:
