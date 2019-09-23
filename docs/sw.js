@@ -32,21 +32,21 @@ self.__precacheManifest = [
     "url": "commons.c4bc147484ae894cfd61.css"
   },
   {
-    "url": "commons-3f6eff695f185cc99cb6.js"
+    "url": "commons-ac429c5c7de397cfcdc1.js"
   },
   {
-    "url": "app-8ab091fc30b001b55b67.js"
+    "url": "app-d9eadcd630e899135061.js"
   },
   {
     "url": "component---node-modules-gatsby-plugin-offline-app-shell-js-a7eb68fab5785ceac4de.js"
   },
   {
     "url": "offline-plugin-app-shell-fallback/index.html",
-    "revision": "3e43b3372dfa4bc2e9ace172ae5580fb"
+    "revision": "7ba5ecd79bc729d7d866152bc3753f15"
   },
   {
     "url": "page-data/offline-plugin-app-shell-fallback/page-data.json",
-    "revision": "e3340506e63d882d8a1da5b0137c8f86"
+    "revision": "1e70618fe46936ff96c3c1b762d57c6c"
   },
   {
     "url": "manifest.webmanifest",
@@ -74,7 +74,7 @@ const navigationRoute = new NavigationRoute(async ({ event }) => {
   // Check for resources + the app bundle
   // The latter may not exist if the SW is updating to a new version
   const resources = await idbKeyval.get(`resources:${pathname}`)
-  if (!resources || !(await caches.match(`/flamegrill/app-8ab091fc30b001b55b67.js`))) {
+  if (!resources || !(await caches.match(`/flamegrill/app-d9eadcd630e899135061.js`))) {
     return await fetch(event.request)
   }
 
