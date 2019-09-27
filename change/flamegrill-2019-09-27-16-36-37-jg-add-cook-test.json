@@ -1,0 +1,8 @@
+{
+  "type": "none",
+  "comment": "Add cook tests. Move around some code without changing any functionality.",
+  "packageName": "flamegrill",
+  "email": "jagore@microsoft.com",
+  "commit": "eb25d4d6f3e6216e0a543804cc794e9e0ce48957",
+  "date": "2019-09-27T23:36:37.532Z"
+}
