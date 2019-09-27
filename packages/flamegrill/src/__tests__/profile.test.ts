@@ -3,7 +3,6 @@ import { Browser, Page } from 'puppeteer';
 
 import { runProfile } from '../profile';
 
-// These tests should be in flamegrill.test.ts but there is some nasty side effect issue that causes them to fail.
 describe('runProfile', () => {
   let outdir: tmp.DirResult;
   let logfile: tmp.FileResult;
