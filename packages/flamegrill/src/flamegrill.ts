@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import puppeteer, { Browser }  from 'puppeteer';
+import puppeteer from 'puppeteer';
+
+import { runProfile } from './profile';
 import { generateFlamegraph, GeneratedFiles } from './flamegraph/generate';
 import { checkForRegressions } from './analysis/processData';
 
@@ -83,10 +85,10 @@ export async function cook(scenarios: Scenario[], config: ScenarioConfig): Promi
   const perfTests: PerfTests = {};
 
   for (const scenario of scenarios) {
-    let logFile = await runPerfTest(browser, scenario.scenario, scenario.name, tempDir);
+    let logFile = await runProfile(browser, scenario.scenario, scenario.name, tempDir);
     let logFileRef;
     if (scenario.reference) {
-      logFileRef = await runPerfTest(browser, scenario.reference, scenario.name, tempDir);
+      logFileRef = await runProfile(browser, scenario.reference, scenario.name, tempDir);
     }
 
     let outFileRef = path.join(outDir, `${scenario.name}_ref`);
@@ -135,49 +137,6 @@ export async function cook(scenarios: Scenario[], config: ScenarioConfig): Promi
 };
 
 /**
- *
- * @param {*} browser Launched puppeteer instance.
- * @param {string} testUrl Base URL supporting 'scenario' and 'iterations' query parameters.
- * @param {string} scenarioName Name of scenario that will be used with baseUrl.
- * @param {string} logDir Absolute path to output log profiles.
- * @returns {string} Log file path associated with test.
- */
-async function runPerfTest(browser: Browser, testUrl: string, scenarioName: string, logDir: string): Promise<string> {
-  const logFilesBefore = fs.readdirSync(logDir);
-
-  const page = await browser.newPage();
-
-  // Default timeout is 30 seconds. This is good for most tests except for problematic components like DocumentCardTitle.
-  // Disable timeout for now and tweak to a maximum setting once server condtiions are better known.
-  // TODO: argument? should probably default to 30 seconds
-  page.setDefaultTimeout(0);
-
-  const logFilesAfter = fs.readdirSync(logDir);
-
-  const testLogFile = arr_diff(logFilesBefore, logFilesAfter);
-
-  if (testLogFile.length !== 1) {
-    // We have to be able to identify log file associated with tab. Throw error if we can't.
-    // TODO: what should be the standard for erroring? console.error? throw? return failure?
-    // TODO: make sure all async function calls have catch blocks
-    // TODO: make sure invalid URLs (and other inputs) don't hang result
-    throw new Error(`Could not determine log file for ${testUrl}. Log files detected: [ ${testLogFile} ]`);
-  }
-
-  console.log(`Starting test for ${scenarioName} at ${testUrl}`);
-
-  console.time('Ran perf test in');
-  await page.goto(testUrl);
-  console.timeEnd('Ran perf test in');
-
-  console.log('testLogFile: ' + testLogFile[0]);
-
-  await page.close();
-
-  return path.join(logDir, testLogFile[0]);
-}
-
-/**
  * Create test summary based on test results.
  */
 // TODO: don't take in and return same structure. it's too hard to tell what this function needs and what it adds.
@@ -221,35 +180,6 @@ function getTicks(resultsFile: string): number | undefined {
     console.log('Could not read numTicks from ' + resultsFile);
     return undefined;
   }
-}
-
-/**
- * Array diff utility that returns a list of elements that are not present in both arrays.
- *
- * @param {Array} a1 First array
- * @param {Array} a2 Second array
- */
-function arr_diff(a1: string[], a2: string[]): string[] {
-  let a = {} as any;
-  let diff: string[] = [];
-
-  for (var i = 0; i < a1.length; i++) {
-    a[a1[i]] = true;
-  }
-
-  for (var i = 0; i < a2.length; i++) {
-    if (a[a2[i]]) {
-      delete a[a2[i]];
-    } else {
-      a[a2[i]] = true;
-    }
-  }
-
-  for (var k in a) {
-    diff.push(k);
-  }
-
-  return diff;
 }
 
 export default {

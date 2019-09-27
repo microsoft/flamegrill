@@ -1,0 +1,338 @@
+{
+  "BaseButton": {
+    "files": {
+      "dataFile": "BaseButton.data.js",
+      "flamegraphFile": "BaseButton.html",
+      "regressionFile": "BaseButton.regression.txt"
+    },
+    "reference": {
+      "files": {
+        "dataFile": "BaseButton_ref.data.js",
+        "flamegraphFile": "BaseButton_ref.html"
+      },
+      "numTicks": 345
+    },
+    "numTicks": 327,
+    "isRegression": false
+  },
+  "BaseButtonNew": {
+    "files": {
+      "dataFile": "BaseButtonNew.data.js",
+      "flamegraphFile": "BaseButtonNew.html",
+      "regressionFile": "BaseButtonNew.regression.txt"
+    },
+    "reference": {
+      "files": {
+        "dataFile": "BaseButtonNew_ref.data.js",
+        "flamegraphFile": "BaseButtonNew_ref.html"
+      },
+      "numTicks": 426
+    },
+    "numTicks": 421,
+    "isRegression": false
+  },
+  "button": {
+    "files": {
+      "dataFile": "button.data.js",
+      "flamegraphFile": "button.html",
+      "regressionFile": "button.regression.txt"
+    },
+    "reference": {
+      "files": {
+        "dataFile": "button_ref.data.js",
+        "flamegraphFile": "button_ref.html"
+      },
+      "numTicks": 28
+    },
+    "numTicks": 26,
+    "isRegression": false
+  },
+  "DefaultButton": {
+    "files": {
+      "dataFile": "DefaultButton.data.js",
+      "flamegraphFile": "DefaultButton.html",
+      "regressionFile": "DefaultButton.regression.txt"
+    },
+    "reference": {
+      "files": {
+        "dataFile": "DefaultButton_ref.data.js",
+        "flamegraphFile": "DefaultButton_ref.html"
+      },
+      "numTicks": 528
+    },
+    "numTicks": 455,
+    "isRegression": false
+  },
+  "DefaultButtonNew": {
+    "files": {
+      "dataFile": "DefaultButtonNew.data.js",
+      "flamegraphFile": "DefaultButtonNew.html",
+      "regressionFile": "DefaultButtonNew.regression.txt"
+    },
+    "reference": {
+      "files": {
+        "dataFile": "DefaultButtonNew_ref.data.js",
+        "flamegraphFile": "DefaultButtonNew_ref.html"
+      },
+      "numTicks": 923
+    },
+    "numTicks": 882,
+    "isRegression": false
+  },
+  "DetailsRow": {
+    "files": {
+      "dataFile": "DetailsRow.data.js",
+      "flamegraphFile": "DetailsRow.html",
+      "regressionFile": "DetailsRow.regression.txt"
+    },
+    "reference": {
+      "files": {
+        "dataFile": "DetailsRow_ref.data.js",
+        "flamegraphFile": "DetailsRow_ref.html"
+      },
+      "numTicks": 1471
+    },
+    "numTicks": 2750,
+    "isRegression": true
+  },
+  "DetailsRowFast": {
+    "files": {
+      "dataFile": "DetailsRowFast.data.js",
+      "flamegraphFile": "DetailsRowFast.html",
+      "regressionFile": "DetailsRowFast.regression.txt"
+    },
+    "reference": {
+      "files": {
+        "dataFile": "DetailsRowFast_ref.data.js",
+        "flamegraphFile": "DetailsRowFast_ref.html"
+      },
+      "numTicks": 1409
+    },
+    "numTicks": 2695,
+    "isRegression": true
+  },
+  "DetailsRowNoStyles": {
+    "files": {
+      "dataFile": "DetailsRowNoStyles.data.js",
+      "flamegraphFile": "DetailsRowNoStyles.html",
+      "regressionFile": "DetailsRowNoStyles.regression.txt"
+    },
+    "reference": {
+      "files": {
+        "dataFile": "DetailsRowNoStyles_ref.data.js",
+        "flamegraphFile": "DetailsRowNoStyles_ref.html"
+      },
+      "numTicks": 1466
+    },
+    "numTicks": 1948,
+    "isRegression": true
+  },
+  "DocumentCardTitle": {
+    "files": {
+      "dataFile": "DocumentCardTitle.data.js",
+      "flamegraphFile": "DocumentCardTitle.html",
+      "regressionFile": "DocumentCardTitle.regression.txt"
+    },
+    "reference": {
+      "files": {
+        "dataFile": "DocumentCardTitle_ref.data.js",
+        "flamegraphFile": "DocumentCardTitle_ref.html"
+      },
+      "numTicks": 15919
+    },
+    "numTicks": 16012,
+    "isRegression": false
+  },
+  "MenuButton": {
+    "files": {
+      "dataFile": "MenuButton.data.js",
+      "flamegraphFile": "MenuButton.html",
+      "regressionFile": "MenuButton.regression.txt"
+    },
+    "reference": {
+      "files": {
+        "dataFile": "MenuButton_ref.data.js",
+        "flamegraphFile": "MenuButton_ref.html"
+      },
+      "numTicks": 590
+    },
+    "numTicks": 647,
+    "isRegression": false
+  },
+  "MenuButtonNew": {
+    "files": {
+      "dataFile": "MenuButtonNew.data.js",
+      "flamegraphFile": "MenuButtonNew.html",
+      "regressionFile": "MenuButtonNew.regression.txt"
+    },
+    "reference": {
+      "files": {
+        "dataFile": "MenuButtonNew_ref.data.js",
+        "flamegraphFile": "MenuButtonNew_ref.html"
+      },
+      "numTicks": 1581
+    },
+    "numTicks": 1548,
+    "isRegression": false
+  },
+  "PrimaryButton": {
+    "files": {
+      "dataFile": "PrimaryButton.data.js",
+      "flamegraphFile": "PrimaryButton.html",
+      "regressionFile": "PrimaryButton.regression.txt"
+    },
+    "reference": {
+      "files": {
+        "dataFile": "PrimaryButton_ref.data.js",
+        "flamegraphFile": "PrimaryButton_ref.html"
+      },
+      "numTicks": 496
+    },
+    "numTicks": 488,
+    "isRegression": false
+  },
+  "PrimaryButtonNew": {
+    "files": {
+      "dataFile": "PrimaryButtonNew.data.js",
+      "flamegraphFile": "PrimaryButtonNew.html",
+      "regressionFile": "PrimaryButtonNew.regression.txt"
+    },
+    "reference": {
+      "files": {
+        "dataFile": "PrimaryButtonNew_ref.data.js",
+        "flamegraphFile": "PrimaryButtonNew_ref.html"
+      },
+      "numTicks": 1001
+    },
+    "numTicks": 922,
+    "isRegression": false
+  },
+  "SplitButton": {
+    "files": {
+      "dataFile": "SplitButton.data.js",
+      "flamegraphFile": "SplitButton.html",
+      "regressionFile": "SplitButton.regression.txt"
+    },
+    "reference": {
+      "files": {
+        "dataFile": "SplitButton_ref.data.js",
+        "flamegraphFile": "SplitButton_ref.html"
+      },
+      "numTicks": 1355
+    },
+    "numTicks": 1293,
+    "isRegression": false
+  },
+  "SplitButtonNew": {
+    "files": {
+      "dataFile": "SplitButtonNew.data.js",
+      "flamegraphFile": "SplitButtonNew.html",
+      "regressionFile": "SplitButtonNew.regression.txt"
+    },
+    "reference": {
+      "files": {
+        "dataFile": "SplitButtonNew_ref.data.js",
+        "flamegraphFile": "SplitButtonNew_ref.html"
+      },
+      "numTicks": 3048
+    },
+    "numTicks": 3155,
+    "isRegression": false
+  },
+  "Stack": {
+    "files": {
+      "dataFile": "Stack.data.js",
+      "flamegraphFile": "Stack.html",
+      "regressionFile": "Stack.regression.txt"
+    },
+    "reference": {
+      "files": {
+        "dataFile": "Stack_ref.data.js",
+        "flamegraphFile": "Stack_ref.html"
+      },
+      "numTicks": 251
+    },
+    "numTicks": 263,
+    "isRegression": false
+  },
+  "StackWithIntrinsicChildren": {
+    "files": {
+      "dataFile": "StackWithIntrinsicChildren.data.js",
+      "flamegraphFile": "StackWithIntrinsicChildren.html",
+      "regressionFile": "StackWithIntrinsicChildren.regression.txt"
+    },
+    "reference": {
+      "files": {
+        "dataFile": "StackWithIntrinsicChildren_ref.data.js",
+        "flamegraphFile": "StackWithIntrinsicChildren_ref.html"
+      },
+      "numTicks": 596
+    },
+    "numTicks": 563,
+    "isRegression": false
+  },
+  "StackWithTextChildren": {
+    "files": {
+      "dataFile": "StackWithTextChildren.data.js",
+      "flamegraphFile": "StackWithTextChildren.html",
+      "regressionFile": "StackWithTextChildren.regression.txt"
+    },
+    "reference": {
+      "files": {
+        "dataFile": "StackWithTextChildren_ref.data.js",
+        "flamegraphFile": "StackWithTextChildren_ref.html"
+      },
+      "numTicks": 1928
+    },
+    "numTicks": 1978,
+    "isRegression": false
+  },
+  "Text": {
+    "files": {
+      "dataFile": "Text.data.js",
+      "flamegraphFile": "Text.html",
+      "regressionFile": "Text.regression.txt"
+    },
+    "reference": {
+      "files": {
+        "dataFile": "Text_ref.data.js",
+        "flamegraphFile": "Text_ref.html"
+      },
+      "numTicks": 168
+    },
+    "numTicks": 206,
+    "isRegression": false
+  },
+  "Toggle": {
+    "files": {
+      "dataFile": "Toggle.data.js",
+      "flamegraphFile": "Toggle.html",
+      "regressionFile": "Toggle.regression.txt"
+    },
+    "reference": {
+      "files": {
+        "dataFile": "Toggle_ref.data.js",
+        "flamegraphFile": "Toggle_ref.html"
+      },
+      "numTicks": 454
+    },
+    "numTicks": 882,
+    "isRegression": true
+  },
+  "ToggleNew": {
+    "files": {
+      "dataFile": "ToggleNew.data.js",
+      "flamegraphFile": "ToggleNew.html",
+      "regressionFile": "ToggleNew.regression.txt"
+    },
+    "reference": {
+      "files": {
+        "dataFile": "ToggleNew_ref.data.js",
+        "flamegraphFile": "ToggleNew_ref.html"
+      },
+      "numTicks": 1102
+    },
+    "numTicks": 1165,
+    "isRegression": false
+  }
+}
