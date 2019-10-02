@@ -2,7 +2,7 @@
 /* eslint import/extensions:"off" */
 /* eslint global-require:"off" */
 import React from 'react'
-import favicon from './favicon.png'
+import favicon from './favicon.ico'
 
 export default class HTML extends React.Component {
   render() {
