@@ -1,4 +1,4 @@
-import { FunctionData, __unitTestHooks } from '../processData';
+import { FunctionData, __unitTestHooks } from '../regression';
 
 const { filterMinifiedNames, filterSystemNames } = __unitTestHooks;
 
@@ -12,10 +12,7 @@ function constructFunctionData(names: string[], defaultFiltered?: boolean): Func
   }));
 }
 
-describe('processData', () => {
-  describe('checkForRegressions', () => {
-  });
-
+describe('regression', () => {
   describe('filterMinifiedNames', () => {
     const testMinifiedNames = [ 
       '~j ', 

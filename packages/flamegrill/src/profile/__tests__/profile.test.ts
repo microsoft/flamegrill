@@ -1,18 +1,18 @@
 import * as tmp from 'tmp';
 import { Browser, Page } from 'puppeteer';
 
-import { runProfile } from '../profile';
+import { __unitTestHooks } from '../profile';
 
-describe('runProfile', () => {
-  let outdir: tmp.DirResult;
-  let logfile: tmp.FileResult;
-
+describe('profileUrl', () => {
+  const { profileUrl } = __unitTestHooks;
   const testUrl = 'testUrl';
+  const testMetrics = { metric1: 1, metric2: 2 };
   const testPage: Page = {
     close: jest.fn(() => Promise.resolve()),
     goto: jest.fn(() => {
       return Promise.resolve(null);
     }),
+    metrics: jest.fn(() => Promise.resolve(testMetrics)),
     setDefaultTimeout: jest.fn(() => {})
   } as unknown as Page;
 
@@ -23,6 +23,9 @@ describe('runProfile', () => {
     })
   } as unknown as Browser;
 
+  let outdir: tmp.DirResult;
+  let logfile: tmp.FileResult;
+
   beforeAll(() => {
     outdir = tmp.dirSync({ unsafeCleanup: true });
   });
@@ -32,7 +35,7 @@ describe('runProfile', () => {
   })
 
   it('performs expected operations', async () => {
-    const result = await runProfile(testBrowser, testUrl, 'testScenario', outdir.name);
+    const result = await profileUrl(testBrowser, testUrl, 'testScenario', outdir.name);
 
     expect((testPage.setDefaultTimeout as jest.Mock).mock.calls.length).toEqual(1);
     expect((testPage.setDefaultTimeout as jest.Mock).mock.calls[0][0]).toEqual(0);
@@ -41,6 +44,7 @@ describe('runProfile', () => {
     expect((testPage.close as jest.Mock).mock.calls.length).toEqual(1);
 
     expect(logfile).toBeDefined();
-    expect(result).toEqual(logfile.name);
+    expect(result.logFile).toEqual(logfile.name);
+    expect(result.metrics).toEqual(testMetrics);
   });
 });

@@ -1,0 +1,10 @@
+{
+  "test": {
+    "numTicks": -1,
+    "isRegression": false,
+    "regressionFile": "test.regression.txt",
+    "files": {
+      "errorFile": "test.err.txt"
+    }
+  }
+}

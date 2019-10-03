@@ -38,7 +38,7 @@ let args = parser(argv, {
     name: ['n'],
     outDir: ['o'],
     scenario: ['s'],
-    reference: ['r'],
+    baseline: ['b'],
     tempDir: ['t']
   }
 });
@@ -53,7 +53,7 @@ const options: CliOptions = {
   command: args._.length === 0 ? defaultCommand : args._[0],
   name: args.name,
   outDir: args.outDir,
-  reference: args.reference || undefined,
+  baseline: args.baseline || undefined,
   scenario: args.scenario,
   tempDir: args.tempDir
 };
@@ -79,11 +79,11 @@ const options: CliOptions = {
       const { 
         name, 
         outDir,
-        reference,
+        baseline,
         scenario,
         tempDir
       } = options;
-      flamegrill.cook( [{ name, scenario, reference }], { outDir, tempDir } );
+      flamegrill.cook( { [name]: { scenario, baseline } }, { outDir, tempDir } );
       break;
   }
 })();
@@ -108,7 +108,7 @@ Options:
 
   --name, -n          - name for scenario
   --scenario, -s      - URL for scenario to cook
-  --reference, -r     - optional reference scenario to compare against
+  --baseline, -b      - optional baseline scenario to compare against
   --temp-dir, -t      - temporary directory for storing intermediate files (default: cwd)
   --out-dir, -o       - output directory for flamegraphs (default: cwd)
 

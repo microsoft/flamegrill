@@ -8,12 +8,7 @@ const { isFrameworkName, isSystemName } = require('../../assets/helpers');
 //  - Recalculate percentages when changing the top level function displayed.
 
 // These types are modeled after the data output from the perf test, currently dictated by flamegraph implementation.
-export interface PerfTestOutput {
-  numTicks: number;
-  names: string[];
-  levels: number[][];
-};
-
+// TODO: clean up types and type naming
 export interface FunctionsMap {
   [key: string]: FunctionData;
 };
@@ -52,7 +47,7 @@ export interface ProcessedData {
   numTicks: number;
 }
 
-export interface RegressionAnalysis {
+export interface RegressionOutput {
   summary: string;
   isRegression: boolean;
 }
@@ -60,13 +55,14 @@ export interface RegressionAnalysis {
 /**
  * Analyzes processed perf.
  *
- * @param {string} datafileBefore Perf data input.
+ * @param {string} datafileBaseline Baseline data.
+ * @param {string} datafile Scenario data.
  */
-export function checkForRegressions(datafileBefore: string, datafileAfter: string): RegressionAnalysis {
+export function findRegressions(datafileBaseline: string, datafile: string): RegressionOutput {
   let summary = '';
   let isRegression = false;
-  const dataBefore = processFile(datafileBefore);
-  const dataAfter = processFile(datafileAfter);
+  const dataBefore = readFlamegraphData(datafileBaseline);
+  const dataAfter = readFlamegraphData(datafile);
 
   // TODO: UNIT TESTS FOR EVERYONE!
   // * function removed making other functions seem to be regressions when overall perf improves
@@ -136,7 +132,7 @@ export function checkForRegressions(datafileBefore: string, datafileAfter: strin
 
   });
 
-  summary += `Results for ${path.basename(datafileBefore)} => ${path.basename(datafileAfter)}\n\n`;
+  summary += `Results for ${path.basename(datafileBaseline)} => ${path.basename(datafile)}\n\n`;
   summary += `numTicks: ${dataBefore.numTicks} => ${dataAfter.numTicks}\n\n`;
 
   if (regressions.length === 0 && newFunctions.length === 0) {
@@ -179,7 +175,7 @@ export function checkForRegressions(datafileBefore: string, datafileAfter: strin
   return { summary, isRegression };
 }
 
-function processFile(datafile: string): ProcessedData {
+function readFlamegraphData(datafile: string): ProcessedData {
   // Levels:
   // Index - level of flamegraph, from top down
   // Data - [0, 1, 0, 0, 758, 5]
@@ -187,8 +183,13 @@ function processFile(datafile: string): ProcessedData {
   // 0 - start sample to show horizontally where sample = 0 to numTicks
   // 758 - number of samples
   // 5 - index into names array
-
-  const { names, levels, numTicks } = require(datafile) as PerfTestOutput;
+  interface FlamegraphDataFile {
+    numTicks: number;
+    names: string[];
+    levels: number[][];
+  };
+  
+  const { names, levels, numTicks } = require(datafile) as FlamegraphDataFile;
 
   // TODO: if cleaning names, write checkDuplicateNames utility to make sure duplicates don't appear in filtered name set.
   // TODO: also clean out ~
@@ -263,10 +264,6 @@ function processFile(datafile: string): ProcessedData {
   return { numLevels: levels.length, numTicks, functions, functionsMap };
 }
 
-function calcTotalTicks(levels: FunctionInstance[]): number {
-  return levels.map(el => el.ticks).reduce((acc, ticks) => acc + ticks);
-}
-
 function calcTotalTicksNormalized(levels: FunctionInstance[]): number {
   return levels.map(el => el.ticksNormalized).reduce((acc, ticks) => acc + ticks);
 }
@@ -330,8 +327,8 @@ if (require.main === module) {
   });
 
   scenarios.forEach(scenario => {
-    const analysis = checkForRegressions(path.join(process.cwd(), `${scenario}_ref.data.js`), path.join(process.cwd(), `${scenario}.data.js`));
+    const analysis = findRegressions(path.join(process.cwd(), `${scenario}_base.data.js`), path.join(process.cwd(), `${scenario}.data.js`));
     console.log(JSON.stringify(analysis));
-    // processPerfData(path.join(process.cwd(), `${scenario}_ref.js`), path.join(process.cwd(), `${scenario}.js`));
+    // processPerfData(path.join(process.cwd(), `${scenario}_base.js`), path.join(process.cwd(), `${scenario}.js`));
   });
 }
