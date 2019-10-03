@@ -1,7 +1,13 @@
 # Change Log - flamegrill
 
-This log was last generated on Wed, 18 Sep 2019 18:07:22 GMT and should not be manually modified.
+This log was last generated on Thu, 03 Oct 2019 23:13:04 GMT and should not be manually modified.
 
+## 0.1.0
+Thu, 03 Oct 2019 23:13:04 GMT
+
+### Minor changes
+
+- Major refactor breaking up flamegrill into modules and changing API for consistency. (jagore@microsoft.com)
 ## 0.0.8
 Wed, 18 Sep 2019 18:07:22 GMT
 

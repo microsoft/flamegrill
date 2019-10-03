@@ -2,6 +2,27 @@
   "name": "flamegrill",
   "entries": [
     {
+      "date": "Thu, 03 Oct 2019 23:13:04 GMT",
+      "tag": "flamegrill_v0.1.0",
+      "version": "0.1.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "Add cook tests. Move around some code without changing any functionality.",
+            "author": "jagore@microsoft.com",
+            "commit": "eb25d4d6f3e6216e0a543804cc794e9e0ce48957"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "Major refactor breaking up flamegrill into modules and changing API for consistency.",
+            "author": "jagore@microsoft.com",
+            "commit": "7472f1e8ecba91f035dbd779fb8ebd067084a10f"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 18 Sep 2019 18:07:22 GMT",
       "tag": "flamegrill_v0.0.8",
       "version": "0.0.8",
