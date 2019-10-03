@@ -1,0 +1,8 @@
+{
+  "type": "minor",
+  "comment": "Major refactor breaking up flamegrill into modules and changing API for consistency.",
+  "packageName": "flamegrill",
+  "email": "jagore@microsoft.com",
+  "commit": "7472f1e8ecba91f035dbd779fb8ebd067084a10f",
+  "date": "2019-10-03T00:05:13.559Z"
+}
