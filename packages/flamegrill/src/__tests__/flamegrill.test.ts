@@ -3,7 +3,7 @@ import path from 'path';
 import * as tmp from 'tmp';
 import puppeteer, { Browser, Page } from 'puppeteer';
 
-import { cook, CookOutput, Scenarios, ScenarioConfig } from '../flamegrill';
+import { cook, CookResult, Scenarios, ScenarioConfig } from '../flamegrill';
 import { __unitTestHooks } from '../process/process';
 import { findRegressions } from '../analyze/regression';
 
@@ -94,17 +94,10 @@ describe('flamegrill', () => {
       const testResults = await cook(scenarios, scenarioConfig);
 
       // The path will differ for every test run, so remove it before comparing results.
-      // TODO: remove these !s after types are cleaned up
-      Object.keys(testResults).forEach(result => {
-        Object.keys(testResults[result].files!).forEach(file => {
-          testResults[result].files![file as keyof CookOutput] 
-            = path.basename(testResults[result].files![file as keyof CookOutput]!);
-        })
-        Object.keys(testResults[result].baseline!.files!).forEach(file => {
-          testResults[result].baseline!.files![file as keyof CookOutput] 
-            = path.basename(testResults[result].baseline!.files![file as keyof CookOutput]!);
-        })
-      });
+      removePaths(testResults);
+
+      // Convenience line left commented out for updating expected output.
+      // fs.writeFileSync(path.join(outdir.name, "results.json"), JSON.stringify(testResults));
 
       expect(testResults).toEqual(expectedResults);
 
@@ -137,13 +130,7 @@ describe('flamegrill', () => {
       const testResults = await cook({ 'test': { scenario: 'testUrl' } }, scenarioConfig);
 
       // The path will differ for every test run, so remove it before comparing results.
-      // TODO: remove these !s after types are cleaned up
-      Object.keys(testResults).forEach(result => {
-        Object.keys(testResults[result].files!).forEach(file => {
-          testResults[result].files![file as keyof CookOutput] 
-            = path.basename(testResults[result].files![file as keyof CookOutput]!);
-        })
-      });
+      removePaths(testResults);
 
       // Convenience line left commented out for updating expected output.
       // fs.writeFileSync(path.join(outdir.name, "errors.json"), JSON.stringify(testResults));
@@ -175,6 +162,7 @@ describe('flamegrill', () => {
       
       const outdir = tmp.dirSync({ unsafeCleanup: true });
 
+      // TODO: replace with processProfiles?
       await Promise.all(Object.keys(profiles).map(key => {
         let logfile = require.resolve(path.join('../fixtures', profiles[key].logFile));
         let outfile = path.join(outdir.name, key);
@@ -218,3 +206,17 @@ describe('flamegrill', () => {
     });
   });
 });
+
+/**
+ * Helper to remove paths from filenames, leaving just base filename.
+ */ 
+function removePaths<T>(obj: T) {
+  Object.keys(obj).forEach(key => {
+    if (key.includes('File')) {
+      console.log(`key = ${key}`);
+      obj[key as keyof T] = path.basename(obj[key as keyof T] as any) as any;
+    } else if (obj[key as keyof T] instanceof Object) {
+      removePaths(obj[key as keyof T]);
+    }
+  });
+}

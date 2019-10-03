@@ -1,10 +1,13 @@
 {
   "test": {
-    "numTicks": -1,
-    "isRegression": false,
-    "regressionFile": "test.regression.txt",
-    "files": {
-      "errorFile": "test.err.txt"
+    "profile": {
+      "logFile": "error.prof",
+      "metrics": {}
+    },
+    "processed": {
+      "error": {
+        "errorFile": "test.err.txt"
+      }
     }
   }
 }

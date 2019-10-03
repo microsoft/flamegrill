@@ -1,1 +1,1 @@
-export { analyze, ScenarioAnalyses } from './analyze';
+export { analyze, ScenarioAnalysis, ScenarioAnalyses } from './analyze';

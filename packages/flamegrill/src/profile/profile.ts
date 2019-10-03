@@ -8,7 +8,6 @@ import { Scenarios, ScenarioConfig } from '../flamegrill';
 import { arr_diff } from '../util';
 
 export interface Profile {
-  name: string;
   logFile: string;
   metrics: Metrics;
 }
@@ -113,14 +112,12 @@ async function profileUrl(browser: Browser, testUrl: string, profileName: string
   console.timeEnd('Ran profile in');
 
   let metrics = await page.metrics();
-  console.log(`metrics: ${JSON.stringify(metrics)}`);
-
+  
   console.log('testLogFile: ' + testLogFile[0]);
 
   await page.close();
 
   return {
-    name: profileName,
     logFile: path.join(logDir, testLogFile[0]),
     metrics
   }

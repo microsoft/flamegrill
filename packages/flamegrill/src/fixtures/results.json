@@ -1,338 +1,678 @@
 {
   "BaseButton": {
-    "files": {
-      "dataFile": "BaseButton.data.js",
-      "flamegraphFile": "BaseButton.html"
+    "profile": {
+      "logFile": "isolate-000001C8E897A980-9332-puppeteer.prof",
+      "metrics": {},
+      "baseline": {
+        "logFile": "isolate-000002716F92D960-27048-puppeteer.prof",
+        "metrics": {}
+      }
     },
-    "baseline": {
-      "files": {
-        "dataFile": "BaseButton_base.data.js",
-        "flamegraphFile": "BaseButton_base.html"
+    "processed": {
+      "output": {
+        "dataFile": "BaseButton.data.js",
+        "flamegraphFile": "BaseButton.html"
       },
-      "numTicks": 345
+      "baseline": {
+        "output": {
+          "dataFile": "BaseButton_base.data.js",
+          "flamegraphFile": "BaseButton_base.html"
+        }
+      }
     },
-    "regressionFile": "BaseButton.regression.txt",
-    "numTicks": 327,
-    "isRegression": false
+    "analysis": {
+      "numTicks": 327,
+      "baseline": {
+        "numTicks": 345
+      },
+      "regression": {
+        "summary": "Results for BaseButton_base.data.js => BaseButton.data.js\n\nnumTicks: 345 => 327\n\nOK!",
+        "isRegression": false
+      }
+    }
   },
   "BaseButtonNew": {
-    "files": {
-      "dataFile": "BaseButtonNew.data.js",
-      "flamegraphFile": "BaseButtonNew.html"
+    "profile": {
+      "logFile": "isolate-00000150C15DDCB0-8200-puppeteer.prof",
+      "metrics": {},
+      "baseline": {
+        "logFile": "isolate-000001C7CB0729F0-15316-puppeteer.prof",
+        "metrics": {}
+      }
     },
-    "baseline": {
-      "files": {
-        "dataFile": "BaseButtonNew_base.data.js",
-        "flamegraphFile": "BaseButtonNew_base.html"
+    "processed": {
+      "output": {
+        "dataFile": "BaseButtonNew.data.js",
+        "flamegraphFile": "BaseButtonNew.html"
       },
-      "numTicks": 426
+      "baseline": {
+        "output": {
+          "dataFile": "BaseButtonNew_base.data.js",
+          "flamegraphFile": "BaseButtonNew_base.html"
+        }
+      }
     },
-    "regressionFile": "BaseButtonNew.regression.txt",
-    "numTicks": 421,
-    "isRegression": false
+    "analysis": {
+      "numTicks": 421,
+      "baseline": {
+        "numTicks": 426
+      },
+      "regression": {
+        "summary": "Results for BaseButtonNew_base.data.js => BaseButtonNew.data.js\n\nnumTicks: 426 => 421\n\nOK!",
+        "isRegression": false
+      }
+    }
   },
   "button": {
-    "files": {
-      "dataFile": "button.data.js",
-      "flamegraphFile": "button.html"
+    "profile": {
+      "logFile": "isolate-000001FA30C2C060-15348-puppeteer.prof",
+      "metrics": {},
+      "baseline": {
+        "logFile": "isolate-00000218B8DE6280-33408-puppeteer.prof",
+        "metrics": {}
+      }
     },
-    "baseline": {
-      "files": {
-        "dataFile": "button_base.data.js",
-        "flamegraphFile": "button_base.html"
+    "processed": {
+      "output": {
+        "dataFile": "button.data.js",
+        "flamegraphFile": "button.html"
       },
-      "numTicks": 28
+      "baseline": {
+        "output": {
+          "dataFile": "button_base.data.js",
+          "flamegraphFile": "button_base.html"
+        }
+      }
     },
-    "regressionFile": "button.regression.txt",
-    "numTicks": 26,
-    "isRegression": false
+    "analysis": {
+      "numTicks": 26,
+      "baseline": {
+        "numTicks": 28
+      },
+      "regression": {
+        "summary": "Results for button_base.data.js => button.data.js\n\nnumTicks: 28 => 26\n\nOK!",
+        "isRegression": false
+      }
+    }
   },
   "DefaultButton": {
-    "files": {
-      "dataFile": "DefaultButton.data.js",
-      "flamegraphFile": "DefaultButton.html"
+    "profile": {
+      "logFile": "isolate-0000026F3D5C86F0-32220-puppeteer.prof",
+      "metrics": {},
+      "baseline": {
+        "logFile": "isolate-000001A279165800-31988-puppeteer.prof",
+        "metrics": {}
+      }
     },
-    "baseline": {
-      "files": {
-        "dataFile": "DefaultButton_base.data.js",
-        "flamegraphFile": "DefaultButton_base.html"
+    "processed": {
+      "output": {
+        "dataFile": "DefaultButton.data.js",
+        "flamegraphFile": "DefaultButton.html"
       },
-      "numTicks": 528
+      "baseline": {
+        "output": {
+          "dataFile": "DefaultButton_base.data.js",
+          "flamegraphFile": "DefaultButton_base.html"
+        }
+      }
     },
-    "regressionFile": "DefaultButton.regression.txt",
-    "numTicks": 455,
-    "isRegression": false
+    "analysis": {
+      "numTicks": 455,
+      "baseline": {
+        "numTicks": 528
+      },
+      "regression": {
+        "summary": "Results for DefaultButton_base.data.js => DefaultButton.data.js\n\nnumTicks: 528 => 455\n\nOK!",
+        "isRegression": false
+      }
+    }
   },
   "DefaultButtonNew": {
-    "files": {
-      "dataFile": "DefaultButtonNew.data.js",
-      "flamegraphFile": "DefaultButtonNew.html"
+    "profile": {
+      "logFile": "isolate-000001976475B760-12772-puppeteer.prof",
+      "metrics": {},
+      "baseline": {
+        "logFile": "isolate-000001AFA4995FB0-8920-puppeteer.prof",
+        "metrics": {}
+      }
     },
-    "baseline": {
-      "files": {
-        "dataFile": "DefaultButtonNew_base.data.js",
-        "flamegraphFile": "DefaultButtonNew_base.html"
+    "processed": {
+      "output": {
+        "dataFile": "DefaultButtonNew.data.js",
+        "flamegraphFile": "DefaultButtonNew.html"
       },
-      "numTicks": 923
+      "baseline": {
+        "output": {
+          "dataFile": "DefaultButtonNew_base.data.js",
+          "flamegraphFile": "DefaultButtonNew_base.html"
+        }
+      }
     },
-    "regressionFile": "DefaultButtonNew.regression.txt",
-    "numTicks": 882,
-    "isRegression": false
+    "analysis": {
+      "numTicks": 882,
+      "baseline": {
+        "numTicks": 923
+      },
+      "regression": {
+        "summary": "Results for DefaultButtonNew_base.data.js => DefaultButtonNew.data.js\n\nnumTicks: 923 => 882\n\nOK!",
+        "isRegression": false
+      }
+    }
   },
   "DetailsRow": {
-    "files": {
-      "dataFile": "DetailsRow.data.js",
-      "flamegraphFile": "DetailsRow.html"
+    "profile": {
+      "logFile": "isolate-000001C75B30DD10-19448-puppeteer.prof",
+      "metrics": {},
+      "baseline": {
+        "logFile": "isolate-0000016A4F24EAD0-27036-puppeteer.prof",
+        "metrics": {}
+      }
     },
-    "baseline": {
-      "files": {
-        "dataFile": "DetailsRow_base.data.js",
-        "flamegraphFile": "DetailsRow_base.html"
+    "processed": {
+      "output": {
+        "dataFile": "DetailsRow.data.js",
+        "flamegraphFile": "DetailsRow.html"
       },
-      "numTicks": 1471
+      "baseline": {
+        "output": {
+          "dataFile": "DetailsRow_base.data.js",
+          "flamegraphFile": "DetailsRow_base.html"
+        }
+      }
     },
-    "regressionFile": "DetailsRow.regression.txt",
-    "numTicks": 2750,
-    "isRegression": true
+    "analysis": {
+      "numTicks": 2750,
+      "baseline": {
+        "numTicks": 1471
+      },
+      "regression": {
+        "summary": "Results for DetailsRow_base.data.js => DetailsRow.data.js\n\nnumTicks: 1471 => 2750\n\nPotential Regressions: \n ~DetailsRowBase.render, time consumed: 7% => 30% \n ~getClassNames, time consumed: 1% => 15% \n ~mergeStyleSets, time consumed: 0% => 37% \n ~styleToRegistration, time consumed: 0% => 27% \n",
+        "isRegression": true,
+        "regressionFile": "DetailsRow.regression.txt"
+      }
+    }
   },
   "DetailsRowFast": {
-    "files": {
-      "dataFile": "DetailsRowFast.data.js",
-      "flamegraphFile": "DetailsRowFast.html"
+    "profile": {
+      "logFile": "isolate-000001AB3AA2DE10-28068-puppeteer.prof",
+      "metrics": {},
+      "baseline": {
+        "logFile": "isolate-0000025EBEA9C020-13384-puppeteer.prof",
+        "metrics": {}
+      }
     },
-    "baseline": {
-      "files": {
-        "dataFile": "DetailsRowFast_base.data.js",
-        "flamegraphFile": "DetailsRowFast_base.html"
+    "processed": {
+      "output": {
+        "dataFile": "DetailsRowFast.data.js",
+        "flamegraphFile": "DetailsRowFast.html"
       },
-      "numTicks": 1409
+      "baseline": {
+        "output": {
+          "dataFile": "DetailsRowFast_base.data.js",
+          "flamegraphFile": "DetailsRowFast_base.html"
+        }
+      }
     },
-    "regressionFile": "DetailsRowFast.regression.txt",
-    "numTicks": 2695,
-    "isRegression": true
+    "analysis": {
+      "numTicks": 2695,
+      "baseline": {
+        "numTicks": 1409
+      },
+      "regression": {
+        "summary": "Results for DetailsRowFast_base.data.js => DetailsRowFast.data.js\n\nnumTicks: 1409 => 2695\n\nPotential Regressions: \n ~DetailsRowBase.render, time consumed: 6% => 27% \n ~extractRules, time consumed: 0% => 20% \n ~getClassNames, time consumed: 1% => 14% \n ~mergeStyleSets, time consumed: 0% => 36% \n ~styleToRegistration, time consumed: 0% => 27% \n",
+        "isRegression": true,
+        "regressionFile": "DetailsRowFast.regression.txt"
+      }
+    }
   },
   "DetailsRowNoStyles": {
-    "files": {
-      "dataFile": "DetailsRowNoStyles.data.js",
-      "flamegraphFile": "DetailsRowNoStyles.html"
+    "profile": {
+      "logFile": "isolate-000001D1BFE31800-24432-puppeteer.prof",
+      "metrics": {},
+      "baseline": {
+        "logFile": "isolate-000001CEF69AFE10-4612-puppeteer.prof",
+        "metrics": {}
+      }
     },
-    "baseline": {
-      "files": {
-        "dataFile": "DetailsRowNoStyles_base.data.js",
-        "flamegraphFile": "DetailsRowNoStyles_base.html"
+    "processed": {
+      "output": {
+        "dataFile": "DetailsRowNoStyles.data.js",
+        "flamegraphFile": "DetailsRowNoStyles.html"
       },
-      "numTicks": 1466
+      "baseline": {
+        "output": {
+          "dataFile": "DetailsRowNoStyles_base.data.js",
+          "flamegraphFile": "DetailsRowNoStyles_base.html"
+        }
+      }
     },
-    "regressionFile": "DetailsRowNoStyles.regression.txt",
-    "numTicks": 1948,
-    "isRegression": true
+    "analysis": {
+      "numTicks": 1948,
+      "baseline": {
+        "numTicks": 1466
+      },
+      "regression": {
+        "summary": "Results for DetailsRowNoStyles_base.data.js => DetailsRowNoStyles.data.js\n\nnumTicks: 1466 => 1948\n\nPotential Regressions: \n ~CheckBase, time consumed: 1% => 15% \n ~DetailsRowCheckBase, time consumed: 3% => 14% \n\nNew Functions: \n ~mergeStyleSets, time consumed = 23%\n ~styleToRegistration, time consumed = 17%\n",
+        "isRegression": true,
+        "regressionFile": "DetailsRowNoStyles.regression.txt"
+      }
+    }
   },
   "DocumentCardTitle": {
-    "files": {
-      "dataFile": "DocumentCardTitle.data.js",
-      "flamegraphFile": "DocumentCardTitle.html"
+    "profile": {
+      "logFile": "isolate-000001658015DEE0-9140-puppeteer.prof",
+      "metrics": {},
+      "baseline": {
+        "logFile": "isolate-000002A0A0FDD770-30228-puppeteer.prof",
+        "metrics": {}
+      }
     },
-    "baseline": {
-      "files": {
-        "dataFile": "DocumentCardTitle_base.data.js",
-        "flamegraphFile": "DocumentCardTitle_base.html"
+    "processed": {
+      "output": {
+        "dataFile": "DocumentCardTitle.data.js",
+        "flamegraphFile": "DocumentCardTitle.html"
       },
-      "numTicks": 15919
+      "baseline": {
+        "output": {
+          "dataFile": "DocumentCardTitle_base.data.js",
+          "flamegraphFile": "DocumentCardTitle_base.html"
+        }
+      }
     },
-    "regressionFile": "DocumentCardTitle.regression.txt",
-    "numTicks": 16012,
-    "isRegression": false
+    "analysis": {
+      "numTicks": 16012,
+      "baseline": {
+        "numTicks": 15919
+      },
+      "regression": {
+        "summary": "Results for DocumentCardTitle_base.data.js => DocumentCardTitle.data.js\n\nnumTicks: 15919 => 16012\n\nOK!",
+        "isRegression": false
+      }
+    }
   },
   "MenuButton": {
-    "files": {
-      "dataFile": "MenuButton.data.js",
-      "flamegraphFile": "MenuButton.html"
+    "profile": {
+      "logFile": "isolate-0000023E414D6CE0-28460-puppeteer.prof",
+      "metrics": {},
+      "baseline": {
+        "logFile": "isolate-000002744B17D570-32064-puppeteer.prof",
+        "metrics": {}
+      }
     },
-    "baseline": {
-      "files": {
-        "dataFile": "MenuButton_base.data.js",
-        "flamegraphFile": "MenuButton_base.html"
+    "processed": {
+      "output": {
+        "dataFile": "MenuButton.data.js",
+        "flamegraphFile": "MenuButton.html"
       },
-      "numTicks": 590
+      "baseline": {
+        "output": {
+          "dataFile": "MenuButton_base.data.js",
+          "flamegraphFile": "MenuButton_base.html"
+        }
+      }
     },
-    "regressionFile": "MenuButton.regression.txt",
-    "numTicks": 647,
-    "isRegression": false
+    "analysis": {
+      "numTicks": 647,
+      "baseline": {
+        "numTicks": 590
+      },
+      "regression": {
+        "summary": "Results for MenuButton_base.data.js => MenuButton.data.js\n\nnumTicks: 590 => 647\n\nOK!",
+        "isRegression": false
+      }
+    }
   },
   "MenuButtonNew": {
-    "files": {
-      "dataFile": "MenuButtonNew.data.js",
-      "flamegraphFile": "MenuButtonNew.html"
+    "profile": {
+      "logFile": "isolate-0000021FD7B39BB0-28188-puppeteer.prof",
+      "metrics": {},
+      "baseline": {
+        "logFile": "isolate-0000028C417C8AC0-24936-puppeteer.prof",
+        "metrics": {}
+      }
     },
-    "baseline": {
-      "files": {
-        "dataFile": "MenuButtonNew_base.data.js",
-        "flamegraphFile": "MenuButtonNew_base.html"
+    "processed": {
+      "output": {
+        "dataFile": "MenuButtonNew.data.js",
+        "flamegraphFile": "MenuButtonNew.html"
       },
-      "numTicks": 1581
+      "baseline": {
+        "output": {
+          "dataFile": "MenuButtonNew_base.data.js",
+          "flamegraphFile": "MenuButtonNew_base.html"
+        }
+      }
     },
-    "regressionFile": "MenuButtonNew.regression.txt",
-    "numTicks": 1548,
-    "isRegression": false
+    "analysis": {
+      "numTicks": 1548,
+      "baseline": {
+        "numTicks": 1581
+      },
+      "regression": {
+        "summary": "Results for MenuButtonNew_base.data.js => MenuButtonNew.data.js\n\nnumTicks: 1581 => 1548\n\nOK!",
+        "isRegression": false
+      }
+    }
   },
   "PrimaryButton": {
-    "files": {
-      "dataFile": "PrimaryButton.data.js",
-      "flamegraphFile": "PrimaryButton.html"
+    "profile": {
+      "logFile": "isolate-00000224DD39CC70-27088-puppeteer.prof",
+      "metrics": {},
+      "baseline": {
+        "logFile": "isolate-00000289B99F90F0-33752-puppeteer.prof",
+        "metrics": {}
+      }
     },
-    "baseline": {
-      "files": {
-        "dataFile": "PrimaryButton_base.data.js",
-        "flamegraphFile": "PrimaryButton_base.html"
+    "processed": {
+      "output": {
+        "dataFile": "PrimaryButton.data.js",
+        "flamegraphFile": "PrimaryButton.html"
       },
-      "numTicks": 496
+      "baseline": {
+        "output": {
+          "dataFile": "PrimaryButton_base.data.js",
+          "flamegraphFile": "PrimaryButton_base.html"
+        }
+      }
     },
-    "regressionFile": "PrimaryButton.regression.txt",
-    "numTicks": 488,
-    "isRegression": false
+    "analysis": {
+      "numTicks": 488,
+      "baseline": {
+        "numTicks": 496
+      },
+      "regression": {
+        "summary": "Results for PrimaryButton_base.data.js => PrimaryButton.data.js\n\nnumTicks: 496 => 488\n\nOK!",
+        "isRegression": false
+      }
+    }
   },
   "PrimaryButtonNew": {
-    "files": {
-      "dataFile": "PrimaryButtonNew.data.js",
-      "flamegraphFile": "PrimaryButtonNew.html"
+    "profile": {
+      "logFile": "isolate-000001D40015E310-20784-puppeteer.prof",
+      "metrics": {},
+      "baseline": {
+        "logFile": "isolate-000001C3BAC2EA80-32776-puppeteer.prof",
+        "metrics": {}
+      }
     },
-    "baseline": {
-      "files": {
-        "dataFile": "PrimaryButtonNew_base.data.js",
-        "flamegraphFile": "PrimaryButtonNew_base.html"
+    "processed": {
+      "output": {
+        "dataFile": "PrimaryButtonNew.data.js",
+        "flamegraphFile": "PrimaryButtonNew.html"
       },
-      "numTicks": 1001
+      "baseline": {
+        "output": {
+          "dataFile": "PrimaryButtonNew_base.data.js",
+          "flamegraphFile": "PrimaryButtonNew_base.html"
+        }
+      }
     },
-    "regressionFile": "PrimaryButtonNew.regression.txt",
-    "numTicks": 922,
-    "isRegression": false
+    "analysis": {
+      "numTicks": 922,
+      "baseline": {
+        "numTicks": 1001
+      },
+      "regression": {
+        "summary": "Results for PrimaryButtonNew_base.data.js => PrimaryButtonNew.data.js\n\nnumTicks: 1001 => 922\n\nOK!",
+        "isRegression": false
+      }
+    }
   },
   "SplitButton": {
-    "files": {
-      "dataFile": "SplitButton.data.js",
-      "flamegraphFile": "SplitButton.html"
+    "profile": {
+      "logFile": "isolate-000001D2DD15DB40-22696-puppeteer.prof",
+      "metrics": {},
+      "baseline": {
+        "logFile": "isolate-000001292C499B50-24060-puppeteer.prof",
+        "metrics": {}
+      }
     },
-    "baseline": {
-      "files": {
-        "dataFile": "SplitButton_base.data.js",
-        "flamegraphFile": "SplitButton_base.html"
+    "processed": {
+      "output": {
+        "dataFile": "SplitButton.data.js",
+        "flamegraphFile": "SplitButton.html"
       },
-      "numTicks": 1355
+      "baseline": {
+        "output": {
+          "dataFile": "SplitButton_base.data.js",
+          "flamegraphFile": "SplitButton_base.html"
+        }
+      }
     },
-    "regressionFile": "SplitButton.regression.txt",
-    "numTicks": 1293,
-    "isRegression": false
+    "analysis": {
+      "numTicks": 1293,
+      "baseline": {
+        "numTicks": 1355
+      },
+      "regression": {
+        "summary": "Results for SplitButton_base.data.js => SplitButton.data.js\n\nnumTicks: 1355 => 1293\n\nOK!",
+        "isRegression": false
+      }
+    }
   },
   "SplitButtonNew": {
-    "files": {
-      "dataFile": "SplitButtonNew.data.js",
-      "flamegraphFile": "SplitButtonNew.html"
+    "profile": {
+      "logFile": "isolate-0000027E6DE24B80-31272-puppeteer.prof",
+      "metrics": {},
+      "baseline": {
+        "logFile": "isolate-000002EAD2E39E10-33780-puppeteer.prof",
+        "metrics": {}
+      }
     },
-    "baseline": {
-      "files": {
-        "dataFile": "SplitButtonNew_base.data.js",
-        "flamegraphFile": "SplitButtonNew_base.html"
+    "processed": {
+      "output": {
+        "dataFile": "SplitButtonNew.data.js",
+        "flamegraphFile": "SplitButtonNew.html"
       },
-      "numTicks": 3048
+      "baseline": {
+        "output": {
+          "dataFile": "SplitButtonNew_base.data.js",
+          "flamegraphFile": "SplitButtonNew_base.html"
+        }
+      }
     },
-    "regressionFile": "SplitButtonNew.regression.txt",
-    "numTicks": 3155,
-    "isRegression": false
+    "analysis": {
+      "numTicks": 3155,
+      "baseline": {
+        "numTicks": 3048
+      },
+      "regression": {
+        "summary": "Results for SplitButtonNew_base.data.js => SplitButtonNew.data.js\n\nnumTicks: 3048 => 3155\n\nOK!",
+        "isRegression": false
+      }
+    }
   },
   "Stack": {
-    "files": {
-      "dataFile": "Stack.data.js",
-      "flamegraphFile": "Stack.html"
+    "profile": {
+      "logFile": "isolate-000002958EF69420-30340-puppeteer.prof",
+      "metrics": {},
+      "baseline": {
+        "logFile": "isolate-00000199612E7F60-32084-puppeteer.prof",
+        "metrics": {}
+      }
     },
-    "baseline": {
-      "files": {
-        "dataFile": "Stack_base.data.js",
-        "flamegraphFile": "Stack_base.html"
+    "processed": {
+      "output": {
+        "dataFile": "Stack.data.js",
+        "flamegraphFile": "Stack.html"
       },
-      "numTicks": 251
+      "baseline": {
+        "output": {
+          "dataFile": "Stack_base.data.js",
+          "flamegraphFile": "Stack_base.html"
+        }
+      }
     },
-    "regressionFile": "Stack.regression.txt",
-    "numTicks": 263,
-    "isRegression": false
+    "analysis": {
+      "numTicks": 263,
+      "baseline": {
+        "numTicks": 251
+      },
+      "regression": {
+        "summary": "Results for Stack_base.data.js => Stack.data.js\n\nnumTicks: 251 => 263\n\nOK!",
+        "isRegression": false
+      }
+    }
   },
   "StackWithIntrinsicChildren": {
-    "files": {
-      "dataFile": "StackWithIntrinsicChildren.data.js",
-      "flamegraphFile": "StackWithIntrinsicChildren.html"
+    "profile": {
+      "logFile": "isolate-000002CB95DF62A0-29024-puppeteer.prof",
+      "metrics": {},
+      "baseline": {
+        "logFile": "isolate-000001F8F52C6E60-30996-puppeteer.prof",
+        "metrics": {}
+      }
     },
-    "baseline": {
-      "files": {
-        "dataFile": "StackWithIntrinsicChildren_base.data.js",
-        "flamegraphFile": "StackWithIntrinsicChildren_base.html"
+    "processed": {
+      "output": {
+        "dataFile": "StackWithIntrinsicChildren.data.js",
+        "flamegraphFile": "StackWithIntrinsicChildren.html"
       },
-      "numTicks": 596
+      "baseline": {
+        "output": {
+          "dataFile": "StackWithIntrinsicChildren_base.data.js",
+          "flamegraphFile": "StackWithIntrinsicChildren_base.html"
+        }
+      }
     },
-    "regressionFile": "StackWithIntrinsicChildren.regression.txt",
-    "numTicks": 563,
-    "isRegression": false
+    "analysis": {
+      "numTicks": 563,
+      "baseline": {
+        "numTicks": 596
+      },
+      "regression": {
+        "summary": "Results for StackWithIntrinsicChildren_base.data.js => StackWithIntrinsicChildren.data.js\n\nnumTicks: 596 => 563\n\nOK!",
+        "isRegression": false
+      }
+    }
   },
   "StackWithTextChildren": {
-    "files": {
-      "dataFile": "StackWithTextChildren.data.js",
-      "flamegraphFile": "StackWithTextChildren.html"
+    "profile": {
+      "logFile": "isolate-000001E2F953C450-33588-puppeteer.prof",
+      "metrics": {},
+      "baseline": {
+        "logFile": "isolate-000001AA84CA8D20-8016-puppeteer.prof",
+        "metrics": {}
+      }
     },
-    "baseline": {
-      "files": {
-        "dataFile": "StackWithTextChildren_base.data.js",
-        "flamegraphFile": "StackWithTextChildren_base.html"
+    "processed": {
+      "output": {
+        "dataFile": "StackWithTextChildren.data.js",
+        "flamegraphFile": "StackWithTextChildren.html"
       },
-      "numTicks": 1928
+      "baseline": {
+        "output": {
+          "dataFile": "StackWithTextChildren_base.data.js",
+          "flamegraphFile": "StackWithTextChildren_base.html"
+        }
+      }
     },
-    "regressionFile": "StackWithTextChildren.regression.txt",
-    "numTicks": 1978,
-    "isRegression": false
+    "analysis": {
+      "numTicks": 1978,
+      "baseline": {
+        "numTicks": 1928
+      },
+      "regression": {
+        "summary": "Results for StackWithTextChildren_base.data.js => StackWithTextChildren.data.js\n\nnumTicks: 1928 => 1978\n\nOK!",
+        "isRegression": false
+      }
+    }
   },
   "Text": {
-    "files": {
-      "dataFile": "Text.data.js",
-      "flamegraphFile": "Text.html"
+    "profile": {
+      "logFile": "isolate-00000257772F8820-33584-puppeteer.prof",
+      "metrics": {},
+      "baseline": {
+        "logFile": "isolate-000002236CE1DD30-25244-puppeteer.prof",
+        "metrics": {}
+      }
     },
-    "baseline": {
-      "files": {
-        "dataFile": "Text_base.data.js",
-        "flamegraphFile": "Text_base.html"
+    "processed": {
+      "output": {
+        "dataFile": "Text.data.js",
+        "flamegraphFile": "Text.html"
       },
-      "numTicks": 168
+      "baseline": {
+        "output": {
+          "dataFile": "Text_base.data.js",
+          "flamegraphFile": "Text_base.html"
+        }
+      }
     },
-    "regressionFile": "Text.regression.txt",
-    "numTicks": 206,
-    "isRegression": false
+    "analysis": {
+      "numTicks": 206,
+      "baseline": {
+        "numTicks": 168
+      },
+      "regression": {
+        "summary": "Results for Text_base.data.js => Text.data.js\n\nnumTicks: 168 => 206\n\nOK!",
+        "isRegression": false
+      }
+    }
   },
   "Toggle": {
-    "files": {
-      "dataFile": "Toggle.data.js",
-      "flamegraphFile": "Toggle.html"
+    "profile": {
+      "logFile": "isolate-00000248C0C3E090-14868-puppeteer.prof",
+      "metrics": {},
+      "baseline": {
+        "logFile": "isolate-000001FCF48C0980-25140-puppeteer.prof",
+        "metrics": {}
+      }
     },
-    "baseline": {
-      "files": {
-        "dataFile": "Toggle_base.data.js",
-        "flamegraphFile": "Toggle_base.html"
+    "processed": {
+      "output": {
+        "dataFile": "Toggle.data.js",
+        "flamegraphFile": "Toggle.html"
       },
-      "numTicks": 454
+      "baseline": {
+        "output": {
+          "dataFile": "Toggle_base.data.js",
+          "flamegraphFile": "Toggle_base.html"
+        }
+      }
     },
-    "regressionFile": "Toggle.regression.txt",
-    "numTicks": 882,
-    "isRegression": true
+    "analysis": {
+      "numTicks": 882,
+      "baseline": {
+        "numTicks": 454
+      },
+      "regression": {
+        "summary": "Results for Toggle_base.data.js => Toggle.data.js\n\nnumTicks: 454 => 882\n\nPotential Regressions: \n ~ToggleBase.render, time consumed: 9% => 53% \n ~getClassNames, time consumed: 2% => 47% \n ~mergeStyleSets, time consumed: 0% => 39% \n ~obj.<computed>, time consumed: 10% => 53% \n ~styleToRegistration, time consumed: 0% => 29% \n\nNew Functions: \n ~Toggle_styles_getStyles, time consumed = 6%\n ~_resolve, time consumed = 7%\n ~_styles, time consumed = 7%\n ~extractRules, time consumed = 42%\n ~getKeyForRules, time consumed = 8%\n",
+        "isRegression": true,
+        "regressionFile": "Toggle.regression.txt"
+      }
+    }
   },
   "ToggleNew": {
-    "files": {
-      "dataFile": "ToggleNew.data.js",
-      "flamegraphFile": "ToggleNew.html"
+    "profile": {
+      "logFile": "isolate-000002231747AC50-11576-puppeteer.prof",
+      "metrics": {},
+      "baseline": {
+        "logFile": "isolate-0000014BEA16EDB0-28552-puppeteer.prof",
+        "metrics": {}
+      }
     },
-    "baseline": {
-      "files": {
-        "dataFile": "ToggleNew_base.data.js",
-        "flamegraphFile": "ToggleNew_base.html"
+    "processed": {
+      "output": {
+        "dataFile": "ToggleNew.data.js",
+        "flamegraphFile": "ToggleNew.html"
       },
-      "numTicks": 1102
+      "baseline": {
+        "output": {
+          "dataFile": "ToggleNew_base.data.js",
+          "flamegraphFile": "ToggleNew_base.html"
+        }
+      }
     },
-    "regressionFile": "ToggleNew.regression.txt",
-    "numTicks": 1165,
-    "isRegression": false
+    "analysis": {
+      "numTicks": 1165,
+      "baseline": {
+        "numTicks": 1102
+      },
+      "regression": {
+        "summary": "Results for ToggleNew_base.data.js => ToggleNew.data.js\n\nnumTicks: 1102 => 1165\n\nOK!",
+        "isRegression": false
+      }
+    }
   }
 }

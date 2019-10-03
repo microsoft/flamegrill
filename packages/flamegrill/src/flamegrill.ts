@@ -1,8 +1,8 @@
 import path from 'path';
 
-import { profile } from './profile';
-import { processProfiles } from './process';
-import { analyze } from './analyze';
+import { profile, ScenarioProfile } from './profile';
+import { processProfiles, ProcessedScenario } from './process';
+import { analyze, ScenarioAnalysis } from './analyze';
 
 // Chrome command for running similarly configured instance of Chrome as puppeteer is configured here:
 // "C:\Program Files (x86)\Google\Chrome\Application\chrome" --no-sandbox --js-flags=" --logfile=C:\git\perf\output\chrome.log --prof --jitless --no-opt" --user-data-dir="C:\git\perf\user" http://localhost:4322
@@ -21,30 +21,14 @@ export type ScenarioConfig = {
   tempDir?: string; 
 };
 
-// TODO: this should reuse existing structures as much as possible. profile, process, analysis.
-export interface CookBaselineResult {
-  files: CookOutput;
-  numTicks: number;
-}
-
-// TODO: this should reuse existing structures as much as possible. profile, process, analysis.
 export interface CookResult {
-  numTicks: number;
-  files: CookOutput;
-  isRegression: boolean;
-  regressionFile: string;
-  baseline?: CookBaselineResult;
-};
+  profile: ScenarioProfile;
+  processed: ProcessedScenario;
+  analysis?: ScenarioAnalysis;
+}
 
 export interface CookResults {
   [scenarioName: string]: CookResult;
-}
-
-// TODO: this is redundant with ProcessedOutput
-export interface CookOutput {
-  dataFile?: string;
-  errorFile?: string;
-  flamegraphFile?: string;
 }
 
 /**
@@ -59,63 +43,23 @@ export async function cook(scenarios: Scenarios, userConfig?: ScenarioConfig): P
   }
   
   const profiles = await profile(scenarios, config);
-  console.log('profiles: ' + JSON.stringify(profiles));
+  const processed = await processProfiles(profiles, config);
+  const analyses = analyze(processed, config);
 
-  const processedScenarios = await processProfiles(profiles, config);
-  const scenarioAnalyses = analyze(processedScenarios, config);
+  const results: CookResults = {};
 
-  const analyses: CookResults = {};
+  Object.keys(scenarios).forEach(scenarioName => {
+    results[scenarioName] = {
+      profile: profiles[scenarioName],
+      processed: processed[scenarioName],
+      analysis: analyses[scenarioName],
+    };
+  });
 
-  for (const scenarioName of Object.keys(scenarios)) {
-    const processedScenario = processedScenarios[scenarioName];
-    const analysis = scenarioAnalyses[scenarioName];
-    // TODO: remove dis
-    const regressionFile = `${scenarioName}.regression.txt`;
-  
-    // TODO: delete this mess when cook return types are aligned with module types (profile, process, analyze)
-    const tempFiles: CookOutput = {};
-    if (processedScenario.output) {
-      tempFiles.dataFile = processedScenario.output.dataFile;
-      tempFiles.flamegraphFile = processedScenario.output.flamegraphFile;
-    }
-    if (processedScenario.error) {
-      tempFiles.errorFile = processedScenario.error.errorFile
-    }
-    // TODO: delete this mess when cook return types are aligned with module types (profile, process, analyze)
-    const tempFilesBaseline: CookOutput = {};
-    if (processedScenario.baseline && processedScenario.baseline.output) {
-      tempFilesBaseline.dataFile = processedScenario.baseline.output.dataFile;
-      tempFilesBaseline.flamegraphFile = processedScenario.baseline.output.flamegraphFile;
-    }
-    if (processedScenario.baseline && processedScenario.baseline.error) {
-      tempFilesBaseline.errorFile = processedScenario.baseline.error.errorFile
-    }
+  console.log('results: ');
+  console.dir(results, { depth: null });
 
-    if (processedScenario.output) {
-      analyses[scenarioName] = {
-        numTicks: analysis.numTicks,
-        isRegression: analysis.regression ? analysis.regression.isRegression : false,
-        // TODO: this should be an input to processFile?
-        regressionFile,
-        files: tempFiles,
-        baseline: processedScenario.baseline && analysis.baseline ? {
-          numTicks: analysis.baseline.numTicks,
-          files: tempFilesBaseline
-        } : undefined
-      };
-    } else {
-      analyses[scenarioName] = {
-        numTicks: -1,
-        isRegression: false,
-        regressionFile,
-        files: tempFiles,
-      };
-    }
-  }
-
-  console.log('analyses: ' + JSON.stringify(analyses));
-
-  return analyses;
+  return results;
 };
 
 export default {

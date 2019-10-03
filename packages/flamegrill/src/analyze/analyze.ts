@@ -6,7 +6,6 @@ import { ProcessedScenario, ProcessedScenarios } from '../process';
 
 import { findRegressions, RegressionOutput } from './regression';
 
-// TODO: check all types for usage and consistency across modules.
 export interface Analysis {
   numTicks: number;
 }
@@ -17,11 +16,11 @@ export interface RegressionAnalysis extends RegressionOutput {
 
 export interface ScenarioAnalysis extends Analysis {
   baseline?: Analysis;
-  regression?: RegressionOutput;
+  regression?: RegressionAnalysis;
 };
 
 export interface ScenarioAnalyses {
-  [scenarioName: string]: ScenarioAnalysis;
+  [scenarioName: string]: ScenarioAnalysis | undefined;
 };
 
 export function analyze(processedScenarios: ProcessedScenarios, config: Required<ScenarioConfig>): ScenarioAnalyses {
@@ -34,18 +33,16 @@ export function analyze(processedScenarios: ProcessedScenarios, config: Required
 
     scenarioAnalyses[scenarioName] = analysis;
   }
-
+  
   return scenarioAnalyses;
 }
 
 /**
  * Process profiler output and check for regressions.
  */
-function analyzeScenario(scenario: ProcessedScenario, scenarioName: string, config: Required<ScenarioConfig>): ScenarioAnalysis {
-  let numTicks = -1;
-
+function analyzeScenario(scenario: ProcessedScenario, scenarioName: string, config: Required<ScenarioConfig>): ScenarioAnalysis | undefined {
   if (scenario.output) {
-    numTicks = getTicks(scenario.output.dataFile);
+    let numTicks = getTicks(scenario.output.dataFile);
 
     if (scenario.baseline && scenario.baseline.output) {
       let numTicksBaseline = getTicks(scenario.baseline.output.dataFile);
@@ -62,13 +59,11 @@ function analyzeScenario(scenario: ProcessedScenario, scenarioName: string, conf
         regression: analysis
       };
     }
-  } else {
-    console.log('analyzeScenario: no output to analyze!')
-  }
+  } 
+  
+  console.log('analyzeScenario: no output to analyze!')
 
-  return {
-    numTicks
-  };
+  return undefined;
 }
 
 /**
