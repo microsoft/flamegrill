@@ -1,170 +1,128 @@
 {
   "BaseButton": {
     "logFile": "profiles/isolate-000001C8E897A980-9332-puppeteer.prof",
-    "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\BaseButton",
-    "reference": {
-      "logFile": "profiles/isolate-000002716F92D960-27048-puppeteer.prof",
-      "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\BaseButton_ref"
+    "baseline": {
+      "logFile": "profiles/isolate-000002716F92D960-27048-puppeteer.prof"
     }
   },
   "BaseButtonNew": {
     "logFile": "profiles/isolate-00000150C15DDCB0-8200-puppeteer.prof",
-    "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\BaseButtonNew",
-    "reference": {
-      "logFile": "profiles/isolate-000001C7CB0729F0-15316-puppeteer.prof",
-      "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\BaseButtonNew_ref"
+    "baseline": {
+      "logFile": "profiles/isolate-000001C7CB0729F0-15316-puppeteer.prof"
     }
   },
   "button": {
     "logFile": "profiles/isolate-000001FA30C2C060-15348-puppeteer.prof",
-    "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\button",
-    "reference": {
-      "logFile": "profiles/isolate-00000218B8DE6280-33408-puppeteer.prof",
-      "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\button_ref"
+    "baseline": {
+      "logFile": "profiles/isolate-00000218B8DE6280-33408-puppeteer.prof"
     }
   },
   "DefaultButton": {
     "logFile": "profiles/isolate-0000026F3D5C86F0-32220-puppeteer.prof",
-    "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\DefaultButton",
-    "reference": {
-      "logFile": "profiles/isolate-000001A279165800-31988-puppeteer.prof",
-      "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\DefaultButton_ref"
+    "baseline": {
+      "logFile": "profiles/isolate-000001A279165800-31988-puppeteer.prof"
     }
   },
   "DefaultButtonNew": {
     "logFile": "profiles/isolate-000001976475B760-12772-puppeteer.prof",
-    "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\DefaultButtonNew",
-    "reference": {
-      "logFile": "profiles/isolate-000001AFA4995FB0-8920-puppeteer.prof",
-      "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\DefaultButtonNew_ref"
+    "baseline": {
+      "logFile": "profiles/isolate-000001AFA4995FB0-8920-puppeteer.prof"
     }
   },
   "DetailsRow": {
     "logFile": "profiles/isolate-000001C75B30DD10-19448-puppeteer.prof",
-    "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\DetailsRow",
-    "reference": {
-      "logFile": "profiles/isolate-0000016A4F24EAD0-27036-puppeteer.prof",
-      "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\DetailsRow_ref"
+    "baseline": {
+      "logFile": "profiles/isolate-0000016A4F24EAD0-27036-puppeteer.prof"
     }
   },
   "DetailsRowFast": {
     "logFile": "profiles/isolate-000001AB3AA2DE10-28068-puppeteer.prof",
-    "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\DetailsRowFast",
-    "reference": {
-      "logFile": "profiles/isolate-0000025EBEA9C020-13384-puppeteer.prof",
-      "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\DetailsRowFast_ref"
+    "baseline": {
+      "logFile": "profiles/isolate-0000025EBEA9C020-13384-puppeteer.prof"
     }
   },
   "DetailsRowNoStyles": {
     "logFile": "profiles/isolate-000001D1BFE31800-24432-puppeteer.prof",
-    "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\DetailsRowNoStyles",
-    "reference": {
-      "logFile": "profiles/isolate-000001CEF69AFE10-4612-puppeteer.prof",
-      "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\DetailsRowNoStyles_ref"
+    "baseline": {
+      "logFile": "profiles/isolate-000001CEF69AFE10-4612-puppeteer.prof"
     }
   },
   "DocumentCardTitle": {
     "logFile": "profiles/isolate-000001658015DEE0-9140-puppeteer.prof",
-    "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\DocumentCardTitle",
-    "reference": {
-      "logFile": "profiles/isolate-000002A0A0FDD770-30228-puppeteer.prof",
-      "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\DocumentCardTitle_ref"
+    "baseline": {
+      "logFile": "profiles/isolate-000002A0A0FDD770-30228-puppeteer.prof"
     }
   },
   "MenuButton": {
     "logFile": "profiles/isolate-0000023E414D6CE0-28460-puppeteer.prof",
-    "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\MenuButton",
-    "reference": {
-      "logFile": "profiles/isolate-000002744B17D570-32064-puppeteer.prof",
-      "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\MenuButton_ref"
+    "baseline": {
+      "logFile": "profiles/isolate-000002744B17D570-32064-puppeteer.prof"
     }
   },
   "MenuButtonNew": {
     "logFile": "profiles/isolate-0000021FD7B39BB0-28188-puppeteer.prof",
-    "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\MenuButtonNew",
-    "reference": {
-      "logFile": "profiles/isolate-0000028C417C8AC0-24936-puppeteer.prof",
-      "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\MenuButtonNew_ref"
+    "baseline": {
+      "logFile": "profiles/isolate-0000028C417C8AC0-24936-puppeteer.prof"
     }
   },
   "PrimaryButton": {
     "logFile": "profiles/isolate-00000224DD39CC70-27088-puppeteer.prof",
-    "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\PrimaryButton",
-    "reference": {
-      "logFile": "profiles/isolate-00000289B99F90F0-33752-puppeteer.prof",
-      "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\PrimaryButton_ref"
+    "baseline": {
+      "logFile": "profiles/isolate-00000289B99F90F0-33752-puppeteer.prof"
     }
   },
   "PrimaryButtonNew": {
     "logFile": "profiles/isolate-000001D40015E310-20784-puppeteer.prof",
-    "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\PrimaryButtonNew",
-    "reference": {
-      "logFile": "profiles/isolate-000001C3BAC2EA80-32776-puppeteer.prof",
-      "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\PrimaryButtonNew_ref"
+    "baseline": {
+      "logFile": "profiles/isolate-000001C3BAC2EA80-32776-puppeteer.prof"
     }
   },
   "SplitButton": {
     "logFile": "profiles/isolate-000001D2DD15DB40-22696-puppeteer.prof",
-    "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\SplitButton",
-    "reference": {
-      "logFile": "profiles/isolate-000001292C499B50-24060-puppeteer.prof",
-      "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\SplitButton_ref"
+    "baseline": {
+      "logFile": "profiles/isolate-000001292C499B50-24060-puppeteer.prof"
     }
   },
   "SplitButtonNew": {
     "logFile": "profiles/isolate-0000027E6DE24B80-31272-puppeteer.prof",
-    "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\SplitButtonNew",
-    "reference": {
-      "logFile": "profiles/isolate-000002EAD2E39E10-33780-puppeteer.prof",
-      "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\SplitButtonNew_ref"
+    "baseline": {
+      "logFile": "profiles/isolate-000002EAD2E39E10-33780-puppeteer.prof"
     }
   },
   "Stack": {
     "logFile": "profiles/isolate-000002958EF69420-30340-puppeteer.prof",
-    "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\Stack",
-    "reference": {
-      "logFile": "profiles/isolate-00000199612E7F60-32084-puppeteer.prof",
-      "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\Stack_ref"
+    "baseline": {
+      "logFile": "profiles/isolate-00000199612E7F60-32084-puppeteer.prof"
     }
   },
   "StackWithIntrinsicChildren": {
     "logFile": "profiles/isolate-000002CB95DF62A0-29024-puppeteer.prof",
-    "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\StackWithIntrinsicChildren",
-    "reference": {
-      "logFile": "profiles/isolate-000001F8F52C6E60-30996-puppeteer.prof",
-      "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\StackWithIntrinsicChildren_ref"
+    "baseline": {
+      "logFile": "profiles/isolate-000001F8F52C6E60-30996-puppeteer.prof"
     }
   },
   "StackWithTextChildren": {
     "logFile": "profiles/isolate-000001E2F953C450-33588-puppeteer.prof",
-    "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\StackWithTextChildren",
-    "reference": {
-      "logFile": "profiles/isolate-000001AA84CA8D20-8016-puppeteer.prof",
-      "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\StackWithTextChildren_ref"
+    "baseline": {
+      "logFile": "profiles/isolate-000001AA84CA8D20-8016-puppeteer.prof"
     }
   },
   "Text": {
     "logFile": "profiles/isolate-00000257772F8820-33584-puppeteer.prof",
-    "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\Text",
-    "reference": {
-      "logFile": "profiles/isolate-000002236CE1DD30-25244-puppeteer.prof",
-      "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\Text_ref"
+    "baseline": {
+      "logFile": "profiles/isolate-000002236CE1DD30-25244-puppeteer.prof"
     }
   },
   "Toggle": {
     "logFile": "profiles/isolate-00000248C0C3E090-14868-puppeteer.prof",
-    "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\Toggle",
-    "reference": {
-      "logFile": "profiles/isolate-000001FCF48C0980-25140-puppeteer.prof",
-      "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\Toggle_ref"
+    "baseline": {
+      "logFile": "profiles/isolate-000001FCF48C0980-25140-puppeteer.prof"
     }
   },
   "ToggleNew": {
     "logFile": "profiles/isolate-000002231747AC50-11576-puppeteer.prof",
-    "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\ToggleNew",
-    "reference": {
-      "logFile": "profiles/isolate-0000014BEA16EDB0-28552-puppeteer.prof",
-      "outFile": "C:\\git\\oufr-jg\\apps\\perf-test\\dist\\ToggleNew_ref"
+    "baseline": {
+      "logFile": "profiles/isolate-0000014BEA16EDB0-28552-puppeteer.prof"
     }
   }
 }

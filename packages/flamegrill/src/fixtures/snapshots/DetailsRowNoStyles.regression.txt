@@ -1,4 +1,4 @@
-Results for DetailsRowNoStyles_ref.data.js => DetailsRowNoStyles.data.js
+Results for DetailsRowNoStyles_base.data.js => DetailsRowNoStyles.data.js
 
 numTicks: 1466 => 1948
 

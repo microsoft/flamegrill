@@ -1,4 +1,4 @@
-Results for DetailsRow_ref.data.js => DetailsRow.data.js
+Results for DetailsRow_base.data.js => DetailsRow.data.js
 
 numTicks: 1471 => 2750
 

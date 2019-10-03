@@ -4,7 +4,7 @@ tags: cli
 category: doc
 ---
 
-Cook a page to generate flamegraph output. Optionally, provide a reference URL and perform a regression analysis.
+Cook a page to generate flamegraph output. Optionally, provide a baseline URL and perform a regression analysis.
 
 ## Options
 
@@ -16,9 +16,9 @@ name for given scenario
 
 URL for scenario under test
 
-###### `--reference, -r`
+###### `--baseline, -b`
 
-optional reference scenario to compare against
+optional baseline scenario to compare against
 
 ###### `--temp-dir, -t`
 

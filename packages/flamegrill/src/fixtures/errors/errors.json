@@ -1,0 +1,13 @@
+{
+  "test": {
+    "profile": {
+      "logFile": "error.prof",
+      "metrics": {}
+    },
+    "processed": {
+      "error": {
+        "errorFile": "test.err.txt"
+      }
+    }
+  }
+}
