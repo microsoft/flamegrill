@@ -2,7 +2,7 @@
 /* eslint import/extensions:"off" */
 /* eslint global-require:"off" */
 import React from 'react'
-import favicon from './favicon.png'
+import favicon from './favicon.ico'
 
 export default class HTML extends React.Component {
   render() {
@@ -15,7 +15,8 @@ export default class HTML extends React.Component {
             content="width=device-width, initial-scale=1.0"
           />
           {this.props.headComponents}
-          <link rel="shortcut icon" href={favicon} />
+          <link rel="shortcut icon" href={favicon} type="image/x-icon">
+          <link rel="icon" href={favicon} type="image/x-icon">
         </head>
         <body>
           <div
