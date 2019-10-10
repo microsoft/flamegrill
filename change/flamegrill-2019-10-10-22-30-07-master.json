@@ -1,6 +1,6 @@
 {
   "type": "patch",
-  "comment": "Added mkdirp to flamegrill so that it will create output directory if it doesn't exist",
+  "comment": "Automatically create output directories when they don't exist",
   "packageName": "flamegrill",
   "email": "lewisdy@tcd.ie",
   "commit": "d05f8b7b19235e1b2894d2becae4f3d34ca0b238",
