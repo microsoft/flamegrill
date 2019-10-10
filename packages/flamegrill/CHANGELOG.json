@@ -2,6 +2,20 @@
   "name": "flamegrill",
   "entries": [
     {
+      "date": "Thu, 10 Oct 2019 21:46:16 GMT",
+      "tag": "flamegrill_v0.1.1",
+      "version": "0.1.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Automatically create output directories when they don't exist",
+            "author": "lewisdy@tcd.ie",
+            "commit": "d05f8b7b19235e1b2894d2becae4f3d34ca0b238"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 03 Oct 2019 23:13:04 GMT",
       "tag": "flamegrill_v0.1.0",
       "version": "0.1.0",

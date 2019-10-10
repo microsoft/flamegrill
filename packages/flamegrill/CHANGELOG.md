@@ -1,7 +1,13 @@
 # Change Log - flamegrill
 
-This log was last generated on Thu, 03 Oct 2019 23:13:04 GMT and should not be manually modified.
+This log was last generated on Thu, 10 Oct 2019 21:46:16 GMT and should not be manually modified.
 
+## 0.1.1
+Thu, 10 Oct 2019 21:46:16 GMT
+
+### Patches
+
+- Automatically create output directories when they don't exist (lewisdy@tcd.ie)
 ## 0.1.0
 Thu, 03 Oct 2019 23:13:04 GMT
 
