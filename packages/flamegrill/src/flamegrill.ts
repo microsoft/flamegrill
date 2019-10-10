@@ -1,5 +1,5 @@
+import mkdirp from 'mkdirp';
 import path from 'path';
-
 import { profile, ScenarioProfile } from './profile';
 import { processProfiles, ProcessedScenario } from './process';
 import { analyze, ScenarioAnalysis } from './analyze';
@@ -31,6 +31,24 @@ export interface CookResults {
   [scenarioName: string]: CookResult;
 }
 
+
+/**
+ * Function that takes a directory path
+ * and creates the structure if it doesn't exist
+ * @param {string} path directory path
+ * @returns {string} the directory path
+ */
+function resolveDir(dirPath: string): string {
+  mkdirp(dirPath, (err, made) => {
+    if (made === null){
+      console.log("Unable to create directory");
+      console.error(err);
+    }
+  })
+  return path.resolve(dirPath);
+}
+
+
 /**
  * 
  * @param {Scenarios} scenarios Scenarios under test.
@@ -38,8 +56,8 @@ export interface CookResults {
  */
 export async function cook(scenarios: Scenarios, userConfig?: ScenarioConfig): Promise<CookResults> {
   const config = {
-    outDir: userConfig && userConfig.outDir ? path.resolve(userConfig.outDir) : process.cwd(),
-    tempDir: userConfig && userConfig.tempDir ? path.resolve(userConfig.tempDir) : process.cwd()
+    outDir: userConfig && userConfig.outDir ? resolveDir(userConfig.outDir) : process.cwd(),
+    tempDir: userConfig && userConfig.tempDir ? resolveDir(userConfig.tempDir) : process.cwd()
   }
   
   const profiles = await profile(scenarios, config);
