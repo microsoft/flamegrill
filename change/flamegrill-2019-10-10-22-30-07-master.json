@@ -1,0 +1,8 @@
+{
+  "type": "patch",
+  "comment": "Automatically create output directories when they don't exist",
+  "packageName": "flamegrill",
+  "email": "lewisdy@tcd.ie",
+  "commit": "d05f8b7b19235e1b2894d2becae4f3d34ca0b238",
+  "date": "2019-10-10T21:30:07.389Z"
+}
