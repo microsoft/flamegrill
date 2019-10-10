@@ -1,4 +1,4 @@
-import mkdirp from 'mkdirp';
+import fs from 'fs';
 import path from 'path';
 import { profile, ScenarioProfile } from './profile';
 import { processProfiles, ProcessedScenario } from './process';
@@ -39,12 +39,7 @@ export interface CookResults {
  * @returns {string} the directory path
  */
 function resolveDir(dirPath: string): string {
-  mkdirp(dirPath, (err, made) => {
-    if (made === null){
-      console.log("Unable to create directory");
-      console.error(err);
-    }
-  })
+  fs.mkdirSync(dirPath);
   return path.resolve(dirPath);
 }
 

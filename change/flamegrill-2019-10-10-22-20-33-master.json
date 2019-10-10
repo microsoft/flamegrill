@@ -1,0 +1,8 @@
+{
+  "type": "minor",
+  "comment": "Added mkdirp to flamegrill so that it will create output directory if it doesn't exist",
+  "packageName": "flamegrill",
+  "email": "lewisdy@tcd.ie",
+  "commit": "fa0fb88d79f21f4a602ef6540b795a861f3ba949",
+  "date": "2019-10-10T21:20:33.040Z"
+}
