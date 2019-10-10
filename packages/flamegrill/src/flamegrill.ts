@@ -39,7 +39,9 @@ export interface CookResults {
  * @returns {string} the directory path
  */
 function resolveDir(dirPath: string): string {
-  fs.mkdirSync(dirPath);
+  if(!fs.existsSync(dirPath)){
+    fs.mkdirSync(dirPath);
+  }
   return path.resolve(dirPath);
 }
 
