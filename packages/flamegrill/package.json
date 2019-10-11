@@ -1,6 +1,6 @@
 {
   "name": "flamegrill",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "main": "lib/flamegrill.js",
   "module": "lib/flamegrill.js",
   "license": "MIT",

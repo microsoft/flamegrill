@@ -1,8 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Feature: Add metrics output from puppeteer.",
-  "packageName": "flamegrill",
-  "email": "jagore@microsoft.com",
-  "commit": "05a9242aa95907af8b468d3e15ae7857cda9a247",
-  "date": "2019-10-11T21:11:12.236Z"
-}

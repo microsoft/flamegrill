@@ -1,7 +1,13 @@
 # Change Log - flamegrill
 
-This log was last generated on Fri, 11 Oct 2019 16:49:43 GMT and should not be manually modified.
+This log was last generated on Fri, 11 Oct 2019 21:51:59 GMT and should not be manually modified.
 
+## 0.1.3
+Fri, 11 Oct 2019 21:51:59 GMT
+
+### Patches
+
+- Feature: Add metrics output from puppeteer. (jagore@microsoft.com)
 ## 0.1.2
 Fri, 11 Oct 2019 16:49:43 GMT
 
