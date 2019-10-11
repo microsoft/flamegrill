@@ -1,0 +1,15 @@
+C:\Users\Jason\src\flamegrill\packages\flamegrill\lib\tickprocessor.js:880
+      throw e;
+      ^
+
+Error: dispatchLogRow_: Can't parse tick,0xfffffffdeb11c0e4,55914,0,0x0,6, integer too large.
+    at TickProcessor.LogReader.dispatchLogRow_ (C:\Users\Jason\src\flamegrill\packages\flamegrill\lib\tickprocessor.js:835:19)
+    at TickProcessor.LogReader.processLogLine_ (C:\Users\Jason\src\flamegrill\packages\flamegrill\lib\tickprocessor.js:876:12)
+    at TickProcessor.LogReader.processLogLine (C:\Users\Jason\src\flamegrill\packages\flamegrill\lib\tickprocessor.js:736:10)
+    at TickProcessor.processLogFile (C:\Users\Jason\src\flamegrill\packages\flamegrill\lib\tickprocessor.js:2793:10)
+    at Object.<anonymous> (C:\Users\Jason\src\flamegrill\packages\flamegrill\lib\tickprocessor.js:3565:15)
+    at Module._compile (internal/modules/cjs/loader.js:778:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:789:10)
+    at Module.load (internal/modules/cjs/loader.js:653:32)
+    at tryModuleLoad (internal/modules/cjs/loader.js:593:12)
+    at Function.Module._load (internal/modules/cjs/loader.js:585:3)

@@ -2,15 +2,16 @@ import fs from 'fs';
 import path from 'path';
 
 import { ScenarioConfig } from '../flamegrill';
+import { ScenarioProfiles } from '../profile';
 import { ProcessedScenario, ProcessedScenarios } from '../process';
 
-import { findRegressions, RegressionOutput } from './regression';
+import { analyzeFunctions, FunctionalAnalysis } from './functional';
 
 export interface Analysis {
   numTicks: number;
 }
 
-export interface RegressionAnalysis extends RegressionOutput {
+export interface RegressionAnalysis extends FunctionalAnalysis {
   regressionFile?: string;
 };
 
@@ -46,7 +47,7 @@ function analyzeScenario(scenario: ProcessedScenario, scenarioName: string, conf
 
     if (scenario.baseline && scenario.baseline.output) {
       let numTicksBaseline = getTicks(scenario.baseline.output.dataFile);
-      let analysis: RegressionAnalysis = findRegressions(scenario.baseline.output.dataFile, scenario.output.dataFile);
+      let analysis: RegressionAnalysis = analyzeFunctions(scenario.baseline.output.dataFile, scenario.output.dataFile);
       if (analysis.isRegression) {
         analysis.regressionFile = `${scenarioName}.regression.txt`;
         fs.writeFileSync(path.join(config.outDir, analysis.regressionFile), analysis.summary);

@@ -2,10 +2,38 @@
   "BaseButton": {
     "profile": {
       "logFile": "isolate-000001C8E897A980-9332-puppeteer.prof",
-      "metrics": {},
+      "metrics": {
+        "Timestamp": 0,
+        "Documents": 1,
+        "Frames": 2,
+        "JSEventListeners": 3,
+        "Nodes": 4,
+        "LayoutCount": 5,
+        "RecalcStyleCount": 6,
+        "LayoutDuration": 7,
+        "RecalcStyleDuration": 8,
+        "ScriptDuration": 9,
+        "TaskDuration": 10,
+        "JSHeapUsedSize": 11,
+        "JSHeapTotalSize": 12
+      },
       "baseline": {
         "logFile": "isolate-000002716F92D960-27048-puppeteer.prof",
-        "metrics": {}
+        "metrics": {
+          "Timestamp": 0,
+          "Documents": 1,
+          "Frames": 2,
+          "JSEventListeners": 3,
+          "Nodes": 4,
+          "LayoutCount": 5,
+          "RecalcStyleCount": 6,
+          "LayoutDuration": 7,
+          "RecalcStyleDuration": 8,
+          "ScriptDuration": 9,
+          "TaskDuration": 10,
+          "JSHeapUsedSize": 11,
+          "JSHeapTotalSize": 12
+        }
       }
     },
     "processed": {
@@ -34,10 +62,38 @@
   "BaseButtonNew": {
     "profile": {
       "logFile": "isolate-00000150C15DDCB0-8200-puppeteer.prof",
-      "metrics": {},
+      "metrics": {
+        "Timestamp": 0,
+        "Documents": 1,
+        "Frames": 2,
+        "JSEventListeners": 3,
+        "Nodes": 4,
+        "LayoutCount": 5,
+        "RecalcStyleCount": 6,
+        "LayoutDuration": 7,
+        "RecalcStyleDuration": 8,
+        "ScriptDuration": 9,
+        "TaskDuration": 10,
+        "JSHeapUsedSize": 11,
+        "JSHeapTotalSize": 12
+      },
       "baseline": {
         "logFile": "isolate-000001C7CB0729F0-15316-puppeteer.prof",
-        "metrics": {}
+        "metrics": {
+          "Timestamp": 0,
+          "Documents": 1,
+          "Frames": 2,
+          "JSEventListeners": 3,
+          "Nodes": 4,
+          "LayoutCount": 5,
+          "RecalcStyleCount": 6,
+          "LayoutDuration": 7,
+          "RecalcStyleDuration": 8,
+          "ScriptDuration": 9,
+          "TaskDuration": 10,
+          "JSHeapUsedSize": 11,
+          "JSHeapTotalSize": 12
+        }
       }
     },
     "processed": {
@@ -66,10 +122,38 @@
   "button": {
     "profile": {
       "logFile": "isolate-000001FA30C2C060-15348-puppeteer.prof",
-      "metrics": {},
+      "metrics": {
+        "Timestamp": 0,
+        "Documents": 1,
+        "Frames": 2,
+        "JSEventListeners": 3,
+        "Nodes": 4,
+        "LayoutCount": 5,
+        "RecalcStyleCount": 6,
+        "LayoutDuration": 7,
+        "RecalcStyleDuration": 8,
+        "ScriptDuration": 9,
+        "TaskDuration": 10,
+        "JSHeapUsedSize": 11,
+        "JSHeapTotalSize": 12
+      },
       "baseline": {
         "logFile": "isolate-00000218B8DE6280-33408-puppeteer.prof",
-        "metrics": {}
+        "metrics": {
+          "Timestamp": 0,
+          "Documents": 1,
+          "Frames": 2,
+          "JSEventListeners": 3,
+          "Nodes": 4,
+          "LayoutCount": 5,
+          "RecalcStyleCount": 6,
+          "LayoutDuration": 7,
+          "RecalcStyleDuration": 8,
+          "ScriptDuration": 9,
+          "TaskDuration": 10,
+          "JSHeapUsedSize": 11,
+          "JSHeapTotalSize": 12
+        }
       }
     },
     "processed": {
@@ -98,10 +182,38 @@
   "DefaultButton": {
     "profile": {
       "logFile": "isolate-0000026F3D5C86F0-32220-puppeteer.prof",
-      "metrics": {},
+      "metrics": {
+        "Timestamp": 0,
+        "Documents": 1,
+        "Frames": 2,
+        "JSEventListeners": 3,
+        "Nodes": 4,
+        "LayoutCount": 5,
+        "RecalcStyleCount": 6,
+        "LayoutDuration": 7,
+        "RecalcStyleDuration": 8,
+        "ScriptDuration": 9,
+        "TaskDuration": 10,
+        "JSHeapUsedSize": 11,
+        "JSHeapTotalSize": 12
+      },
       "baseline": {
         "logFile": "isolate-000001A279165800-31988-puppeteer.prof",
-        "metrics": {}
+        "metrics": {
+          "Timestamp": 0,
+          "Documents": 1,
+          "Frames": 2,
+          "JSEventListeners": 3,
+          "Nodes": 4,
+          "LayoutCount": 5,
+          "RecalcStyleCount": 6,
+          "LayoutDuration": 7,
+          "RecalcStyleDuration": 8,
+          "ScriptDuration": 9,
+          "TaskDuration": 10,
+          "JSHeapUsedSize": 11,
+          "JSHeapTotalSize": 12
+        }
       }
     },
     "processed": {
@@ -130,10 +242,38 @@
   "DefaultButtonNew": {
     "profile": {
       "logFile": "isolate-000001976475B760-12772-puppeteer.prof",
-      "metrics": {},
+      "metrics": {
+        "Timestamp": 0,
+        "Documents": 1,
+        "Frames": 2,
+        "JSEventListeners": 3,
+        "Nodes": 4,
+        "LayoutCount": 5,
+        "RecalcStyleCount": 6,
+        "LayoutDuration": 7,
+        "RecalcStyleDuration": 8,
+        "ScriptDuration": 9,
+        "TaskDuration": 10,
+        "JSHeapUsedSize": 11,
+        "JSHeapTotalSize": 12
+      },
       "baseline": {
         "logFile": "isolate-000001AFA4995FB0-8920-puppeteer.prof",
-        "metrics": {}
+        "metrics": {
+          "Timestamp": 0,
+          "Documents": 1,
+          "Frames": 2,
+          "JSEventListeners": 3,
+          "Nodes": 4,
+          "LayoutCount": 5,
+          "RecalcStyleCount": 6,
+          "LayoutDuration": 7,
+          "RecalcStyleDuration": 8,
+          "ScriptDuration": 9,
+          "TaskDuration": 10,
+          "JSHeapUsedSize": 11,
+          "JSHeapTotalSize": 12
+        }
       }
     },
     "processed": {
@@ -162,10 +302,38 @@
   "DetailsRow": {
     "profile": {
       "logFile": "isolate-000001C75B30DD10-19448-puppeteer.prof",
-      "metrics": {},
+      "metrics": {
+        "Timestamp": 0,
+        "Documents": 1,
+        "Frames": 2,
+        "JSEventListeners": 3,
+        "Nodes": 4,
+        "LayoutCount": 5,
+        "RecalcStyleCount": 6,
+        "LayoutDuration": 7,
+        "RecalcStyleDuration": 8,
+        "ScriptDuration": 9,
+        "TaskDuration": 10,
+        "JSHeapUsedSize": 11,
+        "JSHeapTotalSize": 12
+      },
       "baseline": {
         "logFile": "isolate-0000016A4F24EAD0-27036-puppeteer.prof",
-        "metrics": {}
+        "metrics": {
+          "Timestamp": 0,
+          "Documents": 1,
+          "Frames": 2,
+          "JSEventListeners": 3,
+          "Nodes": 4,
+          "LayoutCount": 5,
+          "RecalcStyleCount": 6,
+          "LayoutDuration": 7,
+          "RecalcStyleDuration": 8,
+          "ScriptDuration": 9,
+          "TaskDuration": 10,
+          "JSHeapUsedSize": 11,
+          "JSHeapTotalSize": 12
+        }
       }
     },
     "processed": {
@@ -195,10 +363,38 @@
   "DetailsRowFast": {
     "profile": {
       "logFile": "isolate-000001AB3AA2DE10-28068-puppeteer.prof",
-      "metrics": {},
+      "metrics": {
+        "Timestamp": 0,
+        "Documents": 1,
+        "Frames": 2,
+        "JSEventListeners": 3,
+        "Nodes": 4,
+        "LayoutCount": 5,
+        "RecalcStyleCount": 6,
+        "LayoutDuration": 7,
+        "RecalcStyleDuration": 8,
+        "ScriptDuration": 9,
+        "TaskDuration": 10,
+        "JSHeapUsedSize": 11,
+        "JSHeapTotalSize": 12
+      },
       "baseline": {
         "logFile": "isolate-0000025EBEA9C020-13384-puppeteer.prof",
-        "metrics": {}
+        "metrics": {
+          "Timestamp": 0,
+          "Documents": 1,
+          "Frames": 2,
+          "JSEventListeners": 3,
+          "Nodes": 4,
+          "LayoutCount": 5,
+          "RecalcStyleCount": 6,
+          "LayoutDuration": 7,
+          "RecalcStyleDuration": 8,
+          "ScriptDuration": 9,
+          "TaskDuration": 10,
+          "JSHeapUsedSize": 11,
+          "JSHeapTotalSize": 12
+        }
       }
     },
     "processed": {
@@ -228,10 +424,38 @@
   "DetailsRowNoStyles": {
     "profile": {
       "logFile": "isolate-000001D1BFE31800-24432-puppeteer.prof",
-      "metrics": {},
+      "metrics": {
+        "Timestamp": 0,
+        "Documents": 1,
+        "Frames": 2,
+        "JSEventListeners": 3,
+        "Nodes": 4,
+        "LayoutCount": 5,
+        "RecalcStyleCount": 6,
+        "LayoutDuration": 7,
+        "RecalcStyleDuration": 8,
+        "ScriptDuration": 9,
+        "TaskDuration": 10,
+        "JSHeapUsedSize": 11,
+        "JSHeapTotalSize": 12
+      },
       "baseline": {
         "logFile": "isolate-000001CEF69AFE10-4612-puppeteer.prof",
-        "metrics": {}
+        "metrics": {
+          "Timestamp": 0,
+          "Documents": 1,
+          "Frames": 2,
+          "JSEventListeners": 3,
+          "Nodes": 4,
+          "LayoutCount": 5,
+          "RecalcStyleCount": 6,
+          "LayoutDuration": 7,
+          "RecalcStyleDuration": 8,
+          "ScriptDuration": 9,
+          "TaskDuration": 10,
+          "JSHeapUsedSize": 11,
+          "JSHeapTotalSize": 12
+        }
       }
     },
     "processed": {
@@ -261,10 +485,38 @@
   "DocumentCardTitle": {
     "profile": {
       "logFile": "isolate-000001658015DEE0-9140-puppeteer.prof",
-      "metrics": {},
+      "metrics": {
+        "Timestamp": 0,
+        "Documents": 1,
+        "Frames": 2,
+        "JSEventListeners": 3,
+        "Nodes": 4,
+        "LayoutCount": 5,
+        "RecalcStyleCount": 6,
+        "LayoutDuration": 7,
+        "RecalcStyleDuration": 8,
+        "ScriptDuration": 9,
+        "TaskDuration": 10,
+        "JSHeapUsedSize": 11,
+        "JSHeapTotalSize": 12
+      },
       "baseline": {
         "logFile": "isolate-000002A0A0FDD770-30228-puppeteer.prof",
-        "metrics": {}
+        "metrics": {
+          "Timestamp": 0,
+          "Documents": 1,
+          "Frames": 2,
+          "JSEventListeners": 3,
+          "Nodes": 4,
+          "LayoutCount": 5,
+          "RecalcStyleCount": 6,
+          "LayoutDuration": 7,
+          "RecalcStyleDuration": 8,
+          "ScriptDuration": 9,
+          "TaskDuration": 10,
+          "JSHeapUsedSize": 11,
+          "JSHeapTotalSize": 12
+        }
       }
     },
     "processed": {
@@ -293,10 +545,38 @@
   "MenuButton": {
     "profile": {
       "logFile": "isolate-0000023E414D6CE0-28460-puppeteer.prof",
-      "metrics": {},
+      "metrics": {
+        "Timestamp": 0,
+        "Documents": 1,
+        "Frames": 2,
+        "JSEventListeners": 3,
+        "Nodes": 4,
+        "LayoutCount": 5,
+        "RecalcStyleCount": 6,
+        "LayoutDuration": 7,
+        "RecalcStyleDuration": 8,
+        "ScriptDuration": 9,
+        "TaskDuration": 10,
+        "JSHeapUsedSize": 11,
+        "JSHeapTotalSize": 12
+      },
       "baseline": {
         "logFile": "isolate-000002744B17D570-32064-puppeteer.prof",
-        "metrics": {}
+        "metrics": {
+          "Timestamp": 0,
+          "Documents": 1,
+          "Frames": 2,
+          "JSEventListeners": 3,
+          "Nodes": 4,
+          "LayoutCount": 5,
+          "RecalcStyleCount": 6,
+          "LayoutDuration": 7,
+          "RecalcStyleDuration": 8,
+          "ScriptDuration": 9,
+          "TaskDuration": 10,
+          "JSHeapUsedSize": 11,
+          "JSHeapTotalSize": 12
+        }
       }
     },
     "processed": {
@@ -325,10 +605,38 @@
   "MenuButtonNew": {
     "profile": {
       "logFile": "isolate-0000021FD7B39BB0-28188-puppeteer.prof",
-      "metrics": {},
+      "metrics": {
+        "Timestamp": 0,
+        "Documents": 1,
+        "Frames": 2,
+        "JSEventListeners": 3,
+        "Nodes": 4,
+        "LayoutCount": 5,
+        "RecalcStyleCount": 6,
+        "LayoutDuration": 7,
+        "RecalcStyleDuration": 8,
+        "ScriptDuration": 9,
+        "TaskDuration": 10,
+        "JSHeapUsedSize": 11,
+        "JSHeapTotalSize": 12
+      },
       "baseline": {
         "logFile": "isolate-0000028C417C8AC0-24936-puppeteer.prof",
-        "metrics": {}
+        "metrics": {
+          "Timestamp": 0,
+          "Documents": 1,
+          "Frames": 2,
+          "JSEventListeners": 3,
+          "Nodes": 4,
+          "LayoutCount": 5,
+          "RecalcStyleCount": 6,
+          "LayoutDuration": 7,
+          "RecalcStyleDuration": 8,
+          "ScriptDuration": 9,
+          "TaskDuration": 10,
+          "JSHeapUsedSize": 11,
+          "JSHeapTotalSize": 12
+        }
       }
     },
     "processed": {
@@ -357,10 +665,38 @@
   "PrimaryButton": {
     "profile": {
       "logFile": "isolate-00000224DD39CC70-27088-puppeteer.prof",
-      "metrics": {},
+      "metrics": {
+        "Timestamp": 0,
+        "Documents": 1,
+        "Frames": 2,
+        "JSEventListeners": 3,
+        "Nodes": 4,
+        "LayoutCount": 5,
+        "RecalcStyleCount": 6,
+        "LayoutDuration": 7,
+        "RecalcStyleDuration": 8,
+        "ScriptDuration": 9,
+        "TaskDuration": 10,
+        "JSHeapUsedSize": 11,
+        "JSHeapTotalSize": 12
+      },
       "baseline": {
         "logFile": "isolate-00000289B99F90F0-33752-puppeteer.prof",
-        "metrics": {}
+        "metrics": {
+          "Timestamp": 0,
+          "Documents": 1,
+          "Frames": 2,
+          "JSEventListeners": 3,
+          "Nodes": 4,
+          "LayoutCount": 5,
+          "RecalcStyleCount": 6,
+          "LayoutDuration": 7,
+          "RecalcStyleDuration": 8,
+          "ScriptDuration": 9,
+          "TaskDuration": 10,
+          "JSHeapUsedSize": 11,
+          "JSHeapTotalSize": 12
+        }
       }
     },
     "processed": {
@@ -389,10 +725,38 @@
   "PrimaryButtonNew": {
     "profile": {
       "logFile": "isolate-000001D40015E310-20784-puppeteer.prof",
-      "metrics": {},
+      "metrics": {
+        "Timestamp": 0,
+        "Documents": 1,
+        "Frames": 2,
+        "JSEventListeners": 3,
+        "Nodes": 4,
+        "LayoutCount": 5,
+        "RecalcStyleCount": 6,
+        "LayoutDuration": 7,
+        "RecalcStyleDuration": 8,
+        "ScriptDuration": 9,
+        "TaskDuration": 10,
+        "JSHeapUsedSize": 11,
+        "JSHeapTotalSize": 12
+      },
       "baseline": {
         "logFile": "isolate-000001C3BAC2EA80-32776-puppeteer.prof",
-        "metrics": {}
+        "metrics": {
+          "Timestamp": 0,
+          "Documents": 1,
+          "Frames": 2,
+          "JSEventListeners": 3,
+          "Nodes": 4,
+          "LayoutCount": 5,
+          "RecalcStyleCount": 6,
+          "LayoutDuration": 7,
+          "RecalcStyleDuration": 8,
+          "ScriptDuration": 9,
+          "TaskDuration": 10,
+          "JSHeapUsedSize": 11,
+          "JSHeapTotalSize": 12
+        }
       }
     },
     "processed": {
@@ -421,10 +785,38 @@
   "SplitButton": {
     "profile": {
       "logFile": "isolate-000001D2DD15DB40-22696-puppeteer.prof",
-      "metrics": {},
+      "metrics": {
+        "Timestamp": 0,
+        "Documents": 1,
+        "Frames": 2,
+        "JSEventListeners": 3,
+        "Nodes": 4,
+        "LayoutCount": 5,
+        "RecalcStyleCount": 6,
+        "LayoutDuration": 7,
+        "RecalcStyleDuration": 8,
+        "ScriptDuration": 9,
+        "TaskDuration": 10,
+        "JSHeapUsedSize": 11,
+        "JSHeapTotalSize": 12
+      },
       "baseline": {
         "logFile": "isolate-000001292C499B50-24060-puppeteer.prof",
-        "metrics": {}
+        "metrics": {
+          "Timestamp": 0,
+          "Documents": 1,
+          "Frames": 2,
+          "JSEventListeners": 3,
+          "Nodes": 4,
+          "LayoutCount": 5,
+          "RecalcStyleCount": 6,
+          "LayoutDuration": 7,
+          "RecalcStyleDuration": 8,
+          "ScriptDuration": 9,
+          "TaskDuration": 10,
+          "JSHeapUsedSize": 11,
+          "JSHeapTotalSize": 12
+        }
       }
     },
     "processed": {
@@ -453,10 +845,38 @@
   "SplitButtonNew": {
     "profile": {
       "logFile": "isolate-0000027E6DE24B80-31272-puppeteer.prof",
-      "metrics": {},
+      "metrics": {
+        "Timestamp": 0,
+        "Documents": 1,
+        "Frames": 2,
+        "JSEventListeners": 3,
+        "Nodes": 4,
+        "LayoutCount": 5,
+        "RecalcStyleCount": 6,
+        "LayoutDuration": 7,
+        "RecalcStyleDuration": 8,
+        "ScriptDuration": 9,
+        "TaskDuration": 10,
+        "JSHeapUsedSize": 11,
+        "JSHeapTotalSize": 12
+      },
       "baseline": {
         "logFile": "isolate-000002EAD2E39E10-33780-puppeteer.prof",
-        "metrics": {}
+        "metrics": {
+          "Timestamp": 0,
+          "Documents": 1,
+          "Frames": 2,
+          "JSEventListeners": 3,
+          "Nodes": 4,
+          "LayoutCount": 5,
+          "RecalcStyleCount": 6,
+          "LayoutDuration": 7,
+          "RecalcStyleDuration": 8,
+          "ScriptDuration": 9,
+          "TaskDuration": 10,
+          "JSHeapUsedSize": 11,
+          "JSHeapTotalSize": 12
+        }
       }
     },
     "processed": {
@@ -485,10 +905,38 @@
   "Stack": {
     "profile": {
       "logFile": "isolate-000002958EF69420-30340-puppeteer.prof",
-      "metrics": {},
+      "metrics": {
+        "Timestamp": 0,
+        "Documents": 1,
+        "Frames": 2,
+        "JSEventListeners": 3,
+        "Nodes": 4,
+        "LayoutCount": 5,
+        "RecalcStyleCount": 6,
+        "LayoutDuration": 7,
+        "RecalcStyleDuration": 8,
+        "ScriptDuration": 9,
+        "TaskDuration": 10,
+        "JSHeapUsedSize": 11,
+        "JSHeapTotalSize": 12
+      },
       "baseline": {
         "logFile": "isolate-00000199612E7F60-32084-puppeteer.prof",
-        "metrics": {}
+        "metrics": {
+          "Timestamp": 0,
+          "Documents": 1,
+          "Frames": 2,
+          "JSEventListeners": 3,
+          "Nodes": 4,
+          "LayoutCount": 5,
+          "RecalcStyleCount": 6,
+          "LayoutDuration": 7,
+          "RecalcStyleDuration": 8,
+          "ScriptDuration": 9,
+          "TaskDuration": 10,
+          "JSHeapUsedSize": 11,
+          "JSHeapTotalSize": 12
+        }
       }
     },
     "processed": {
@@ -517,10 +965,38 @@
   "StackWithIntrinsicChildren": {
     "profile": {
       "logFile": "isolate-000002CB95DF62A0-29024-puppeteer.prof",
-      "metrics": {},
+      "metrics": {
+        "Timestamp": 0,
+        "Documents": 1,
+        "Frames": 2,
+        "JSEventListeners": 3,
+        "Nodes": 4,
+        "LayoutCount": 5,
+        "RecalcStyleCount": 6,
+        "LayoutDuration": 7,
+        "RecalcStyleDuration": 8,
+        "ScriptDuration": 9,
+        "TaskDuration": 10,
+        "JSHeapUsedSize": 11,
+        "JSHeapTotalSize": 12
+      },
       "baseline": {
         "logFile": "isolate-000001F8F52C6E60-30996-puppeteer.prof",
-        "metrics": {}
+        "metrics": {
+          "Timestamp": 0,
+          "Documents": 1,
+          "Frames": 2,
+          "JSEventListeners": 3,
+          "Nodes": 4,
+          "LayoutCount": 5,
+          "RecalcStyleCount": 6,
+          "LayoutDuration": 7,
+          "RecalcStyleDuration": 8,
+          "ScriptDuration": 9,
+          "TaskDuration": 10,
+          "JSHeapUsedSize": 11,
+          "JSHeapTotalSize": 12
+        }
       }
     },
     "processed": {
@@ -549,10 +1025,38 @@
   "StackWithTextChildren": {
     "profile": {
       "logFile": "isolate-000001E2F953C450-33588-puppeteer.prof",
-      "metrics": {},
+      "metrics": {
+        "Timestamp": 0,
+        "Documents": 1,
+        "Frames": 2,
+        "JSEventListeners": 3,
+        "Nodes": 4,
+        "LayoutCount": 5,
+        "RecalcStyleCount": 6,
+        "LayoutDuration": 7,
+        "RecalcStyleDuration": 8,
+        "ScriptDuration": 9,
+        "TaskDuration": 10,
+        "JSHeapUsedSize": 11,
+        "JSHeapTotalSize": 12
+      },
       "baseline": {
         "logFile": "isolate-000001AA84CA8D20-8016-puppeteer.prof",
-        "metrics": {}
+        "metrics": {
+          "Timestamp": 0,
+          "Documents": 1,
+          "Frames": 2,
+          "JSEventListeners": 3,
+          "Nodes": 4,
+          "LayoutCount": 5,
+          "RecalcStyleCount": 6,
+          "LayoutDuration": 7,
+          "RecalcStyleDuration": 8,
+          "ScriptDuration": 9,
+          "TaskDuration": 10,
+          "JSHeapUsedSize": 11,
+          "JSHeapTotalSize": 12
+        }
       }
     },
     "processed": {
@@ -581,10 +1085,38 @@
   "Text": {
     "profile": {
       "logFile": "isolate-00000257772F8820-33584-puppeteer.prof",
-      "metrics": {},
+      "metrics": {
+        "Timestamp": 0,
+        "Documents": 1,
+        "Frames": 2,
+        "JSEventListeners": 3,
+        "Nodes": 4,
+        "LayoutCount": 5,
+        "RecalcStyleCount": 6,
+        "LayoutDuration": 7,
+        "RecalcStyleDuration": 8,
+        "ScriptDuration": 9,
+        "TaskDuration": 10,
+        "JSHeapUsedSize": 11,
+        "JSHeapTotalSize": 12
+      },
       "baseline": {
         "logFile": "isolate-000002236CE1DD30-25244-puppeteer.prof",
-        "metrics": {}
+        "metrics": {
+          "Timestamp": 0,
+          "Documents": 1,
+          "Frames": 2,
+          "JSEventListeners": 3,
+          "Nodes": 4,
+          "LayoutCount": 5,
+          "RecalcStyleCount": 6,
+          "LayoutDuration": 7,
+          "RecalcStyleDuration": 8,
+          "ScriptDuration": 9,
+          "TaskDuration": 10,
+          "JSHeapUsedSize": 11,
+          "JSHeapTotalSize": 12
+        }
       }
     },
     "processed": {
@@ -613,10 +1145,38 @@
   "Toggle": {
     "profile": {
       "logFile": "isolate-00000248C0C3E090-14868-puppeteer.prof",
-      "metrics": {},
+      "metrics": {
+        "Timestamp": 0,
+        "Documents": 1,
+        "Frames": 2,
+        "JSEventListeners": 3,
+        "Nodes": 4,
+        "LayoutCount": 5,
+        "RecalcStyleCount": 6,
+        "LayoutDuration": 7,
+        "RecalcStyleDuration": 8,
+        "ScriptDuration": 9,
+        "TaskDuration": 10,
+        "JSHeapUsedSize": 11,
+        "JSHeapTotalSize": 12
+      },
       "baseline": {
         "logFile": "isolate-000001FCF48C0980-25140-puppeteer.prof",
-        "metrics": {}
+        "metrics": {
+          "Timestamp": 0,
+          "Documents": 1,
+          "Frames": 2,
+          "JSEventListeners": 3,
+          "Nodes": 4,
+          "LayoutCount": 5,
+          "RecalcStyleCount": 6,
+          "LayoutDuration": 7,
+          "RecalcStyleDuration": 8,
+          "ScriptDuration": 9,
+          "TaskDuration": 10,
+          "JSHeapUsedSize": 11,
+          "JSHeapTotalSize": 12
+        }
       }
     },
     "processed": {
@@ -646,10 +1206,38 @@
   "ToggleNew": {
     "profile": {
       "logFile": "isolate-000002231747AC50-11576-puppeteer.prof",
-      "metrics": {},
+      "metrics": {
+        "Timestamp": 0,
+        "Documents": 1,
+        "Frames": 2,
+        "JSEventListeners": 3,
+        "Nodes": 4,
+        "LayoutCount": 5,
+        "RecalcStyleCount": 6,
+        "LayoutDuration": 7,
+        "RecalcStyleDuration": 8,
+        "ScriptDuration": 9,
+        "TaskDuration": 10,
+        "JSHeapUsedSize": 11,
+        "JSHeapTotalSize": 12
+      },
       "baseline": {
         "logFile": "isolate-0000014BEA16EDB0-28552-puppeteer.prof",
-        "metrics": {}
+        "metrics": {
+          "Timestamp": 0,
+          "Documents": 1,
+          "Frames": 2,
+          "JSEventListeners": 3,
+          "Nodes": 4,
+          "LayoutCount": 5,
+          "RecalcStyleCount": 6,
+          "LayoutDuration": 7,
+          "RecalcStyleDuration": 8,
+          "ScriptDuration": 9,
+          "TaskDuration": 10,
+          "JSHeapUsedSize": 11,
+          "JSHeapTotalSize": 12
+        }
       }
     },
     "processed": {
