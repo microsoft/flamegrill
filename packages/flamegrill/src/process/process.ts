@@ -2,10 +2,12 @@ import fs from 'fs';
 import path from 'path';
 import cp from 'child_process';
 import concat from 'concat-stream';
-import flamebearer from './flamebearer';
 
 import { ScenarioConfig } from '../flamegrill';
-import { ScenarioProfiles } from '../profile';
+import { ScenarioProfile, ScenarioProfiles } from '../profile';
+
+import flamebearer from './flamebearer';
+import { addMetrics } from './metrics';
 
 // TODO: is file output good enough here as an API? should this return programmatic results?
 export interface ProcessedOutput {
@@ -42,10 +44,10 @@ export async function processProfiles(profiles: ScenarioProfiles, config: Requir
     const outFileBaseline = path.join(config.outDir, `${scenarioName}_base`);
     const result = profiles[scenarioName];
 
-    const processedScenario: ProcessedScenario = await processProfile(result.logFile, outFile);
+    const processedScenario: ProcessedScenario = await processProfile(result, outFile);
 
     if(result.baseline) {
-      processedScenario.baseline = await processProfile(result.baseline.logFile, outFileBaseline);
+      processedScenario.baseline = await processProfile(result.baseline, outFileBaseline);
     }
 
     processedScenarios[scenarioName] = processedScenario;
@@ -54,8 +56,8 @@ export async function processProfiles(profiles: ScenarioProfiles, config: Requir
   return processedScenarios;
 }
 
-async function processProfile(logFile: string, outFile: string): Promise<Processed> {
-  return generateFlamegraph(logFile, outFile);
+async function processProfile(profile: ScenarioProfile, outFile: string): Promise<Processed> {
+  return generateFlamegraph(profile, outFile);
 }
 
 /**
@@ -66,10 +68,10 @@ async function processProfile(logFile: string, outFile: string): Promise<Process
  * @param {string} outFile File path and base name for file output. Extensions will be added for each type of file output.
  * @returns {Promise<OutputFiles>} Promise resolving to generated files.
  */
-async function generateFlamegraph(logFile: string, outFile: string): Promise<Processed> {
+async function generateFlamegraph(profile: ScenarioProfile, outFile: string): Promise<Processed> {
   // TODO: account for --windows, --unix and --mac arguments? what is the output difference with and without these args?
   // TODO: use cli
-  const preprocessProc = cp.spawn(process.execPath, [tickprocessor, '--preprocess', '-j', logFile]);
+  const preprocessProc = cp.spawn(process.execPath, [tickprocessor, '--preprocess', '-j', profile.logFile]);
   const flamegraphFile = outFile + '.html'
   const dataFile = outFile + '.data.js';
   const errorFile = outFile + '.err.txt';
@@ -86,7 +88,10 @@ async function generateFlamegraph(logFile: string, outFile: string): Promise<Pro
         // This line writes intermediate streaming output for troubleshooting:
         // fs.writeFileSync(flamegraphfile.split('.html').join('.preprocessed.log'), preprocessed);
 
-        const [flamegraph, data] = flamebearer(preprocessed);
+        let [flamegraph, data] = flamebearer(preprocessed);
+
+        flamegraph = addMetrics(flamegraph, profile.metrics);
+
         fs.writeFileSync(flamegraphFile, flamegraph);
         fs.writeFileSync(dataFile, data);
 

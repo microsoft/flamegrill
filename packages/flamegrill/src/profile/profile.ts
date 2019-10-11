@@ -36,6 +36,7 @@ export async function profile(scenarios: Scenarios, config: Required<ScenarioCon
 
   const browser = await puppeteer.launch({
     headless: true,
+    // TODO: use --single-process arg?
     args: [
       '--flag-switches-begin',
       '--no-sandbox',

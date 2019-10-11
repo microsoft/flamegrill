@@ -1,4 +1,4 @@
-import { FunctionData, __unitTestHooks } from '../regression';
+import { FunctionData, __unitTestHooks } from '../functional';
 
 const { filterMinifiedNames, filterSystemNames } = __unitTestHooks;
 

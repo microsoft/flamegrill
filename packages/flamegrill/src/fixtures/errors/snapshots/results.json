@@ -1,0 +1,27 @@
+{
+  "test": {
+    "profile": {
+      "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\errors\\error.prof",
+      "metrics": {
+        "Timestamp": 0,
+        "Documents": 1,
+        "Frames": 2,
+        "JSEventListeners": 3,
+        "Nodes": 4,
+        "LayoutCount": 5,
+        "RecalcStyleCount": 6,
+        "LayoutDuration": 7,
+        "RecalcStyleDuration": 8,
+        "ScriptDuration": 9,
+        "TaskDuration": 10,
+        "JSHeapUsedSize": 11,
+        "JSHeapTotalSize": 12
+      }
+    },
+    "processed": {
+      "error": {
+        "errorFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-31156P9K1pPOdnx3z\\test.err.txt"
+      }
+    }
+  }
+}

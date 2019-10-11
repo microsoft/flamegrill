@@ -71,6 +71,8 @@ export async function cook(scenarios: Scenarios, userConfig?: ScenarioConfig): P
     };
   });
 
+  fs.writeFileSync(path.join(config.outDir, 'results.json'), JSON.stringify(results));
+  
   console.log('results: ');
   console.dir(results, { depth: null });
 

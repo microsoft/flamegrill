@@ -47,7 +47,7 @@ export interface ProcessedData {
   numTicks: number;
 }
 
-export interface RegressionOutput {
+export interface FunctionalAnalysis {
   summary: string;
   isRegression: boolean;
 }
@@ -58,11 +58,11 @@ export interface RegressionOutput {
  * @param {string} datafileBaseline Baseline data.
  * @param {string} datafile Scenario data.
  */
-export function findRegressions(datafileBaseline: string, datafile: string): RegressionOutput {
+export function analyzeFunctions(datafileBaseline: string, datafile: string): FunctionalAnalysis {
   let summary = '';
   let isRegression = false;
-  const dataBefore = readFlamegraphData(datafileBaseline);
-  const dataAfter = readFlamegraphData(datafile);
+  const dataBaseline = readFlamegraphData(datafileBaseline);
+  const data = readFlamegraphData(datafile);
 
   // TODO: UNIT TESTS FOR EVERYONE!
   // * function removed making other functions seem to be regressions when overall perf improves
@@ -95,12 +95,12 @@ export function findRegressions(datafileBaseline: string, datafile: string): Reg
   const regressions: FunctionRegression[] = [];
 
   // Analyze data to find new functions and regressions.
-  Object.keys(dataAfter.functionsMap).forEach(name => {
+  Object.keys(data.functionsMap).forEach(name => {
     // In some scenarios (such as native button), a tick can represent more time than our base thresholds. 
     // In these cases, elevate the base threshold to the tick base * 2.
     // For example, if base threshold reports new functions at 2% time consumed, but 1 tick is 4% time, 
     // then new functions will only be reported when > 8%.
-    const minTicks = Math.min(dataBefore.numTicks, dataAfter.numTicks);
+    const minTicks = Math.min(dataBaseline.numTicks, data.numTicks);
     const regressionNew = Math.max(1 / minTicks * 2, regressionNewBase);
     const regressionDiff = Math.max(1 / minTicks * 2, regressionDiffBase);
 
@@ -109,31 +109,31 @@ export function findRegressions(datafileBaseline: string, datafile: string): Reg
     //   console.log(`Modified base thresholds: regressionNew = ${regressionNew}, regressionDiff = ${regressionDiff}`);
     // }
 
-    const after = dataAfter.functionsMap[name];
-    const before = dataBefore.functionsMap[name];
+    const functions = data.functionsMap[name];
+    const functionsBaseline = dataBaseline.functionsMap[name];
 
     // TODO: This analysis should really account for the entire call hierarchy when comparing rather than just averaging.
     // For now just ignore spurious 1 tick instances by using the same number of instances for both.
-    const instances = before ? Math.min(before.instances.length, after.instances.length) : after.instances.length;
-    const afterTicksNormalized = calcTotalTicksNormalized(after.instances) / instances;
+    const instances = functionsBaseline ? Math.min(functionsBaseline.instances.length, functions.instances.length) : functions.instances.length;
+    const ticksNormalized = calcTotalTicksNormalized(functions.instances) / instances;
 
-    if (!before) {
-      if(afterTicksNormalized > regressionNew) {
-        newFunctions.push({ name, displayName: after.displayName });
+    if (!functionsBaseline) {
+      if(ticksNormalized > regressionNew) {
+        newFunctions.push({ name, displayName: functions.displayName });
       }
     } else {
-      const beforeTicksNormalized = calcTotalTicksNormalized(before.instances) / instances;
-      const percDiff = afterTicksNormalized - beforeTicksNormalized;
+      const ticksNormalizedBaseline = calcTotalTicksNormalized(functionsBaseline.instances) / instances;
+      const percDiff = ticksNormalized - ticksNormalizedBaseline;
 
       if (percDiff > regressionDiff) {
-        regressions.push({ name, displayName: after.displayName });
+        regressions.push({ name, displayName: functions.displayName });
       }
     }
 
   });
 
   summary += `Results for ${path.basename(datafileBaseline)} => ${path.basename(datafile)}\n\n`;
-  summary += `numTicks: ${dataBefore.numTicks} => ${dataAfter.numTicks}\n\n`;
+  summary += `numTicks: ${dataBaseline.numTicks} => ${data.numTicks}\n\n`;
 
   if (regressions.length === 0 && newFunctions.length === 0) {
     summary += 'OK!';
@@ -143,23 +143,23 @@ export function findRegressions(datafileBaseline: string, datafile: string): Reg
     isRegression = true;
     summary += 'Potential Regressions: \n';
     regressions.forEach(regression => {
-      const after = dataAfter.functionsMap[regression.displayName];
-      const before = dataBefore.functionsMap[regression.displayName];
+      const functions = data.functionsMap[regression.displayName];
+      const functionsBaseline = dataBaseline.functionsMap[regression.displayName];
   
       // Averaging prevents overexaggeration of recurisve functions, but can also underexaggerate their impact.
       // Averaging can also cause spurious (1 tick samples of obj.computed, what causes these?) of functions to underexaggerate impact.
       // TODO: Remove averaging when analysis takes into account call hierarchy.
       // For now just ignore spurious 1 tick instances by using the same number of instances for both.
-      const instances = before ? Math.min(before.instances.length, after.instances.length) : after.instances.length;
-      const afterTicksNormalized = calcTotalTicksNormalized(after.instances) / instances;
-      const beforeTicksNormalized = before && calcTotalTicksNormalized(before.instances) / instances;
+      const instances = functionsBaseline ? Math.min(functionsBaseline.instances.length, functions.instances.length) : functions.instances.length;
+      const ticksNormalized = calcTotalTicksNormalized(functions.instances) / instances;
+      const ticksNormalizedBaseline = functionsBaseline && calcTotalTicksNormalized(functionsBaseline.instances) / instances;
   
-      const beforeTicksDisplay = beforeTicksNormalized ? (beforeTicksNormalized * 100).toFixed(0) : 'not present';
-      const afterTicksDisplay = afterTicksNormalized && (afterTicksNormalized * 100).toFixed(0);
+      const ticksDisplayBaseline = ticksNormalizedBaseline ? (ticksNormalizedBaseline * 100).toFixed(0) : 'not present';
+      const ticksDisplay = ticksNormalized && (ticksNormalized * 100).toFixed(0);
 
       summary += ` ${regression.displayName}` +
-        `, time consumed: ${beforeTicksDisplay}% => ` +
-        `${afterTicksDisplay}% \n`;
+        `, time consumed: ${ticksDisplayBaseline}% => ` +
+        `${ticksDisplay}% \n`;
     });
   }
 
@@ -167,7 +167,7 @@ export function findRegressions(datafileBaseline: string, datafile: string): Reg
     isRegression = true;
     summary += '\nNew Functions: \n';
     newFunctions.forEach(newFunction => {
-      const ticksNormalized = calcTotalTicksNormalized(dataAfter.functionsMap[newFunction.displayName].instances);
+      const ticksNormalized = calcTotalTicksNormalized(data.functionsMap[newFunction.displayName].instances);
       summary += ` ${newFunction.displayName}, time consumed = ${(ticksNormalized * 100).toFixed(0)}%\n`;
     });
   }
@@ -327,7 +327,7 @@ if (require.main === module) {
   });
 
   scenarios.forEach(scenario => {
-    const analysis = findRegressions(path.join(process.cwd(), `${scenario}_base.data.js`), path.join(process.cwd(), `${scenario}.data.js`));
+    const analysis = analyzeFunctions(path.join(process.cwd(), `${scenario}_base.data.js`), path.join(process.cwd(), `${scenario}.data.js`));
     console.log(JSON.stringify(analysis));
     // processPerfData(path.join(process.cwd(), `${scenario}_base.js`), path.join(process.cwd(), `${scenario}.js`));
   });
