@@ -1,8 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Fix JS output for environments with stricter type checking. Fix analysis bug for scenarios without baseline.",
-  "packageName": "flamegrill",
-  "email": "jagore@microsoft.com",
-  "commit": "32b83031daf333c63e020c3dae2c651053eccd62",
-  "date": "2019-10-11T16:41:40.818Z"
-}

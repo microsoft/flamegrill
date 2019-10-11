@@ -2,6 +2,20 @@
   "name": "flamegrill",
   "entries": [
     {
+      "date": "Fri, 11 Oct 2019 16:49:43 GMT",
+      "tag": "flamegrill_v0.1.2",
+      "version": "0.1.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix JS output for environments with stricter type checking. Fix analysis bug for scenarios without baseline.",
+            "author": "jagore@microsoft.com",
+            "commit": "32b83031daf333c63e020c3dae2c651053eccd62"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 10 Oct 2019 21:46:16 GMT",
       "tag": "flamegrill_v0.1.1",
       "version": "0.1.1",
