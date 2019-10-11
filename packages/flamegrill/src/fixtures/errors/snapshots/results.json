@@ -1,7 +1,7 @@
 {
   "test": {
     "profile": {
-      "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\errors\\error.prof",
+      "logFile": "error.prof",
       "metrics": {
         "Timestamp": 0,
         "Documents": 1,
@@ -20,7 +20,7 @@
     },
     "processed": {
       "error": {
-        "errorFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-31156P9K1pPOdnx3z\\test.err.txt"
+        "errorFile": "test.err.txt"
       }
     }
   }

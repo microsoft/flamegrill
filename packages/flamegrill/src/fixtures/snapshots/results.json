@@ -1,7 +1,7 @@
 {
   "BaseButton": {
     "profile": {
-      "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-000001C8E897A980-9332-puppeteer.prof",
+      "logFile": "isolate-000001C8E897A980-9332-puppeteer.prof",
       "metrics": {
         "Timestamp": 0,
         "Documents": 1,
@@ -18,7 +18,7 @@
         "JSHeapTotalSize": 12
       },
       "baseline": {
-        "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-000002716F92D960-27048-puppeteer.prof",
+        "logFile": "isolate-000002716F92D960-27048-puppeteer.prof",
         "metrics": {
           "Timestamp": 0,
           "Documents": 1,
@@ -38,13 +38,13 @@
     },
     "processed": {
       "output": {
-        "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\BaseButton.data.js",
-        "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\BaseButton.html"
+        "dataFile": "BaseButton.data.js",
+        "flamegraphFile": "BaseButton.html"
       },
       "baseline": {
         "output": {
-          "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\BaseButton_base.data.js",
-          "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\BaseButton_base.html"
+          "dataFile": "BaseButton_base.data.js",
+          "flamegraphFile": "BaseButton_base.html"
         }
       }
     },
@@ -61,7 +61,7 @@
   },
   "BaseButtonNew": {
     "profile": {
-      "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-00000150C15DDCB0-8200-puppeteer.prof",
+      "logFile": "isolate-00000150C15DDCB0-8200-puppeteer.prof",
       "metrics": {
         "Timestamp": 0,
         "Documents": 1,
@@ -78,7 +78,7 @@
         "JSHeapTotalSize": 12
       },
       "baseline": {
-        "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-000001C7CB0729F0-15316-puppeteer.prof",
+        "logFile": "isolate-000001C7CB0729F0-15316-puppeteer.prof",
         "metrics": {
           "Timestamp": 0,
           "Documents": 1,
@@ -98,13 +98,13 @@
     },
     "processed": {
       "output": {
-        "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\BaseButtonNew.data.js",
-        "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\BaseButtonNew.html"
+        "dataFile": "BaseButtonNew.data.js",
+        "flamegraphFile": "BaseButtonNew.html"
       },
       "baseline": {
         "output": {
-          "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\BaseButtonNew_base.data.js",
-          "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\BaseButtonNew_base.html"
+          "dataFile": "BaseButtonNew_base.data.js",
+          "flamegraphFile": "BaseButtonNew_base.html"
         }
       }
     },
@@ -121,7 +121,7 @@
   },
   "button": {
     "profile": {
-      "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-000001FA30C2C060-15348-puppeteer.prof",
+      "logFile": "isolate-000001FA30C2C060-15348-puppeteer.prof",
       "metrics": {
         "Timestamp": 0,
         "Documents": 1,
@@ -138,7 +138,7 @@
         "JSHeapTotalSize": 12
       },
       "baseline": {
-        "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-00000218B8DE6280-33408-puppeteer.prof",
+        "logFile": "isolate-00000218B8DE6280-33408-puppeteer.prof",
         "metrics": {
           "Timestamp": 0,
           "Documents": 1,
@@ -158,13 +158,13 @@
     },
     "processed": {
       "output": {
-        "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\button.data.js",
-        "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\button.html"
+        "dataFile": "button.data.js",
+        "flamegraphFile": "button.html"
       },
       "baseline": {
         "output": {
-          "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\button_base.data.js",
-          "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\button_base.html"
+          "dataFile": "button_base.data.js",
+          "flamegraphFile": "button_base.html"
         }
       }
     },
@@ -181,7 +181,7 @@
   },
   "DefaultButton": {
     "profile": {
-      "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-0000026F3D5C86F0-32220-puppeteer.prof",
+      "logFile": "isolate-0000026F3D5C86F0-32220-puppeteer.prof",
       "metrics": {
         "Timestamp": 0,
         "Documents": 1,
@@ -198,7 +198,7 @@
         "JSHeapTotalSize": 12
       },
       "baseline": {
-        "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-000001A279165800-31988-puppeteer.prof",
+        "logFile": "isolate-000001A279165800-31988-puppeteer.prof",
         "metrics": {
           "Timestamp": 0,
           "Documents": 1,
@@ -218,13 +218,13 @@
     },
     "processed": {
       "output": {
-        "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\DefaultButton.data.js",
-        "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\DefaultButton.html"
+        "dataFile": "DefaultButton.data.js",
+        "flamegraphFile": "DefaultButton.html"
       },
       "baseline": {
         "output": {
-          "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\DefaultButton_base.data.js",
-          "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\DefaultButton_base.html"
+          "dataFile": "DefaultButton_base.data.js",
+          "flamegraphFile": "DefaultButton_base.html"
         }
       }
     },
@@ -241,7 +241,7 @@
   },
   "DefaultButtonNew": {
     "profile": {
-      "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-000001976475B760-12772-puppeteer.prof",
+      "logFile": "isolate-000001976475B760-12772-puppeteer.prof",
       "metrics": {
         "Timestamp": 0,
         "Documents": 1,
@@ -258,7 +258,7 @@
         "JSHeapTotalSize": 12
       },
       "baseline": {
-        "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-000001AFA4995FB0-8920-puppeteer.prof",
+        "logFile": "isolate-000001AFA4995FB0-8920-puppeteer.prof",
         "metrics": {
           "Timestamp": 0,
           "Documents": 1,
@@ -278,13 +278,13 @@
     },
     "processed": {
       "output": {
-        "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\DefaultButtonNew.data.js",
-        "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\DefaultButtonNew.html"
+        "dataFile": "DefaultButtonNew.data.js",
+        "flamegraphFile": "DefaultButtonNew.html"
       },
       "baseline": {
         "output": {
-          "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\DefaultButtonNew_base.data.js",
-          "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\DefaultButtonNew_base.html"
+          "dataFile": "DefaultButtonNew_base.data.js",
+          "flamegraphFile": "DefaultButtonNew_base.html"
         }
       }
     },
@@ -301,7 +301,7 @@
   },
   "DetailsRow": {
     "profile": {
-      "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-000001C75B30DD10-19448-puppeteer.prof",
+      "logFile": "isolate-000001C75B30DD10-19448-puppeteer.prof",
       "metrics": {
         "Timestamp": 0,
         "Documents": 1,
@@ -318,7 +318,7 @@
         "JSHeapTotalSize": 12
       },
       "baseline": {
-        "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-0000016A4F24EAD0-27036-puppeteer.prof",
+        "logFile": "isolate-0000016A4F24EAD0-27036-puppeteer.prof",
         "metrics": {
           "Timestamp": 0,
           "Documents": 1,
@@ -338,13 +338,13 @@
     },
     "processed": {
       "output": {
-        "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\DetailsRow.data.js",
-        "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\DetailsRow.html"
+        "dataFile": "DetailsRow.data.js",
+        "flamegraphFile": "DetailsRow.html"
       },
       "baseline": {
         "output": {
-          "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\DetailsRow_base.data.js",
-          "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\DetailsRow_base.html"
+          "dataFile": "DetailsRow_base.data.js",
+          "flamegraphFile": "DetailsRow_base.html"
         }
       }
     },
@@ -362,7 +362,7 @@
   },
   "DetailsRowFast": {
     "profile": {
-      "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-000001AB3AA2DE10-28068-puppeteer.prof",
+      "logFile": "isolate-000001AB3AA2DE10-28068-puppeteer.prof",
       "metrics": {
         "Timestamp": 0,
         "Documents": 1,
@@ -379,7 +379,7 @@
         "JSHeapTotalSize": 12
       },
       "baseline": {
-        "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-0000025EBEA9C020-13384-puppeteer.prof",
+        "logFile": "isolate-0000025EBEA9C020-13384-puppeteer.prof",
         "metrics": {
           "Timestamp": 0,
           "Documents": 1,
@@ -399,13 +399,13 @@
     },
     "processed": {
       "output": {
-        "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\DetailsRowFast.data.js",
-        "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\DetailsRowFast.html"
+        "dataFile": "DetailsRowFast.data.js",
+        "flamegraphFile": "DetailsRowFast.html"
       },
       "baseline": {
         "output": {
-          "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\DetailsRowFast_base.data.js",
-          "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\DetailsRowFast_base.html"
+          "dataFile": "DetailsRowFast_base.data.js",
+          "flamegraphFile": "DetailsRowFast_base.html"
         }
       }
     },
@@ -423,7 +423,7 @@
   },
   "DetailsRowNoStyles": {
     "profile": {
-      "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-000001D1BFE31800-24432-puppeteer.prof",
+      "logFile": "isolate-000001D1BFE31800-24432-puppeteer.prof",
       "metrics": {
         "Timestamp": 0,
         "Documents": 1,
@@ -440,7 +440,7 @@
         "JSHeapTotalSize": 12
       },
       "baseline": {
-        "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-000001CEF69AFE10-4612-puppeteer.prof",
+        "logFile": "isolate-000001CEF69AFE10-4612-puppeteer.prof",
         "metrics": {
           "Timestamp": 0,
           "Documents": 1,
@@ -460,13 +460,13 @@
     },
     "processed": {
       "output": {
-        "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\DetailsRowNoStyles.data.js",
-        "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\DetailsRowNoStyles.html"
+        "dataFile": "DetailsRowNoStyles.data.js",
+        "flamegraphFile": "DetailsRowNoStyles.html"
       },
       "baseline": {
         "output": {
-          "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\DetailsRowNoStyles_base.data.js",
-          "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\DetailsRowNoStyles_base.html"
+          "dataFile": "DetailsRowNoStyles_base.data.js",
+          "flamegraphFile": "DetailsRowNoStyles_base.html"
         }
       }
     },
@@ -484,7 +484,7 @@
   },
   "DocumentCardTitle": {
     "profile": {
-      "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-000001658015DEE0-9140-puppeteer.prof",
+      "logFile": "isolate-000001658015DEE0-9140-puppeteer.prof",
       "metrics": {
         "Timestamp": 0,
         "Documents": 1,
@@ -501,7 +501,7 @@
         "JSHeapTotalSize": 12
       },
       "baseline": {
-        "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-000002A0A0FDD770-30228-puppeteer.prof",
+        "logFile": "isolate-000002A0A0FDD770-30228-puppeteer.prof",
         "metrics": {
           "Timestamp": 0,
           "Documents": 1,
@@ -521,13 +521,13 @@
     },
     "processed": {
       "output": {
-        "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\DocumentCardTitle.data.js",
-        "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\DocumentCardTitle.html"
+        "dataFile": "DocumentCardTitle.data.js",
+        "flamegraphFile": "DocumentCardTitle.html"
       },
       "baseline": {
         "output": {
-          "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\DocumentCardTitle_base.data.js",
-          "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\DocumentCardTitle_base.html"
+          "dataFile": "DocumentCardTitle_base.data.js",
+          "flamegraphFile": "DocumentCardTitle_base.html"
         }
       }
     },
@@ -544,7 +544,7 @@
   },
   "MenuButton": {
     "profile": {
-      "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-0000023E414D6CE0-28460-puppeteer.prof",
+      "logFile": "isolate-0000023E414D6CE0-28460-puppeteer.prof",
       "metrics": {
         "Timestamp": 0,
         "Documents": 1,
@@ -561,7 +561,7 @@
         "JSHeapTotalSize": 12
       },
       "baseline": {
-        "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-000002744B17D570-32064-puppeteer.prof",
+        "logFile": "isolate-000002744B17D570-32064-puppeteer.prof",
         "metrics": {
           "Timestamp": 0,
           "Documents": 1,
@@ -581,13 +581,13 @@
     },
     "processed": {
       "output": {
-        "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\MenuButton.data.js",
-        "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\MenuButton.html"
+        "dataFile": "MenuButton.data.js",
+        "flamegraphFile": "MenuButton.html"
       },
       "baseline": {
         "output": {
-          "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\MenuButton_base.data.js",
-          "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\MenuButton_base.html"
+          "dataFile": "MenuButton_base.data.js",
+          "flamegraphFile": "MenuButton_base.html"
         }
       }
     },
@@ -604,7 +604,7 @@
   },
   "MenuButtonNew": {
     "profile": {
-      "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-0000021FD7B39BB0-28188-puppeteer.prof",
+      "logFile": "isolate-0000021FD7B39BB0-28188-puppeteer.prof",
       "metrics": {
         "Timestamp": 0,
         "Documents": 1,
@@ -621,7 +621,7 @@
         "JSHeapTotalSize": 12
       },
       "baseline": {
-        "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-0000028C417C8AC0-24936-puppeteer.prof",
+        "logFile": "isolate-0000028C417C8AC0-24936-puppeteer.prof",
         "metrics": {
           "Timestamp": 0,
           "Documents": 1,
@@ -641,13 +641,13 @@
     },
     "processed": {
       "output": {
-        "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\MenuButtonNew.data.js",
-        "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\MenuButtonNew.html"
+        "dataFile": "MenuButtonNew.data.js",
+        "flamegraphFile": "MenuButtonNew.html"
       },
       "baseline": {
         "output": {
-          "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\MenuButtonNew_base.data.js",
-          "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\MenuButtonNew_base.html"
+          "dataFile": "MenuButtonNew_base.data.js",
+          "flamegraphFile": "MenuButtonNew_base.html"
         }
       }
     },
@@ -664,7 +664,7 @@
   },
   "PrimaryButton": {
     "profile": {
-      "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-00000224DD39CC70-27088-puppeteer.prof",
+      "logFile": "isolate-00000224DD39CC70-27088-puppeteer.prof",
       "metrics": {
         "Timestamp": 0,
         "Documents": 1,
@@ -681,7 +681,7 @@
         "JSHeapTotalSize": 12
       },
       "baseline": {
-        "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-00000289B99F90F0-33752-puppeteer.prof",
+        "logFile": "isolate-00000289B99F90F0-33752-puppeteer.prof",
         "metrics": {
           "Timestamp": 0,
           "Documents": 1,
@@ -701,13 +701,13 @@
     },
     "processed": {
       "output": {
-        "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\PrimaryButton.data.js",
-        "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\PrimaryButton.html"
+        "dataFile": "PrimaryButton.data.js",
+        "flamegraphFile": "PrimaryButton.html"
       },
       "baseline": {
         "output": {
-          "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\PrimaryButton_base.data.js",
-          "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\PrimaryButton_base.html"
+          "dataFile": "PrimaryButton_base.data.js",
+          "flamegraphFile": "PrimaryButton_base.html"
         }
       }
     },
@@ -724,7 +724,7 @@
   },
   "PrimaryButtonNew": {
     "profile": {
-      "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-000001D40015E310-20784-puppeteer.prof",
+      "logFile": "isolate-000001D40015E310-20784-puppeteer.prof",
       "metrics": {
         "Timestamp": 0,
         "Documents": 1,
@@ -741,7 +741,7 @@
         "JSHeapTotalSize": 12
       },
       "baseline": {
-        "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-000001C3BAC2EA80-32776-puppeteer.prof",
+        "logFile": "isolate-000001C3BAC2EA80-32776-puppeteer.prof",
         "metrics": {
           "Timestamp": 0,
           "Documents": 1,
@@ -761,13 +761,13 @@
     },
     "processed": {
       "output": {
-        "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\PrimaryButtonNew.data.js",
-        "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\PrimaryButtonNew.html"
+        "dataFile": "PrimaryButtonNew.data.js",
+        "flamegraphFile": "PrimaryButtonNew.html"
       },
       "baseline": {
         "output": {
-          "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\PrimaryButtonNew_base.data.js",
-          "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\PrimaryButtonNew_base.html"
+          "dataFile": "PrimaryButtonNew_base.data.js",
+          "flamegraphFile": "PrimaryButtonNew_base.html"
         }
       }
     },
@@ -784,7 +784,7 @@
   },
   "SplitButton": {
     "profile": {
-      "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-000001D2DD15DB40-22696-puppeteer.prof",
+      "logFile": "isolate-000001D2DD15DB40-22696-puppeteer.prof",
       "metrics": {
         "Timestamp": 0,
         "Documents": 1,
@@ -801,7 +801,7 @@
         "JSHeapTotalSize": 12
       },
       "baseline": {
-        "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-000001292C499B50-24060-puppeteer.prof",
+        "logFile": "isolate-000001292C499B50-24060-puppeteer.prof",
         "metrics": {
           "Timestamp": 0,
           "Documents": 1,
@@ -821,13 +821,13 @@
     },
     "processed": {
       "output": {
-        "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\SplitButton.data.js",
-        "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\SplitButton.html"
+        "dataFile": "SplitButton.data.js",
+        "flamegraphFile": "SplitButton.html"
       },
       "baseline": {
         "output": {
-          "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\SplitButton_base.data.js",
-          "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\SplitButton_base.html"
+          "dataFile": "SplitButton_base.data.js",
+          "flamegraphFile": "SplitButton_base.html"
         }
       }
     },
@@ -844,7 +844,7 @@
   },
   "SplitButtonNew": {
     "profile": {
-      "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-0000027E6DE24B80-31272-puppeteer.prof",
+      "logFile": "isolate-0000027E6DE24B80-31272-puppeteer.prof",
       "metrics": {
         "Timestamp": 0,
         "Documents": 1,
@@ -861,7 +861,7 @@
         "JSHeapTotalSize": 12
       },
       "baseline": {
-        "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-000002EAD2E39E10-33780-puppeteer.prof",
+        "logFile": "isolate-000002EAD2E39E10-33780-puppeteer.prof",
         "metrics": {
           "Timestamp": 0,
           "Documents": 1,
@@ -881,13 +881,13 @@
     },
     "processed": {
       "output": {
-        "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\SplitButtonNew.data.js",
-        "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\SplitButtonNew.html"
+        "dataFile": "SplitButtonNew.data.js",
+        "flamegraphFile": "SplitButtonNew.html"
       },
       "baseline": {
         "output": {
-          "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\SplitButtonNew_base.data.js",
-          "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\SplitButtonNew_base.html"
+          "dataFile": "SplitButtonNew_base.data.js",
+          "flamegraphFile": "SplitButtonNew_base.html"
         }
       }
     },
@@ -904,7 +904,7 @@
   },
   "Stack": {
     "profile": {
-      "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-000002958EF69420-30340-puppeteer.prof",
+      "logFile": "isolate-000002958EF69420-30340-puppeteer.prof",
       "metrics": {
         "Timestamp": 0,
         "Documents": 1,
@@ -921,7 +921,7 @@
         "JSHeapTotalSize": 12
       },
       "baseline": {
-        "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-00000199612E7F60-32084-puppeteer.prof",
+        "logFile": "isolate-00000199612E7F60-32084-puppeteer.prof",
         "metrics": {
           "Timestamp": 0,
           "Documents": 1,
@@ -941,13 +941,13 @@
     },
     "processed": {
       "output": {
-        "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\Stack.data.js",
-        "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\Stack.html"
+        "dataFile": "Stack.data.js",
+        "flamegraphFile": "Stack.html"
       },
       "baseline": {
         "output": {
-          "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\Stack_base.data.js",
-          "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\Stack_base.html"
+          "dataFile": "Stack_base.data.js",
+          "flamegraphFile": "Stack_base.html"
         }
       }
     },
@@ -964,7 +964,7 @@
   },
   "StackWithIntrinsicChildren": {
     "profile": {
-      "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-000002CB95DF62A0-29024-puppeteer.prof",
+      "logFile": "isolate-000002CB95DF62A0-29024-puppeteer.prof",
       "metrics": {
         "Timestamp": 0,
         "Documents": 1,
@@ -981,7 +981,7 @@
         "JSHeapTotalSize": 12
       },
       "baseline": {
-        "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-000001F8F52C6E60-30996-puppeteer.prof",
+        "logFile": "isolate-000001F8F52C6E60-30996-puppeteer.prof",
         "metrics": {
           "Timestamp": 0,
           "Documents": 1,
@@ -1001,13 +1001,13 @@
     },
     "processed": {
       "output": {
-        "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\StackWithIntrinsicChildren.data.js",
-        "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\StackWithIntrinsicChildren.html"
+        "dataFile": "StackWithIntrinsicChildren.data.js",
+        "flamegraphFile": "StackWithIntrinsicChildren.html"
       },
       "baseline": {
         "output": {
-          "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\StackWithIntrinsicChildren_base.data.js",
-          "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\StackWithIntrinsicChildren_base.html"
+          "dataFile": "StackWithIntrinsicChildren_base.data.js",
+          "flamegraphFile": "StackWithIntrinsicChildren_base.html"
         }
       }
     },
@@ -1024,7 +1024,7 @@
   },
   "StackWithTextChildren": {
     "profile": {
-      "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-000001E2F953C450-33588-puppeteer.prof",
+      "logFile": "isolate-000001E2F953C450-33588-puppeteer.prof",
       "metrics": {
         "Timestamp": 0,
         "Documents": 1,
@@ -1041,7 +1041,7 @@
         "JSHeapTotalSize": 12
       },
       "baseline": {
-        "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-000001AA84CA8D20-8016-puppeteer.prof",
+        "logFile": "isolate-000001AA84CA8D20-8016-puppeteer.prof",
         "metrics": {
           "Timestamp": 0,
           "Documents": 1,
@@ -1061,13 +1061,13 @@
     },
     "processed": {
       "output": {
-        "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\StackWithTextChildren.data.js",
-        "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\StackWithTextChildren.html"
+        "dataFile": "StackWithTextChildren.data.js",
+        "flamegraphFile": "StackWithTextChildren.html"
       },
       "baseline": {
         "output": {
-          "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\StackWithTextChildren_base.data.js",
-          "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\StackWithTextChildren_base.html"
+          "dataFile": "StackWithTextChildren_base.data.js",
+          "flamegraphFile": "StackWithTextChildren_base.html"
         }
       }
     },
@@ -1084,7 +1084,7 @@
   },
   "Text": {
     "profile": {
-      "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-00000257772F8820-33584-puppeteer.prof",
+      "logFile": "isolate-00000257772F8820-33584-puppeteer.prof",
       "metrics": {
         "Timestamp": 0,
         "Documents": 1,
@@ -1101,7 +1101,7 @@
         "JSHeapTotalSize": 12
       },
       "baseline": {
-        "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-000002236CE1DD30-25244-puppeteer.prof",
+        "logFile": "isolate-000002236CE1DD30-25244-puppeteer.prof",
         "metrics": {
           "Timestamp": 0,
           "Documents": 1,
@@ -1121,13 +1121,13 @@
     },
     "processed": {
       "output": {
-        "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\Text.data.js",
-        "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\Text.html"
+        "dataFile": "Text.data.js",
+        "flamegraphFile": "Text.html"
       },
       "baseline": {
         "output": {
-          "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\Text_base.data.js",
-          "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\Text_base.html"
+          "dataFile": "Text_base.data.js",
+          "flamegraphFile": "Text_base.html"
         }
       }
     },
@@ -1144,7 +1144,7 @@
   },
   "Toggle": {
     "profile": {
-      "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-00000248C0C3E090-14868-puppeteer.prof",
+      "logFile": "isolate-00000248C0C3E090-14868-puppeteer.prof",
       "metrics": {
         "Timestamp": 0,
         "Documents": 1,
@@ -1161,7 +1161,7 @@
         "JSHeapTotalSize": 12
       },
       "baseline": {
-        "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-000001FCF48C0980-25140-puppeteer.prof",
+        "logFile": "isolate-000001FCF48C0980-25140-puppeteer.prof",
         "metrics": {
           "Timestamp": 0,
           "Documents": 1,
@@ -1181,13 +1181,13 @@
     },
     "processed": {
       "output": {
-        "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\Toggle.data.js",
-        "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\Toggle.html"
+        "dataFile": "Toggle.data.js",
+        "flamegraphFile": "Toggle.html"
       },
       "baseline": {
         "output": {
-          "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\Toggle_base.data.js",
-          "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\Toggle_base.html"
+          "dataFile": "Toggle_base.data.js",
+          "flamegraphFile": "Toggle_base.html"
         }
       }
     },
@@ -1205,7 +1205,7 @@
   },
   "ToggleNew": {
     "profile": {
-      "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-000002231747AC50-11576-puppeteer.prof",
+      "logFile": "isolate-000002231747AC50-11576-puppeteer.prof",
       "metrics": {
         "Timestamp": 0,
         "Documents": 1,
@@ -1222,7 +1222,7 @@
         "JSHeapTotalSize": 12
       },
       "baseline": {
-        "logFile": "C:\\Users\\Jason\\src\\flamegrill\\packages\\flamegrill\\src\\fixtures\\profiles\\isolate-0000014BEA16EDB0-28552-puppeteer.prof",
+        "logFile": "isolate-0000014BEA16EDB0-28552-puppeteer.prof",
         "metrics": {
           "Timestamp": 0,
           "Documents": 1,
@@ -1242,13 +1242,13 @@
     },
     "processed": {
       "output": {
-        "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\ToggleNew.data.js",
-        "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\ToggleNew.html"
+        "dataFile": "ToggleNew.data.js",
+        "flamegraphFile": "ToggleNew.html"
       },
       "baseline": {
         "output": {
-          "dataFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\ToggleNew_base.data.js",
-          "flamegraphFile": "C:\\Users\\Jason\\AppData\\Local\\Temp\\tmp-16916UmDxYm5DNLeC\\ToggleNew_base.html"
+          "dataFile": "ToggleNew_base.data.js",
+          "flamegraphFile": "ToggleNew_base.html"
         }
       }
     },
