@@ -115,7 +115,7 @@ describe('flamegrill', () => {
       removePaths(testResults);
 
       // Convenience line left commented out for updating expected output.
-      fs.writeFileSync(path.join(outdir.name, "results.json"), JSON.stringify(testResults));
+      // fs.writeFileSync(path.join(outdir.name, "results.json"), JSON.stringify(testResults));
 
       expect(testResults).toEqual(expectedResults);
 
