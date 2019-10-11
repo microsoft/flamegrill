@@ -26,9 +26,9 @@ function flamebearer(buf: Buffer): string[] {
   const vizSrc = fs.readFileSync(require.resolve('../../assets/viz.js'), 'utf8');
   const helperSrc = fs.readFileSync(require.resolve('../../assets/helpers.js'), 'utf8');
 
-  let data = `names = ${JSON.stringify(names)};\n`;
-  data += `levels = ${JSON.stringify(levels)};\n`;
-  data += `numTicks = ${stacks.length};\n`;
+  let data = `let names = ${JSON.stringify(names)};\n`;
+  data += `let levels = ${JSON.stringify(levels)};\n`;
+  data += `let numTicks = ${stacks.length};\n`;
 
   // This code constructs a flamegraph using HTML template and shared JS helper files.
   // It uses split points in those files to keep and remove source, as needed.

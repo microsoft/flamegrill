@@ -9,8 +9,6 @@ const systemEl = document.getElementById('system');
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
-let names, levels, numTicks;
-
 /* BIN_PLACEHOLDER */
 
 let rangeMin = 0;

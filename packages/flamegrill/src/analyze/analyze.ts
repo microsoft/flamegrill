@@ -59,7 +59,9 @@ function analyzeScenario(scenario: ProcessedScenario, scenarioName: string, conf
         regression: analysis
       };
     }
-  } 
+
+    return { numTicks };
+  }
   
   console.log('analyzeScenario: no output to analyze!')
 
