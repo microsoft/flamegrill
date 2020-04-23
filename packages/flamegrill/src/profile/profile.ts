@@ -3,7 +3,7 @@ import path from 'path';
 import puppeteer from 'puppeteer';
 import { Browser, Metrics }  from 'puppeteer';
 
-import { Scenarios, ScenarioConfig } from '../flamegrill';
+import { Scenarios } from '../flamegrill';
 
 import { arr_diff } from '../util';
 
@@ -20,6 +20,16 @@ export interface ScenarioProfiles {
   [scenarioName: string]: ScenarioProfile;
 };
 
+export type ProfilePage = puppeteer.Page;
+
+export interface ScenarioProfileConfig {
+  outDir: string;
+  tempDir: string;
+
+  /** Async operation which will be executed before taking metrics from page. */
+  executeBeforeMeasurement?(page: ProfilePage): Promise<void>;
+}
+
 // const extraV8Flags = '--log-source-code --log-timer-events';
 // const extraV8Flags = '--log-source-code';
 const extraV8Flags = '';
@@ -30,8 +40,10 @@ const extraV8Flags = '';
  * @param config 
  * @param scenarios 
  */
-export async function profile(scenarios: Scenarios, config: Required<ScenarioConfig>): Promise<ScenarioProfiles> {
-  const logFile = path.join(config.tempDir, '/puppeteer.log');
+export async function profile(scenarios: Scenarios, config: ScenarioProfileConfig): Promise<ScenarioProfiles> {
+  const { tempDir, executeBeforeMeasurement } = config;
+
+  const logFile = path.join(tempDir, '/puppeteer.log');
   console.log(`profile logFile: ${logFile}`);
 
   const browser = await puppeteer.launch({
@@ -54,14 +66,13 @@ export async function profile(scenarios: Scenarios, config: Required<ScenarioCon
   // not, but then again other things outside of our control will also affect CPU load and results.
   // Run tests sequentially for now, at least as a chance of getting more consistent results when run locally.
   const profiles: ScenarioProfiles = {};
-
   for (const scenarioName of Object.keys(scenarios)) {
     const scenario = scenarios[scenarioName];
 
-    let profileResults: ScenarioProfile = await profileUrl(browser, scenario.scenario, scenarioName, config.tempDir);
+    let profileResults: ScenarioProfile = await profileUrl(browser, scenario.scenario, scenarioName, tempDir, executeBeforeMeasurement);
 
     if (scenario.baseline) {
-      profileResults.baseline = await profileUrl(browser, scenario.baseline, scenarioName, config.tempDir);
+      profileResults.baseline = await profileUrl(browser, scenario.baseline, scenarioName, tempDir, executeBeforeMeasurement);
     }
 
     profiles[scenarioName] = profileResults;
@@ -82,7 +93,7 @@ export async function profile(scenarios: Scenarios, config: Required<ScenarioCon
  * @param {string} logDir Absolute path to output log profiles.
  * @returns {string} Log file path associated with test.
  */
-async function profileUrl(browser: Browser, testUrl: string, profileName: string, logDir: string): Promise<Profile> {
+async function profileUrl(browser: Browser, testUrl: string, profileName: string, logDir: string, executeBeforeMeasurement?: (page: ProfilePage) => Promise<void>): Promise<Profile> {
   const logFilesBefore = fs.readdirSync(logDir);
 
   const page = await browser.newPage();
@@ -110,6 +121,13 @@ async function profileUrl(browser: Browser, testUrl: string, profileName: string
   // TODO: consider using or exposing other load finished options:
   // https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagegotourl-options
   await page.goto(testUrl);
+
+  if (executeBeforeMeasurement) {
+    console.log("Started executing user-defined page operations.");
+    await executeBeforeMeasurement(page);
+    console.log("Finished executing user-defined page operations.");
+  }
+
   console.timeEnd('Ran profile in');
 
   let metrics = await page.metrics();

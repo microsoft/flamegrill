@@ -1,1 +1,1 @@
-export { profile, ScenarioProfile, ScenarioProfiles } from './profile';
+export { profile, ScenarioProfile, ScenarioProfiles, ScenarioProfileConfig, ProfilePage } from './profile';

@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { profile, ScenarioProfile } from './profile';
+import { profile, ScenarioProfile, ProfilePage } from './profile';
 import { processProfiles, ProcessedScenario } from './process';
 import { analyze, ScenarioAnalysis } from './analyze';
 
@@ -18,7 +18,10 @@ export interface Scenarios {
 
 export type ScenarioConfig = {
   outDir?: string;
-  tempDir?: string; 
+  tempDir?: string;
+
+  /** Any async operation which will be execute before taking metrics for the profiling page. */
+  executeBeforeMeasurement?(page: ProfilePage): Promise<void>;
 };
 
 export interface CookResult {
@@ -54,8 +57,9 @@ function resolveDir(dirPath: string): string {
 export async function cook(scenarios: Scenarios, userConfig?: ScenarioConfig): Promise<CookResults> {
   const config = {
     outDir: userConfig && userConfig.outDir ? resolveDir(userConfig.outDir) : process.cwd(),
-    tempDir: userConfig && userConfig.tempDir ? resolveDir(userConfig.tempDir) : process.cwd()
-  }
+    tempDir: userConfig && userConfig.tempDir ? resolveDir(userConfig.tempDir) : process.cwd(),
+    executeBeforeMeasurement: userConfig && userConfig.executeBeforeMeasurement,
+  };
   
   const profiles = await profile(scenarios, config);
   const processed = await processProfiles(profiles, config);

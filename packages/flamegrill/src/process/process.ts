@@ -3,8 +3,7 @@ import path from 'path';
 import cp from 'child_process';
 import concat from 'concat-stream';
 
-import { ScenarioConfig } from '../flamegrill';
-import { ScenarioProfile, ScenarioProfiles } from '../profile';
+import { ScenarioProfile, ScenarioProfiles, ScenarioProfileConfig } from '../profile';
 
 import flamebearer from './flamebearer';
 import { addMetrics } from './metrics';
@@ -34,7 +33,7 @@ export interface ProcessedScenarios {
 
 const tickprocessor = require.resolve('../tickprocessor');
 
-export async function processProfiles(profiles: ScenarioProfiles, config: Required<ScenarioConfig>): Promise<ProcessedScenarios> {
+export async function processProfiles(profiles: ScenarioProfiles, config: ScenarioProfileConfig): Promise<ProcessedScenarios> {
   const processedScenarios: ProcessedScenarios = {};
 
   // Serialize a bunch of async generation of flamegraphs
