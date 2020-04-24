@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 import { ScenarioConfig } from '../flamegrill';
-import { ScenarioProfiles } from '../profile';
+import { ScenarioProfileConfig } from '../profile';
 import { ProcessedScenario, ProcessedScenarios } from '../process';
 
 import { analyzeFunctions, FunctionalAnalysis } from './functional';
@@ -24,7 +24,7 @@ export interface ScenarioAnalyses {
   [scenarioName: string]: ScenarioAnalysis | undefined;
 };
 
-export function analyze(processedScenarios: ProcessedScenarios, config: Required<ScenarioConfig>): ScenarioAnalyses {
+export function analyze(processedScenarios: ProcessedScenarios, config: ScenarioProfileConfig): ScenarioAnalyses {
   const scenarioAnalyses: ScenarioAnalyses = {};
 
   for (const scenarioName of Object.keys(processedScenarios)) {
@@ -41,7 +41,7 @@ export function analyze(processedScenarios: ProcessedScenarios, config: Required
 /**
  * Process profiler output and check for regressions.
  */
-function analyzeScenario(scenario: ProcessedScenario, scenarioName: string, config: Required<ScenarioConfig>): ScenarioAnalysis | undefined {
+function analyzeScenario(scenario: ProcessedScenario, scenarioName: string, config: ScenarioProfileConfig): ScenarioAnalysis | undefined {
   if (scenario.output) {
     let numTicks = getTicks(scenario.output.dataFile);
 

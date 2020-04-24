@@ -3,7 +3,7 @@ import path from 'path';
 import puppeteer from 'puppeteer';
 import { Browser, Metrics }  from 'puppeteer';
 
-import { Scenarios, ScenarioConfig } from '../flamegrill';
+import { Scenarios, ScenarioConfig, PageActions } from '../flamegrill';
 
 import { arr_diff } from '../util';
 
@@ -20,6 +20,12 @@ export interface ScenarioProfiles {
   [scenarioName: string]: ScenarioProfile;
 };
 
+export type ProfilePage = puppeteer.Page;
+
+type Optional<T, K extends keyof T> = Omit<T, K> & Partial<T>;
+
+export type ScenarioProfileConfig = Optional<Required<ScenarioConfig>, 'pageActions'>;
+
 // const extraV8Flags = '--log-source-code --log-timer-events';
 // const extraV8Flags = '--log-source-code';
 const extraV8Flags = '';
@@ -30,8 +36,10 @@ const extraV8Flags = '';
  * @param config 
  * @param scenarios 
  */
-export async function profile(scenarios: Scenarios, config: Required<ScenarioConfig>): Promise<ScenarioProfiles> {
-  const logFile = path.join(config.tempDir, '/puppeteer.log');
+export async function profile(scenarios: Scenarios, config: ScenarioProfileConfig): Promise<ScenarioProfiles> {
+  const { tempDir, pageActions } = config;
+
+  const logFile = path.join(tempDir, '/puppeteer.log');
   console.log(`profile logFile: ${logFile}`);
 
   const browser = await puppeteer.launch({
@@ -54,14 +62,13 @@ export async function profile(scenarios: Scenarios, config: Required<ScenarioCon
   // not, but then again other things outside of our control will also affect CPU load and results.
   // Run tests sequentially for now, at least as a chance of getting more consistent results when run locally.
   const profiles: ScenarioProfiles = {};
-
   for (const scenarioName of Object.keys(scenarios)) {
     const scenario = scenarios[scenarioName];
 
-    let profileResults: ScenarioProfile = await profileUrl(browser, scenario.scenario, scenarioName, config.tempDir);
+    let profileResults: ScenarioProfile = await profileUrl(browser, scenario.scenario, scenarioName, tempDir, pageActions);
 
     if (scenario.baseline) {
-      profileResults.baseline = await profileUrl(browser, scenario.baseline, scenarioName, config.tempDir);
+      profileResults.baseline = await profileUrl(browser, scenario.baseline, scenarioName, tempDir, pageActions);
     }
 
     profiles[scenarioName] = profileResults;
@@ -80,17 +87,19 @@ export async function profile(scenarios: Scenarios, config: Required<ScenarioCon
  * @param {string} testUrl Base URL supporting 'scenario' and 'iterations' query parameters.
  * @param {string} profileName Name of scenario that will be used with baseUrl.
  * @param {string} logDir Absolute path to output log profiles.
+ * @param {PageActions} pageActions Async opertaion that is executed before taking metrics.
  * @returns {string} Log file path associated with test.
  */
-async function profileUrl(browser: Browser, testUrl: string, profileName: string, logDir: string): Promise<Profile> {
+async function profileUrl(
+  browser: Browser,
+  testUrl: string,
+  profileName: string,
+  logDir: string,
+  pageActions?: PageActions
+): Promise<Profile> {
   const logFilesBefore = fs.readdirSync(logDir);
 
   const page = await browser.newPage();
-
-  // Default timeout is 30 seconds. This is good for most tests except for problematic components like DocumentCardTitle.
-  // Disable timeout for now and tweak to a maximum setting once server conditions are better known.
-  // TODO: argument? should probably default to 30 seconds
-  page.setDefaultTimeout(0);
 
   const logFilesAfter = fs.readdirSync(logDir);
 
@@ -107,9 +116,15 @@ async function profileUrl(browser: Browser, testUrl: string, profileName: string
   console.log(`Starting test for ${profileName} at ${testUrl}`);
 
   console.time('Ran profile in');
-  // TODO: consider using or exposing other load finished options:
-  // https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagegotourl-options
-  await page.goto(testUrl);
+
+  if (pageActions) {
+    console.log("Started executing user-defined page operations.");
+    await pageActions(page, { url: testUrl });
+    console.log("Finished executing user-defined page operations.");
+  } else {
+    await page.goto(testUrl);
+  }
+
   console.timeEnd('Ran profile in');
 
   let metrics = await page.metrics();

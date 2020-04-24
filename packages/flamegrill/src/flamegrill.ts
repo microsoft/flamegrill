@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { profile, ScenarioProfile } from './profile';
+import { profile, ScenarioProfile, ProfilePage } from './profile';
 import { processProfiles, ProcessedScenario } from './process';
 import { analyze, ScenarioAnalysis } from './analyze';
 
@@ -16,10 +16,22 @@ export interface Scenarios {
   [scenarioName: string]: Scenario;
 };
 
-export type ScenarioConfig = {
+export interface PageActionOptions {
+  /** URL the page will navigate to. */
+  url: string;
+}
+
+/**
+ * Async page operations which will be execute before taking metrics.
+ * This will override default page operations done by flamegrill before page.metrics().
+ */
+export type PageActions = (page: ProfilePage, options: PageActionOptions) => Promise<void>;
+
+export interface ScenarioConfig {
   outDir?: string;
-  tempDir?: string; 
-};
+  tempDir?: string;
+  pageActions?: PageActions;
+}
 
 export interface CookResult {
   profile: ScenarioProfile;
@@ -54,8 +66,9 @@ function resolveDir(dirPath: string): string {
 export async function cook(scenarios: Scenarios, userConfig?: ScenarioConfig): Promise<CookResults> {
   const config = {
     outDir: userConfig && userConfig.outDir ? resolveDir(userConfig.outDir) : process.cwd(),
-    tempDir: userConfig && userConfig.tempDir ? resolveDir(userConfig.tempDir) : process.cwd()
-  }
+    tempDir: userConfig && userConfig.tempDir ? resolveDir(userConfig.tempDir) : process.cwd(),
+    pageActions: userConfig && userConfig.pageActions,
+  };
   
   const profiles = await profile(scenarios, config);
   const processed = await processProfiles(profiles, config);
