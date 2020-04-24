@@ -3,7 +3,7 @@ import path from 'path';
 import puppeteer from 'puppeteer';
 import { Browser, Metrics }  from 'puppeteer';
 
-import { Scenarios, ScenarioConfig } from '../flamegrill';
+import { Scenarios, ScenarioConfig, PageActions } from '../flamegrill';
 
 import { arr_diff } from '../util';
 
@@ -24,7 +24,7 @@ export type ProfilePage = puppeteer.Page;
 
 type Optional<T, K extends keyof T> = Omit<T, K> & Partial<T>;
 
-export type ScenarioProfileConfig = Optional<Required<ScenarioConfig>, 'executeBeforeMeasurement'>;
+export type ScenarioProfileConfig = Optional<Required<ScenarioConfig>, 'pageActions'>;
 
 // const extraV8Flags = '--log-source-code --log-timer-events';
 // const extraV8Flags = '--log-source-code';
@@ -37,7 +37,7 @@ const extraV8Flags = '';
  * @param scenarios 
  */
 export async function profile(scenarios: Scenarios, config: ScenarioProfileConfig): Promise<ScenarioProfiles> {
-  const { tempDir, executeBeforeMeasurement } = config;
+  const { tempDir, pageActions } = config;
 
   const logFile = path.join(tempDir, '/puppeteer.log');
   console.log(`profile logFile: ${logFile}`);
@@ -65,10 +65,10 @@ export async function profile(scenarios: Scenarios, config: ScenarioProfileConfi
   for (const scenarioName of Object.keys(scenarios)) {
     const scenario = scenarios[scenarioName];
 
-    let profileResults: ScenarioProfile = await profileUrl(browser, scenario.scenario, scenarioName, tempDir, executeBeforeMeasurement);
+    let profileResults: ScenarioProfile = await profileUrl(browser, scenario.scenario, scenarioName, tempDir, pageActions);
 
     if (scenario.baseline) {
-      profileResults.baseline = await profileUrl(browser, scenario.baseline, scenarioName, tempDir, executeBeforeMeasurement);
+      profileResults.baseline = await profileUrl(browser, scenario.baseline, scenarioName, tempDir, pageActions);
     }
 
     profiles[scenarioName] = profileResults;
@@ -87,7 +87,7 @@ export async function profile(scenarios: Scenarios, config: ScenarioProfileConfi
  * @param {string} testUrl Base URL supporting 'scenario' and 'iterations' query parameters.
  * @param {string} profileName Name of scenario that will be used with baseUrl.
  * @param {string} logDir Absolute path to output log profiles.
- * @param onPageLoad Async opertaion that is executed after page is loaded.
+ * @param {PageActions} pageActions Async opertaion that is executed before taking metrics.
  * @returns {string} Log file path associated with test.
  */
 async function profileUrl(
@@ -95,16 +95,11 @@ async function profileUrl(
   testUrl: string,
   profileName: string,
   logDir: string,
-  onPageLoad?: (page: ProfilePage) => Promise<void>
+  pageActions?: PageActions
 ): Promise<Profile> {
   const logFilesBefore = fs.readdirSync(logDir);
 
   const page = await browser.newPage();
-
-  // Default timeout is 30 seconds. This is good for most tests except for problematic components like DocumentCardTitle.
-  // Disable timeout for now and tweak to a maximum setting once server conditions are better known.
-  // TODO: argument? should probably default to 30 seconds
-  page.setDefaultTimeout(0);
 
   const logFilesAfter = fs.readdirSync(logDir);
 
@@ -121,14 +116,13 @@ async function profileUrl(
   console.log(`Starting test for ${profileName} at ${testUrl}`);
 
   console.time('Ran profile in');
-  // TODO: consider using or exposing other load finished options:
-  // https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagegotourl-options
-  await page.goto(testUrl);
 
-  if (onPageLoad) {
+  if (pageActions) {
     console.log("Started executing user-defined page operations.");
-    await onPageLoad(page);
+    await pageActions(page, { url: testUrl });
     console.log("Finished executing user-defined page operations.");
+  } else {
+    await page.goto(testUrl);
   }
 
   console.timeEnd('Ran profile in');

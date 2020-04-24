@@ -1,0 +1,36 @@
+{
+  // Use IntelliSense to learn about possible Node.js debug attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Unit Jest Tests",
+      "cwd": "${workspaceFolder}",
+      "args": [
+        "--inspect-brk",
+        "${workspaceRoot}/node_modules/.bin/jest",
+        "--runInBand",
+        "--watch",
+        "--config",
+        "${workspaceRoot}/packages/flamegrill/jest.config.js",
+        "${fileBasenameNoExtension}"
+      ],
+      "windows": {
+        "args": [
+          "--inspect-brk",
+          "${workspaceRoot}/node_modules/jest/bin/jest.js",
+          "--runInBand",
+          "--watch",
+          "--config",
+          "${workspaceRoot}/packages/flamegrill/jest.config.js",
+          "${fileBasenameNoExtension}"
+        ]
+      },
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    }
+  ]
+}

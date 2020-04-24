@@ -16,13 +16,22 @@ export interface Scenarios {
   [scenarioName: string]: Scenario;
 };
 
-export type ScenarioConfig = {
+export interface PageActionOptions {
+  /** URL the page will navigate to. */
+  url: string;
+}
+
+/**
+ * Async page operations which will be execute before taking metrics.
+ * This will override default page operations done by flamegrill before page.metrics().
+ */
+export type PageActions = (page: ProfilePage, options: PageActionOptions) => Promise<void>;
+
+export interface ScenarioConfig {
   outDir?: string;
   tempDir?: string;
-
-  /** Any async operation which will be execute before taking metrics for the profiling page. */
-  executeBeforeMeasurement?(page: ProfilePage): Promise<void>;
-};
+  pageActions?: PageActions;
+}
 
 export interface CookResult {
   profile: ScenarioProfile;
@@ -58,7 +67,7 @@ export async function cook(scenarios: Scenarios, userConfig?: ScenarioConfig): P
   const config = {
     outDir: userConfig && userConfig.outDir ? resolveDir(userConfig.outDir) : process.cwd(),
     tempDir: userConfig && userConfig.tempDir ? resolveDir(userConfig.tempDir) : process.cwd(),
-    executeBeforeMeasurement: userConfig && userConfig.executeBeforeMeasurement,
+    pageActions: userConfig && userConfig.pageActions,
   };
   
   const profiles = await profile(scenarios, config);
