@@ -1,0 +1,8 @@
+{
+  "type": "minor",
+  "comment": "support executing page operations before taking measures/profiling",
+  "packageName": "flamegrill",
+  "email": "xgao@microsoft.com",
+  "commit": "355b574566a201ce7c8e31be9c55472651c85310",
+  "date": "2020-04-24T00:01:03.420Z"
+}
