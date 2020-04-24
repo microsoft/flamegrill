@@ -3,7 +3,7 @@ import path from 'path';
 import puppeteer from 'puppeteer';
 import { Browser, Metrics }  from 'puppeteer';
 
-import { Scenarios } from '../flamegrill';
+import { Scenarios, ScenarioConfig } from '../flamegrill';
 
 import { arr_diff } from '../util';
 
@@ -22,13 +22,9 @@ export interface ScenarioProfiles {
 
 export type ProfilePage = puppeteer.Page;
 
-export interface ScenarioProfileConfig {
-  outDir: string;
-  tempDir: string;
+type Optional<T, K extends keyof T> = Omit<T, K> & Partial<T>;
 
-  /** Async operation which will be executed before taking metrics from page. */
-  executeBeforeMeasurement?(page: ProfilePage): Promise<void>;
-}
+export type ScenarioProfileConfig = Optional<Required<ScenarioConfig>, 'executeBeforeMeasurement'>;
 
 // const extraV8Flags = '--log-source-code --log-timer-events';
 // const extraV8Flags = '--log-source-code';
@@ -91,9 +87,16 @@ export async function profile(scenarios: Scenarios, config: ScenarioProfileConfi
  * @param {string} testUrl Base URL supporting 'scenario' and 'iterations' query parameters.
  * @param {string} profileName Name of scenario that will be used with baseUrl.
  * @param {string} logDir Absolute path to output log profiles.
+ * @param onPageNavigated Async opertaion that is executed after page is navigated.
  * @returns {string} Log file path associated with test.
  */
-async function profileUrl(browser: Browser, testUrl: string, profileName: string, logDir: string, executeBeforeMeasurement?: (page: ProfilePage) => Promise<void>): Promise<Profile> {
+async function profileUrl(
+  browser: Browser,
+  testUrl: string,
+  profileName: string,
+  logDir: string,
+  onPageNavigated?: (page: ProfilePage) => Promise<void>
+): Promise<Profile> {
   const logFilesBefore = fs.readdirSync(logDir);
 
   const page = await browser.newPage();
@@ -122,9 +125,9 @@ async function profileUrl(browser: Browser, testUrl: string, profileName: string
   // https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagegotourl-options
   await page.goto(testUrl);
 
-  if (executeBeforeMeasurement) {
+  if (onPageNavigated) {
     console.log("Started executing user-defined page operations.");
-    await executeBeforeMeasurement(page);
+    await onPageNavigated(page);
     console.log("Finished executing user-defined page operations.");
   }
 
