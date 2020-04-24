@@ -87,7 +87,7 @@ export async function profile(scenarios: Scenarios, config: ScenarioProfileConfi
  * @param {string} testUrl Base URL supporting 'scenario' and 'iterations' query parameters.
  * @param {string} profileName Name of scenario that will be used with baseUrl.
  * @param {string} logDir Absolute path to output log profiles.
- * @param onPageNavigated Async opertaion that is executed after page is navigated.
+ * @param onPageLoad Async opertaion that is executed after page is loaded.
  * @returns {string} Log file path associated with test.
  */
 async function profileUrl(
@@ -95,7 +95,7 @@ async function profileUrl(
   testUrl: string,
   profileName: string,
   logDir: string,
-  onPageNavigated?: (page: ProfilePage) => Promise<void>
+  onPageLoad?: (page: ProfilePage) => Promise<void>
 ): Promise<Profile> {
   const logFilesBefore = fs.readdirSync(logDir);
 
@@ -125,9 +125,9 @@ async function profileUrl(
   // https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagegotourl-options
   await page.goto(testUrl);
 
-  if (onPageNavigated) {
+  if (onPageLoad) {
     console.log("Started executing user-defined page operations.");
-    await onPageNavigated(page);
+    await onPageLoad(page);
     console.log("Finished executing user-defined page operations.");
   }
 
