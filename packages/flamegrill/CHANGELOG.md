@@ -1,7 +1,13 @@
 # Change Log - flamegrill
 
-This log was last generated on Fri, 11 Oct 2019 21:51:59 GMT and should not be manually modified.
+This log was last generated on Fri, 24 Apr 2020 20:03:15 GMT and should not be manually modified.
 
+## 0.2.0
+Fri, 24 Apr 2020 20:03:15 GMT
+
+### Minor changes
+
+- Support customized page actions and reset default timeout to 30s instead of no timeout (xgao@microsoft.com)
 ## 0.1.3
 Fri, 11 Oct 2019 21:51:59 GMT
 
