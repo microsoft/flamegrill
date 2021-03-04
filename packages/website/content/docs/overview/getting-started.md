@@ -33,7 +33,7 @@ const InefficientComponent: React.FunctionComponent = (props) => {
 
 In the same `src/App.tsx` file, use `InefficientComponent`:
 
- ```tsx
+ ```sx
  export const App: React.FunctionComponent = () => {
     return 
       // ... 
