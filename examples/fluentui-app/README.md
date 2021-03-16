@@ -44,18 +44,16 @@ further in `config-overrides.js` file.
 If you build the for production using
 
 ```
-node_modules/.bin/react-app-rewired build
+yarn build
 ```
 
-or simply using `yarn build` alias as it's been preconfigured to use `react-app-rewired`. This will put the
-production build of the app in the `build` directory. 
+this will put the production build of the app in the `build` directory. 
 
 Next, create `perf` directory where we'll store generated performance flamegraphs and logs, and run
 `flamegrill` out of with pointing at the generated `build/index.html`.
 
 ```
-mkdir perf && cd perf
-../../../node_modules/.bin/flamegrill -n AppTest -s file:///path/to/my/app/build/index.html
+yarn flamegrill -n AppTest -s file:///path/to/my/app/build/index.html
 ```
 
 This will generate flamegraphs in the `perf` directory which can then be previewed using your favourite browser.

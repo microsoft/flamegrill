@@ -11,6 +11,9 @@
 # production
 /build
 
+# performance
+/perf
+
 # misc
 .DS_Store
 .env.local
