@@ -15,8 +15,8 @@ export default class HTML extends React.Component {
             content="width=device-width, initial-scale=1.0"
           />
           {this.props.headComponents}
-          <link rel="shortcut icon" href={favicon} type="image/x-icon">
-          <link rel="icon" href={favicon} type="image/x-icon">
+          <link rel="shortcut icon" href={favicon} type="image/x-icon" />
+          <link rel="icon" href={favicon} type="image/x-icon" />
         </head>
         <body>
           <div

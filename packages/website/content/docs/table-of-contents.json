@@ -10,6 +10,11 @@
       "chapters": []
     },
     {
+      "title": "Examples",
+      "entries": [{ "entry": "./examples/fluentui-cra.md" }],
+      "chapters": []
+    },
+    {
       "title": "CLI Reference",
       "entries": [{ "entry": "./cli/cook.md" }],
       "chapters": []
