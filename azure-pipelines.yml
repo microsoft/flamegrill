@@ -17,7 +17,7 @@ steps:
     displayName: 'yarn'
 
   - script: |
-      yarn build
+      yarn build:all
     displayName: 'build'
 
   - script: |
