@@ -20,9 +20,9 @@ steps:
       yarn build
     displayName: 'build'
 
-  # - script: |
-  #     yarn build:docs
-  #   displayName: 'build docs'
+  - script: |
+      yarn build:docs
+    displayName: 'build docs'
 
   - script: |
       yarn test
