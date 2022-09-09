@@ -1,8 +1,10 @@
 import * as tmp from 'tmp';
 import { Browser, Page } from 'puppeteer';
 
-import { __unitTestHooks, ProfilePage, Profile } from '../profile';
+import { __unitTestHooks, ProfilePage } from '../profile';
 import { PageActions, PageActionOptions } from '../../flamegrill';
+
+tmp.setGracefulCleanup();
 
 describe('profileUrl', () => {
   const { profileUrl } = __unitTestHooks;
@@ -41,11 +43,11 @@ describe('profileUrl', () => {
       waitForSelector: jest.fn(() => Promise.resolve()),
     } as unknown as Page;
   });
-  
+
   afterEach(() => {
     jest.clearAllMocks();
   });
-  
+
   it('performs expected operations', async () => {
     const result = await profileUrl(testBrowser, testUrl, 'testScenario', outdir.name);
 
@@ -64,7 +66,7 @@ describe('profileUrl', () => {
       await page.goto(options.url);
       await page.waitForSelector(testSelector);
     };
-    
+
     const result = await profileUrl(testBrowser, testUrl, 'testScenario', outdir.name, pageActions);
 
     expect((testPage.setDefaultTimeout as jest.Mock).mock.calls.length).toEqual(1);

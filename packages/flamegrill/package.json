@@ -30,10 +30,10 @@
     "@types/concat-stream": "1.6.1",
     "@types/jest": "24.9.1",
     "@types/puppeteer": "1.20.10",
-    "@types/tmp": "0.1.0",
+    "@types/tmp": "0.2.3",
     "@types/yargs-parser": "13.1.0",
     "jest": "24.9.0",
-    "tmp": "0.1.0",
+    "tmp": "0.2.1",
     "ts-jest": "24.3.0"
   }
 }

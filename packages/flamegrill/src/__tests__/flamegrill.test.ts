@@ -8,6 +8,8 @@ import { ScenarioProfile } from '../profile';
 import { __unitTestHooks } from '../process/process';
 import { analyzeFunctions } from '../analyze/functional';
 
+tmp.setGracefulCleanup();
+
 // TODO: these are black box tests for now but should be refactored to be unit tests
 // TODO: modules that output files should be modified not to and wrapped by a centralized file output helper
 // TODO: consider also making file output / github / CI integration another package within this repo
