@@ -1,6 +1,3 @@
-/* eslint import/no-unresolved:"off" */
-/* eslint import/extensions:"off" */
-/* eslint global-require:"off" */
 import React from 'react'
 import favicon from './favicon.ico'
 

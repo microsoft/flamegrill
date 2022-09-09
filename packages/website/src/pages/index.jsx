@@ -95,7 +95,6 @@ const FooterContainer = styled.footer`
   }
 `;
 
-/* eslint no-undef: "off" */
 export const query = graphql`
   query IndexQuery {
     allMarkdown: allMarkdownRemark(limit: 2000, sort: { order: ASC, fields: [fields___slug] }) {

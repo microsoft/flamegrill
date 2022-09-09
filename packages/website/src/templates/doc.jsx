@@ -104,7 +104,6 @@ const ToCContainer = styled.div`
   }
 `
 
-/* eslint no-undef: "off" */
 export const pageQuery = graphql`
   query DocBySlug($slug: String!) {
     postBySlug: markdownRemark(fields: { slug: { eq: $slug } }) {

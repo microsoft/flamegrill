@@ -2,8 +2,6 @@ import React from 'react'
 import Link from 'gatsby-link'
 import styled from 'styled-components'
 
-/* eslint react/no-array-index-key: "off" */
-
 const Links = ({ entries }) => (
   <StyledLinkList>
     {entries.map(({ entry }, key) => (

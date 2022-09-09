@@ -13,11 +13,6 @@
     "build": "yarn clean && gatsby build --prefix-paths && rimraf ../../docs && ncp public ../../docs",
     "build:local": "gatsby build",
     "clean": "rm -rf public && rm -rf .cache",
-    "format:js": "npm run prettier -- --write",
-    "lint": "npm run lint:js && npm run lint:md",
-    "lint:js": "eslint --ext .js,.jsx --ignore-pattern public,static . && npm run prettier -- --list-different",
-    "lint:md": "remark content/posts/",
-    "prettier": "prettier '{,!(node_modules,.cache)/**/}*.{js,jsx}'",
     "serve": "gatsby serve",
     "start": "gatsby develop"
   },
