@@ -17,6 +17,13 @@
         "ComponentGovernanceComponentDetection"
       ],
       "enabled": false
+    },
+    {
+      // Don't pin azure-pipelines task versions
+      "matchManagers": ["azure-pipelines"],
+      "matchCurrentVersion": "/^\\d+$/",
+      "matchUpdateTypes": ["minor", "patch", "pin"],
+      "enabled": false
     }
   ]
 }
