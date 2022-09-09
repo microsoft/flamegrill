@@ -25,15 +25,15 @@
     "yargs-parser": "^13.1.0"
   },
   "devDependencies": {
-    "@types/concat-stream": "^1.6.0",
-    "@types/jest": "^24.0.17",
-    "@types/puppeteer": "^1.12.4",
-    "@types/tmp": "^0.1.0",
-    "@types/yargs-parser": "^13.0.0",
-    "jest": "^24.8.0",
+    "@types/concat-stream": "1.6.0",
+    "@types/jest": "24.0.18",
+    "@types/puppeteer": "1.12.4",
+    "@types/tmp": "0.1.0",
+    "@types/yargs-parser": "13.1.0",
+    "jest": "24.9.0",
     "just-scripts": "0.28.0",
-    "tmp": "^0.1.0",
-    "ts-jest": "^24.0.2",
-    "typescript": "^3.5.1"
+    "tmp": "0.1.0",
+    "ts-jest": "24.0.2",
+    "typescript": "3.5.3"
   }
 }
