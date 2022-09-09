@@ -12,7 +12,9 @@
     "url": "https://github.com/microsoft/flamegrill"
   },
   "scripts": {
-    "build": "just-scripts build",
+    "build": "yarn build:ts && yarn build:generate",
+    "build:ts": "tsc",
+    "build:generate": "node ./tasks/tickprocessorGenerator.js",
     "test": "jest",
     "test-watch": "jest --watch",
     "start": "tsc -w --preserveWatchOutput"
@@ -31,7 +33,6 @@
     "@types/tmp": "0.1.0",
     "@types/yargs-parser": "13.1.0",
     "jest": "24.9.0",
-    "just-scripts": "0.28.0",
     "tmp": "0.1.0",
     "ts-jest": "24.3.0"
   }

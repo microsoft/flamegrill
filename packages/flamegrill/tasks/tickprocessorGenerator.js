@@ -25,7 +25,7 @@ const path = require('path');
 //    https://github.com/nodejs/node/blob/master/lib/internal/v8_prof_polyfill.js
 
 // TODO: account for --windows, --unix and --mac arguments? what is the output difference with and without these args?
-// TODO: pin version of puppeteer and version of V8 tick processor together. 
+// TODO: pin version of puppeteer and version of V8 tick processor together.
 // TODO: compare version of V8 in puppeteer against V8 tick processor source somehow?
 // TODO: does it make sense to convert repo to just monorepo config?
 // TODO: Once it's working, push simple example script to just-stack-monorepo (and maybe lerna-template)
@@ -74,8 +74,5 @@ const scripts = scriptNames.map(scriptName => {
   return fs.readFileSync(require.resolve(`../assets/v8/${scriptName}`), 'utf8');
 });
 
-module.exports = function generateTickProcessor() {
-  // TODO: way to pass output argument from just task?
-  fs.writeFileSync('./lib/tickprocessor.js', scriptHeader.concat(scripts.join("")));
-}
+fs.writeFileSync('./lib/tickprocessor.js', scriptHeader.concat(scripts.join("")));
 
