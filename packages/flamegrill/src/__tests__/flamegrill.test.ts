@@ -31,7 +31,7 @@ describe('flamegrill', () => {
 
   describe('cook', () => {
     const profiles = require('../fixtures/profiles.json');
-    const util = require('../util');
+    const util = require('../util/array');
     const fixturesDir = path.join(__dirname, '../fixtures');
 
     let scenarios: Scenarios = {};
@@ -55,7 +55,7 @@ describe('flamegrill', () => {
       }),
       close: jest.fn(() => {})
     } as unknown as Browser;
-    
+
     beforeAll(() => {
       // Processing all profiles takes more than the default 5 seconds.
       jest.setTimeout(60000);
@@ -82,7 +82,7 @@ describe('flamegrill', () => {
         tempDir: fixturesDir
       };
     });
-    
+
     afterAll(() => {
       jest.resetAllMocks();
       outdir.removeCallback();
@@ -104,7 +104,7 @@ describe('flamegrill', () => {
           logfile = profiles[scenarioName].logFile;
         }
         scenarioIndex += 1;
-        
+
         return [logfile];
       });
 
@@ -173,7 +173,7 @@ describe('flamegrill', () => {
       const testFiles = fs.readdirSync(outdir.name);
 
       expect(testFiles).toEqual(snapshotFiles);
-      
+
       testFiles.forEach(file => {
         let expectedFileContent;
         let testFileContent;
@@ -199,20 +199,20 @@ describe('flamegrill', () => {
       expect((testBrowser.close as jest.Mock).mock.calls.length).toEqual(1);
     });
   });
-  
-  // These tests are technically redundant with cook tests but are left for now as they may be useful 
+
+  // These tests are technically redundant with cook tests but are left for now as they may be useful
   // as unit tests are added.
   describe('generateFlamegraph, analyzeFunctions', () => {
     const { processProfile } = __unitTestHooks;
     const profiles = require('../fixtures/profiles.json');
     const snapshotsDir = path.join(__dirname, '../fixtures/snapshots');
-    
+
     it('generates expected output', async () => {
       // Processing all profiles takes more than the default 5 seconds.
       jest.setTimeout(30000);
-      
+
       expect.assertions(89);
-      
+
       const outdir = tmp.dirSync({ unsafeCleanup: true });
 
       // TODO: replace with processProfiles?
@@ -268,7 +268,7 @@ describe('flamegrill', () => {
 
 /**
  * Helper to remove paths from filenames, leaving just base filename.
- */ 
+ */
 function removePaths<T>(obj: T) {
   Object.keys(obj).forEach(key => {
     if (key.includes('File')) {
