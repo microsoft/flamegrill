@@ -9,12 +9,12 @@ trigger:
   - master
 
 pool:
-  vmImage: 'Ubuntu-16.04'
+  vmImage: 'ubuntu-latest'
 
 steps:
   - task: NodeTool@0
     inputs:
-      versionSpec: '10.x'
+      versionSpec: '14.x'
     displayName: 'Install Node.js'
 
   - script: |
@@ -44,7 +44,7 @@ steps:
     inputs:
       BuildDropPath: $(System.DefaultWorkingDirectory)
 
-   - task: PublishPipelineArtifact@1
+  - task: PublishPipelineArtifact@1
     displayName: 📒 Publish Manifest
     inputs:
       artifactName: SBom-$(System.JobAttempt)
