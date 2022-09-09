@@ -54,8 +54,7 @@
     "ncp": "2.0.0",
     "remark-cli": "6.0.1",
     "remark-preset-lint-recommended": "3.0.4",
-    "rimraf": "3.0.2",
-    "stylefmt": "6.0.3"
+    "rimraf": "3.0.2"
   },
   "remarkConfig": {
     "plugins": [
