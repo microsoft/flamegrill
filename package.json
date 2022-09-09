@@ -24,7 +24,7 @@
     "test": "yarn workspace flamegrill test"
   },
   "devDependencies": {
-    "beachball": "^1.13.1",
-    "lerna": "^3.13.2"
+    "beachball": "1.13.1",
+    "lerna": "3.16.3"
   }
 }
