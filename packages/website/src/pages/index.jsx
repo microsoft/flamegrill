@@ -2,8 +2,6 @@ import { graphql } from 'gatsby';
 import React from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import { FaSync, FaRobot, FaNewspaper, FaCheckDouble, FaTerminal } from 'react-icons/fa';
-import { DiGitBranch } from 'react-icons/di';
 
 import config from '../../data/SiteConfig';
 import CtaButton from '../components/CtaButton';
@@ -55,28 +53,6 @@ const IndexContainer = styled.div`
   flex-direction: column;
 `;
 
-const FeatureRow = styled.div`
-  display: flex;
-  justify-content: stretch;
-  margin: 40px 0;
-`;
-
-const Feature = styled.div`
-  flex: 1;
-  font-size: 1.4rem;
-
-  margin: 0;
-  padding: 0;
-
-  & h4 {
-    margin: 0;
-  }
-
-  &:first-child {
-    margin-right: 25px;
-  }
-`;
-
 const LogoRow = styled.div`
   display: flex;
   margin: 0 auto;
@@ -104,24 +80,6 @@ const Hero = styled.div`
     padding: 0;
     line-height: 60px;
   }
-`;
-
-const BodyContainer = styled.div`
-  padding: ${props => props.theme.sitePadding};
-  max-width: ${props => props.theme.contentWidthLaptop};
-  margin: 0 auto;
-
-  flex-grow: 1;
-
-  .contributors {
-    margin: 100px auto 0;
-  }
-
-  .contributors a {
-    font-size: 1rem;
-  }
-
-  margin-bottom: 100px;
 `;
 
 const FooterContainer = styled.footer`
