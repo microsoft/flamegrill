@@ -4438,14 +4438,14 @@ batch@0.6.1:
   resolved "https://registry.yarnpkg.com/batch/-/batch-0.6.1.tgz#dc34314f4e679318093fc760272525f94bf25c16"
   integrity sha512-x+VAiMRL6UPkx+kudNvxTl6hB2XNNCG2r+7wixVfIYwu/2HKRXimwQyaumLjMveWvT2Hkd/cAJw+QBMfJ/EKVw==
 
-beachball@2.31.8:
-  version "2.31.8"
-  resolved "https://registry.yarnpkg.com/beachball/-/beachball-2.31.8.tgz#8b6a4ae25bd0ba6385639cead5739d7fedd08d0a"
-  integrity sha512-YRbyThROPH1kYRTf9nOKVl+iP8n6XhSm5hB5/L9wwzVXvQ2Iku/yu+r79D0h4Ga1duA3FfsLCL3n5Q81/rezwg==
+beachball@2.41.0:
+  version "2.41.0"
+  resolved "https://registry.yarnpkg.com/beachball/-/beachball-2.41.0.tgz#a79f06b9036fd9e6046dde0be3c7440bc721e7b0"
+  integrity sha512-hp6BBAiA2UYmm9E+JWwopMK+2njAeV3r6uJR91ICi7jYnjD+DFKxJjrcaW0pb4SOikMdQITw/GfjsMUs07oJqg==
   dependencies:
-    cosmiconfig "^7.0.0"
+    cosmiconfig "^8.3.6"
     execa "^5.0.0"
-    fs-extra "^10.0.0"
+    fs-extra "^11.1.1"
     lodash "^4.17.15"
     minimatch "^3.0.4"
     p-limit "^3.0.2"
@@ -4453,7 +4453,7 @@ beachball@2.31.8:
     semver "^7.0.0"
     toposort "^2.0.2"
     uuid "^9.0.0"
-    workspace-tools "^0.29.0"
+    workspace-tools "^0.36.3"
     yargs-parser "^21.0.0"
 
 before-after-hook@^2.2.0:
@@ -5940,6 +5940,16 @@ cosmiconfig@^6.0.0:
     parse-json "^5.0.0"
     path-type "^4.0.0"
     yaml "^1.7.2"
+
+cosmiconfig@^8.3.6:
+  version "8.3.6"
+  resolved "https://registry.yarnpkg.com/cosmiconfig/-/cosmiconfig-8.3.6.tgz#060a2b871d66dba6c8538ea1118ba1ac16f5fae3"
+  integrity sha512-kcZ6+W5QzcJ3P1Mt+83OUv/oHFqZHIx8DuxG6eZ5RGMERoLqp4BuGjhHLYGK+Kf5XVkQvqBSmAy/nGWN3qDgEA==
+  dependencies:
+    import-fresh "^3.3.0"
+    js-yaml "^4.1.0"
+    parse-json "^5.2.0"
+    path-type "^4.0.0"
 
 create-ecdh@^4.0.0:
   version "4.0.4"
@@ -7890,10 +7900,21 @@ fast-deep-equal@^3.1.1:
   resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-3.1.3.tgz#3a7d56b559d6cbc3eb512325244e619a65c6c525"
   integrity sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==
 
-fast-glob@3.2.7, fast-glob@^3.0.3, fast-glob@^3.1.1:
+fast-glob@3.2.7:
   version "3.2.7"
   resolved "https://registry.yarnpkg.com/fast-glob/-/fast-glob-3.2.7.tgz#fd6cb7a2d7e9aa7a7846111e85a196d6b2f766a1"
   integrity sha512-rYGMRwip6lUMvYD3BTScMwT1HtAs2d71SMv66Vrxs0IekGZEjhM0pcMfjQPnknBt2zeCwQMEupiN02ZP4DiT1Q==
+  dependencies:
+    "@nodelib/fs.stat" "^2.0.2"
+    "@nodelib/fs.walk" "^1.2.3"
+    glob-parent "^5.1.2"
+    merge2 "^1.3.0"
+    micromatch "^4.0.4"
+
+fast-glob@^3.0.3, fast-glob@^3.1.1, fast-glob@^3.3.1:
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/fast-glob/-/fast-glob-3.3.2.tgz#a904501e57cfdd2ffcded45e99a54fef55e46129"
+  integrity sha512-oX2ruAFQwf/Orj8m737Y5adxDQO0LAB7/S5MnxCdTNDd4p6BsyIVsv9JQsATbTSq8KHRpLwIHbVlUNatxd+1Ow==
   dependencies:
     "@nodelib/fs.stat" "^2.0.2"
     "@nodelib/fs.walk" "^1.2.3"
@@ -8286,10 +8307,19 @@ fs-exists-cached@1.0.0, fs-exists-cached@^1.0.0:
   resolved "https://registry.yarnpkg.com/fs-exists-cached/-/fs-exists-cached-1.0.0.tgz#cf25554ca050dc49ae6656b41de42258989dcbce"
   integrity sha512-kSxoARUDn4F2RPXX48UXnaFKwVU7Ivd/6qpzZL29MCDmr9sTvybv4gFCp+qaI4fM9m0z9fgz/yJvi56GAz+BZg==
 
-fs-extra@^10.0.0, fs-extra@^10.1.0:
+fs-extra@^10.1.0:
   version "10.1.0"
   resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-10.1.0.tgz#02873cfbc4084dde127eaa5f9905eef2325d1abf"
   integrity sha512-oRXApq54ETRj4eMiFzGnHWGy+zo5raudjuxN0b8H7s/RU2oW0Wvsx9O0ACRN/kRq9E8Vu/ReskGB5o3ji+FzHQ==
+  dependencies:
+    graceful-fs "^4.2.0"
+    jsonfile "^6.0.1"
+    universalify "^2.0.0"
+
+fs-extra@^11.1.1:
+  version "11.2.0"
+  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-11.2.0.tgz#e70e17dfad64232287d01929399e0ea7c86b0e5b"
+  integrity sha512-PmDi3uwK5nFuXh7XDTlVnS17xJS7vW36is2+w3xcv8SVxiB4NyATf4ctkVY5bkSjX0Y4nbvZCq1/EjtEyr9ktw==
   dependencies:
     graceful-fs "^4.2.0"
     jsonfile "^6.0.1"
@@ -10150,7 +10180,7 @@ import-fresh@^2.0.0:
     caller-path "^2.0.0"
     resolve-from "^3.0.0"
 
-import-fresh@^3.0.0, import-fresh@^3.1.0, import-fresh@^3.2.1:
+import-fresh@^3.0.0, import-fresh@^3.1.0, import-fresh@^3.2.1, import-fresh@^3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/import-fresh/-/import-fresh-3.3.0.tgz#37162c25fcb9ebaa2e6e53d5b4d88ce17d9e0c2b"
   integrity sha512-veYYhQa+D1QBKznvhUHxb8faxlrwUnxseDAbAp457E0wLNio2bOSKnjYDhMj+YiAq61xrMGhQk9iXVk5FzgQMw==
@@ -14407,7 +14437,7 @@ parse-json@^4.0.0:
     error-ex "^1.3.1"
     json-parse-better-errors "^1.0.1"
 
-parse-json@^5.0.0:
+parse-json@^5.0.0, parse-json@^5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/parse-json/-/parse-json-5.2.0.tgz#c76fc66dee54231c962b22bcc8a72cf2f99753cd"
   integrity sha512-ayCKvm/phCGxOkYRSCM82iDwct8/EonSEgCSxWxD7ve6jHggsFl4fZVQBPRNgQoKiuV/odhFrGzQXZwbifC8Rg==
@@ -19460,12 +19490,13 @@ worker-farm@^1.7.0:
   dependencies:
     errno "~0.1.7"
 
-workspace-tools@^0.29.0:
-  version "0.29.1"
-  resolved "https://registry.yarnpkg.com/workspace-tools/-/workspace-tools-0.29.1.tgz#ff38f7484961cd87a342a8fd14eacd31d1645f56"
-  integrity sha512-BVPROxNszGmyaUD2ErLWP4BpCiIkG1P//CnziOvHd27o1TeBm+7T1HKlYu89T4XGAjgPL/NP+tZ4j6aBvG/p/A==
+workspace-tools@^0.36.3:
+  version "0.36.4"
+  resolved "https://registry.yarnpkg.com/workspace-tools/-/workspace-tools-0.36.4.tgz#57504c687569785148c5b7ef1470dadc9be970c5"
+  integrity sha512-v0UFVvw9BjHtRu2Dau5PEJKkuG8u4jPlpXZQWjSz9XgbSutpPURqtO2P0hp3cVmQVATh8lkMFCewFgJuDnyC/w==
   dependencies:
     "@yarnpkg/lockfile" "^1.1.0"
+    fast-glob "^3.3.1"
     git-url-parse "^13.0.0"
     globby "^11.0.0"
     jju "^1.4.0"
